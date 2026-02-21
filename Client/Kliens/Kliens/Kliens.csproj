@@ -8,4 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="UserControls\Szakember\" />
+    <Folder Include="UserControls\Raktaros\" />
+  </ItemGroup>
+
 </Project>
