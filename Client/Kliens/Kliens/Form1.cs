@@ -1,10 +1,20 @@
 using Kliens.UserControls;
+using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing.Text;
 
 namespace Kliens
 {
     public partial class Form1 : Form
     {
+        public void LoadControl(UserControl uc)
+        {
+            uc.Dock = DockStyle.Fill;
+            while (mainPanel.Controls.Count > 0)
+                mainPanel.Controls[0].Dispose();
+            mainPanel.Controls.Add(uc);
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -20,10 +30,7 @@ namespace Kliens
             //Beléptetö kód majd ide
 
             RaktarvezetoMain rMain = new RaktarvezetoMain();
-            rMain.Dock = DockStyle.Fill;
-            this.Controls.Clear();
-            this.Controls.Add(rMain);
-
+            LoadControl(rMain);
         }
     }
 }
