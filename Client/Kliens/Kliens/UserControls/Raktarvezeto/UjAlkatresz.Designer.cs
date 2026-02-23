@@ -148,11 +148,13 @@
             cancelButton.TabIndex = 10;
             cancelButton.Text = "Mégse";
             cancelButton.UseVisualStyleBackColor = true;
+            cancelButton.Click += Cancel;
             // 
             // UjAlkatresz
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(cancelButton);
             Controls.Add(saveButton);
             Controls.Add(label6);
@@ -165,7 +167,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "UjAlkatresz";
-            Size = new Size(510, 300);
+            Size = new Size(508, 298);
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ResumeLayout(false);

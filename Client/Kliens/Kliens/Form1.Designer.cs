@@ -66,7 +66,6 @@
             codeBox.Location = new Point(271, 303);
             codeBox.Margin = new Padding(4, 3, 4, 3);
             codeBox.Name = "codeBox";
-            codeBox.PasswordChar = '*';
             codeBox.Size = new Size(116, 31);
             codeBox.TabIndex = 29;
             // 
@@ -158,7 +157,7 @@
             // 
             linkLabel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(385, 319);
+            linkLabel1.Location = new Point(388, 319);
             linkLabel1.Margin = new Padding(4, 0, 4, 0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(40, 15);

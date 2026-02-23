@@ -12,6 +12,10 @@ namespace Kliens.UserControls.Raktarvezeto
 {
     public partial class UjAlkatresz : UserControl
     {
+        private void Cancel(object sender, EventArgs e)
+        {
+            this.Dispose();        }
+        
         public UjAlkatresz()
         {
             InitializeComponent();

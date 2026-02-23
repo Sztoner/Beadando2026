@@ -15,6 +15,14 @@ namespace Kliens
             mainPanel.Controls.Add(uc);
         }
 
+        private void Login(object sender, EventArgs e)
+        {
+            //Beléptetö kód majd ide
+
+            RaktarvezetoMain rMain = new RaktarvezetoMain();
+            LoadControl(rMain);
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -23,14 +31,6 @@ namespace Kliens
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void Login(object sender, EventArgs e)
-        {
-            //Beléptetö kód majd ide
-
-            RaktarvezetoMain rMain = new RaktarvezetoMain();
-            LoadControl(rMain);
         }
     }
 }

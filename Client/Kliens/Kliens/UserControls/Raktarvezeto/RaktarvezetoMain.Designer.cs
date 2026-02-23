@@ -35,7 +35,8 @@
             newPartToolStripMenuItem = new ToolStripMenuItem();
             welcomeToolStripMenuItem = new ToolStripMenuItem();
             logoutToolStripMenuItem = new ToolStripMenuItem();
-            MainPanel = new Panel();
+            mainPanel = new Panel();
+            addPartButton = new Button();
             panel1 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button2 = new Button();
@@ -67,11 +68,10 @@
             partIdLabel = new Label();
             partNameLabel = new Label();
             label4 = new Label();
-            projectBox = new ComboBox();
-            label1 = new Label();
+            filterBox = new ComboBox();
             partBox = new ListBox();
             menuStrip1.SuspendLayout();
-            MainPanel.SuspendLayout();
+            mainPanel.SuspendLayout();
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -117,7 +117,7 @@
             newPartToolStripMenuItem.BackColor = Color.White;
             newPartToolStripMenuItem.Font = new Font("Segoe UI", 9F);
             newPartToolStripMenuItem.Name = "newPartToolStripMenuItem";
-            newPartToolStripMenuItem.Size = new Size(180, 22);
+            newPartToolStripMenuItem.Size = new Size(87, 22);
             newPartToolStripMenuItem.Text = "Új";
             // 
             // welcomeToolStripMenuItem
@@ -134,20 +134,35 @@
             logoutToolStripMenuItem.BackColor = Color.White;
             logoutToolStripMenuItem.Font = new Font("Segoe UI", 9F);
             logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            logoutToolStripMenuItem.Size = new Size(180, 22);
+            logoutToolStripMenuItem.Size = new Size(142, 22);
             logoutToolStripMenuItem.Text = "Kijelentkezés";
             // 
-            // MainPanel
+            // mainPanel
             // 
-            MainPanel.Controls.Add(panel1);
-            MainPanel.Controls.Add(projectBox);
-            MainPanel.Controls.Add(label1);
-            MainPanel.Controls.Add(partBox);
-            MainPanel.Dock = DockStyle.Fill;
-            MainPanel.Location = new Point(0, 27);
-            MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(800, 423);
-            MainPanel.TabIndex = 1;
+            mainPanel.Controls.Add(addPartButton);
+            mainPanel.Controls.Add(panel1);
+            mainPanel.Controls.Add(filterBox);
+            mainPanel.Controls.Add(partBox);
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 27);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(800, 423);
+            mainPanel.TabIndex = 1;
+            mainPanel.Resize += mainPanel_Resize;
+            // 
+            // addPartButton
+            // 
+            addPartButton.BackColor = Color.DodgerBlue;
+            addPartButton.FlatStyle = FlatStyle.Flat;
+            addPartButton.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            addPartButton.ForeColor = Color.Black;
+            addPartButton.Location = new Point(24, 47);
+            addPartButton.Name = "addPartButton";
+            addPartButton.Size = new Size(35, 30);
+            addPartButton.TabIndex = 4;
+            addPartButton.Text = "+";
+            addPartButton.UseVisualStyleBackColor = false;
+            addPartButton.Click += AddPart;
             // 
             // panel1
             // 
@@ -200,203 +215,243 @@
             // 
             // button2
             // 
+            button2.BackColor = Color.SkyBlue;
+            button2.FlatStyle = FlatStyle.Flat;
             button2.Location = new Point(7, 0);
             button2.Margin = new Padding(7, 0, 7, 0);
             button2.Name = "button2";
             button2.Size = new Size(45, 45);
             button2.TabIndex = 0;
             button2.Text = "1";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             // 
             // button3
             // 
+            button3.BackColor = Color.SkyBlue;
+            button3.FlatStyle = FlatStyle.Flat;
             button3.Location = new Point(7, 45);
             button3.Margin = new Padding(7, 0, 7, 0);
             button3.Name = "button3";
             button3.Size = new Size(45, 45);
             button3.TabIndex = 1;
             button3.Text = "2";
-            button3.UseVisualStyleBackColor = true;
+            button3.UseVisualStyleBackColor = false;
             // 
             // button4
             // 
+            button4.BackColor = Color.SkyBlue;
+            button4.FlatStyle = FlatStyle.Flat;
             button4.Location = new Point(7, 90);
             button4.Margin = new Padding(7, 0, 7, 0);
             button4.Name = "button4";
             button4.Size = new Size(45, 45);
             button4.TabIndex = 2;
             button4.Text = "3";
-            button4.UseVisualStyleBackColor = true;
+            button4.UseVisualStyleBackColor = false;
             // 
             // button5
             // 
+            button5.BackColor = Color.SkyBlue;
+            button5.FlatStyle = FlatStyle.Flat;
             button5.Location = new Point(7, 135);
             button5.Margin = new Padding(7, 0, 7, 0);
             button5.Name = "button5";
             button5.Size = new Size(45, 45);
             button5.TabIndex = 3;
             button5.Text = "4";
-            button5.UseVisualStyleBackColor = true;
+            button5.UseVisualStyleBackColor = false;
             // 
             // button6
             // 
+            button6.BackColor = Color.SkyBlue;
+            button6.FlatStyle = FlatStyle.Flat;
             button6.Location = new Point(66, 0);
             button6.Margin = new Padding(7, 0, 7, 0);
             button6.Name = "button6";
             button6.Size = new Size(45, 45);
             button6.TabIndex = 4;
             button6.Text = "1";
-            button6.UseVisualStyleBackColor = true;
+            button6.UseVisualStyleBackColor = false;
             // 
             // button7
             // 
+            button7.BackColor = Color.SkyBlue;
+            button7.FlatStyle = FlatStyle.Flat;
             button7.Location = new Point(66, 45);
             button7.Margin = new Padding(7, 0, 7, 0);
             button7.Name = "button7";
             button7.Size = new Size(45, 45);
             button7.TabIndex = 5;
             button7.Text = "2";
-            button7.UseVisualStyleBackColor = true;
+            button7.UseVisualStyleBackColor = false;
             // 
             // button8
             // 
+            button8.BackColor = Color.SkyBlue;
+            button8.FlatStyle = FlatStyle.Flat;
             button8.Location = new Point(66, 90);
             button8.Margin = new Padding(7, 0, 7, 0);
             button8.Name = "button8";
             button8.Size = new Size(45, 45);
             button8.TabIndex = 6;
             button8.Text = "3";
-            button8.UseVisualStyleBackColor = true;
+            button8.UseVisualStyleBackColor = false;
             // 
             // button9
             // 
+            button9.BackColor = Color.SkyBlue;
+            button9.FlatStyle = FlatStyle.Flat;
             button9.Location = new Point(66, 135);
             button9.Margin = new Padding(7, 0, 7, 0);
             button9.Name = "button9";
             button9.Size = new Size(45, 45);
             button9.TabIndex = 7;
             button9.Text = "4";
-            button9.UseVisualStyleBackColor = true;
+            button9.UseVisualStyleBackColor = false;
             // 
             // button10
             // 
+            button10.BackColor = Color.SkyBlue;
+            button10.FlatStyle = FlatStyle.Flat;
             button10.Location = new Point(125, 0);
             button10.Margin = new Padding(7, 0, 7, 0);
             button10.Name = "button10";
             button10.Size = new Size(45, 45);
             button10.TabIndex = 8;
             button10.Text = "1";
-            button10.UseVisualStyleBackColor = true;
+            button10.UseVisualStyleBackColor = false;
             // 
             // button11
             // 
+            button11.BackColor = Color.SkyBlue;
+            button11.FlatStyle = FlatStyle.Flat;
             button11.Location = new Point(125, 45);
             button11.Margin = new Padding(7, 0, 7, 0);
             button11.Name = "button11";
             button11.Size = new Size(45, 45);
             button11.TabIndex = 9;
             button11.Text = "2";
-            button11.UseVisualStyleBackColor = true;
+            button11.UseVisualStyleBackColor = false;
             // 
             // button12
             // 
+            button12.BackColor = Color.SkyBlue;
+            button12.FlatStyle = FlatStyle.Flat;
             button12.Location = new Point(125, 90);
             button12.Margin = new Padding(7, 0, 7, 0);
             button12.Name = "button12";
             button12.Size = new Size(45, 45);
             button12.TabIndex = 10;
             button12.Text = "3";
-            button12.UseVisualStyleBackColor = true;
+            button12.UseVisualStyleBackColor = false;
             // 
             // button13
             // 
+            button13.BackColor = Color.SkyBlue;
+            button13.FlatStyle = FlatStyle.Flat;
             button13.Location = new Point(125, 135);
             button13.Margin = new Padding(7, 0, 7, 0);
             button13.Name = "button13";
             button13.Size = new Size(45, 45);
             button13.TabIndex = 11;
             button13.Text = "4";
-            button13.UseVisualStyleBackColor = true;
+            button13.UseVisualStyleBackColor = false;
             // 
             // button14
             // 
+            button14.BackColor = Color.SkyBlue;
+            button14.FlatStyle = FlatStyle.Flat;
             button14.Location = new Point(184, 0);
             button14.Margin = new Padding(7, 0, 7, 0);
             button14.Name = "button14";
             button14.Size = new Size(45, 45);
             button14.TabIndex = 12;
             button14.Text = "1";
-            button14.UseVisualStyleBackColor = true;
+            button14.UseVisualStyleBackColor = false;
             // 
             // button15
             // 
+            button15.BackColor = Color.SkyBlue;
+            button15.FlatStyle = FlatStyle.Flat;
             button15.Location = new Point(184, 45);
             button15.Margin = new Padding(7, 0, 7, 0);
             button15.Name = "button15";
             button15.Size = new Size(45, 45);
             button15.TabIndex = 13;
             button15.Text = "2";
-            button15.UseVisualStyleBackColor = true;
+            button15.UseVisualStyleBackColor = false;
             // 
             // button16
             // 
+            button16.BackColor = Color.SkyBlue;
+            button16.FlatStyle = FlatStyle.Flat;
             button16.Location = new Point(184, 90);
             button16.Margin = new Padding(7, 0, 7, 0);
             button16.Name = "button16";
             button16.Size = new Size(45, 45);
             button16.TabIndex = 14;
             button16.Text = "3";
-            button16.UseVisualStyleBackColor = true;
+            button16.UseVisualStyleBackColor = false;
             // 
             // button17
             // 
+            button17.BackColor = Color.SkyBlue;
+            button17.FlatStyle = FlatStyle.Flat;
             button17.Location = new Point(184, 135);
             button17.Margin = new Padding(7, 0, 7, 0);
             button17.Name = "button17";
             button17.Size = new Size(45, 45);
             button17.TabIndex = 15;
             button17.Text = "4";
-            button17.UseVisualStyleBackColor = true;
+            button17.UseVisualStyleBackColor = false;
             // 
             // button18
             // 
+            button18.BackColor = Color.SkyBlue;
+            button18.FlatStyle = FlatStyle.Flat;
             button18.Location = new Point(243, 0);
             button18.Margin = new Padding(7, 0, 7, 0);
             button18.Name = "button18";
             button18.Size = new Size(45, 45);
             button18.TabIndex = 16;
             button18.Text = "1";
-            button18.UseVisualStyleBackColor = true;
+            button18.UseVisualStyleBackColor = false;
             // 
             // button19
             // 
+            button19.BackColor = Color.SkyBlue;
+            button19.FlatStyle = FlatStyle.Flat;
             button19.Location = new Point(243, 45);
             button19.Margin = new Padding(7, 0, 7, 0);
             button19.Name = "button19";
             button19.Size = new Size(45, 45);
             button19.TabIndex = 17;
             button19.Text = "2";
-            button19.UseVisualStyleBackColor = true;
+            button19.UseVisualStyleBackColor = false;
             // 
             // button20
             // 
+            button20.BackColor = Color.SkyBlue;
+            button20.FlatStyle = FlatStyle.Flat;
             button20.Location = new Point(243, 90);
             button20.Margin = new Padding(7, 0, 7, 0);
             button20.Name = "button20";
             button20.Size = new Size(45, 45);
             button20.TabIndex = 18;
             button20.Text = "3";
-            button20.UseVisualStyleBackColor = true;
+            button20.UseVisualStyleBackColor = false;
             // 
             // button21
             // 
+            button21.BackColor = Color.SkyBlue;
+            button21.FlatStyle = FlatStyle.Flat;
             button21.Location = new Point(243, 135);
             button21.Margin = new Padding(7, 0, 7, 0);
             button21.Name = "button21";
             button21.Size = new Size(45, 45);
             button21.TabIndex = 19;
             button21.Text = "4";
-            button21.UseVisualStyleBackColor = true;
+            button21.UseVisualStyleBackColor = false;
             // 
             // label3
             // 
@@ -410,7 +465,7 @@
             // 
             // button1
             // 
-            button1.BackColor = Color.SpringGreen;
+            button1.BackColor = Color.DodgerBlue;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Calibri", 10F);
             button1.Location = new Point(242, 98);
@@ -484,25 +539,17 @@
             label4.TabIndex = 9;
             label4.Text = "db";
             // 
-            // projectBox
+            // filterBox
             // 
-            projectBox.Font = new Font("Calibri", 12F);
-            projectBox.FormattingEnabled = true;
-            projectBox.Items.AddRange(new object[] { "-" });
-            projectBox.Location = new Point(24, 50);
-            projectBox.Name = "projectBox";
-            projectBox.Size = new Size(154, 27);
-            projectBox.TabIndex = 2;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Calibri", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 238);
-            label1.Location = new Point(24, 24);
-            label1.Name = "label1";
-            label1.Size = new Size(68, 23);
-            label1.TabIndex = 1;
-            label1.Text = "Projekt";
+            filterBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            filterBox.BackColor = SystemColors.Window;
+            filterBox.Font = new Font("Segoe UI", 11F);
+            filterBox.FormattingEnabled = true;
+            filterBox.Items.AddRange(new object[] { "Összes", "Hiányzó", "Lefoglalt" });
+            filterBox.Location = new Point(295, 47);
+            filterBox.Name = "filterBox";
+            filterBox.Size = new Size(99, 28);
+            filterBox.TabIndex = 2;
             // 
             // partBox
             // 
@@ -521,14 +568,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            Controls.Add(MainPanel);
+            Controls.Add(mainPanel);
             Controls.Add(menuStrip1);
             Name = "RaktarvezetoMain";
             Size = new Size(800, 450);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            MainPanel.ResumeLayout(false);
-            MainPanel.PerformLayout();
+            mainPanel.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
@@ -543,16 +589,15 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem partToolStripMenuItem;
-        private Panel MainPanel;
+        private Panel mainPanel;
         private ToolStripMenuItem welcomeToolStripMenuItem;
         private ToolStripMenuItem logoutToolStripMenuItem;
         private ToolStripMenuItem newPartToolStripMenuItem;
         private ListBox partBox;
-        private Label label1;
         private Panel panel1;
         private Label partIdLabel;
         private Label partNameLabel;
-        private ComboBox projectBox;
+        private ComboBox filterBox;
         private NumericUpDown numericUpDown1;
         private Label label2;
         private NumericUpDown priceBox;
@@ -582,5 +627,6 @@
         private Button button21;
         private ToolStripMenuItem saveToolStripMenuItem;
         private Label label4;
+        private Button addPartButton;
     }
 }
