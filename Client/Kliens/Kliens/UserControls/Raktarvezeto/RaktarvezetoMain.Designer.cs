@@ -134,7 +134,7 @@
             logoutToolStripMenuItem.BackColor = Color.White;
             logoutToolStripMenuItem.Font = new Font("Segoe UI", 9F);
             logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            logoutToolStripMenuItem.Size = new Size(142, 22);
+            logoutToolStripMenuItem.Size = new Size(180, 22);
             logoutToolStripMenuItem.Text = "Kijelentkezés";
             // 
             // mainPanel
@@ -148,6 +148,8 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(800, 423);
             mainPanel.TabIndex = 1;
+            mainPanel.ControlAdded += DisableBackground;
+            mainPanel.ControlRemoved += EnableBackground;
             mainPanel.Resize += mainPanel_Resize;
             // 
             // addPartButton

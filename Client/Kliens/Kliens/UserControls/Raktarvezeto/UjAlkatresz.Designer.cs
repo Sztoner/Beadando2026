@@ -167,7 +167,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "UjAlkatresz";
-            Size = new Size(508, 298);
+            Size = new Size(510, 300);
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ResumeLayout(false);

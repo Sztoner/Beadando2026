@@ -8,16 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Kliens.UserControls.Raktarvezeto
+namespace Kliens.UserControls.Szakember
 {
-    public partial class UjAlkatresz : UserControl
+    public partial class SzakemberMain : UserControl
     {
-        private void Cancel(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
-        
-        public UjAlkatresz()
+        public SzakemberMain()
         {
             InitializeComponent();
         }
