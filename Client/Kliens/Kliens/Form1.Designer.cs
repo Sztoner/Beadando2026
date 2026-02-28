@@ -38,7 +38,11 @@
             nameBox = new TextBox();
             welcomeLabel = new Label();
             linkLabel1 = new LinkLabel();
+            topMenu = new MenuStrip();
+            welcomeToolStripMenuItem = new ToolStripMenuItem();
+            logoutToolStripMenuItem = new ToolStripMenuItem();
             mainPanel.SuspendLayout();
+            topMenu.SuspendLayout();
             SuspendLayout();
             // 
             // mainPanel
@@ -54,16 +58,16 @@
             mainPanel.Controls.Add(welcomeLabel);
             mainPanel.Controls.Add(linkLabel1);
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(0, 0);
+            mainPanel.Location = new Point(0, 25);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(800, 450);
+            mainPanel.Size = new Size(800, 425);
             mainPanel.TabIndex = 0;
             // 
             // codeBox
             // 
             codeBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             codeBox.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            codeBox.Location = new Point(271, 303);
+            codeBox.Location = new Point(271, 292);
             codeBox.Margin = new Padding(4, 3, 4, 3);
             codeBox.Name = "codeBox";
             codeBox.Size = new Size(116, 31);
@@ -75,7 +79,7 @@
             loginButton.BackColor = Color.DodgerBlue;
             loginButton.FlatStyle = FlatStyle.Popup;
             loginButton.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            loginButton.Location = new Point(330, 349);
+            loginButton.Location = new Point(330, 338);
             loginButton.Margin = new Padding(4, 3, 4, 3);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(128, 42);
@@ -89,7 +93,7 @@
             label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             label3.AutoSize = true;
             label3.Font = new Font("Calibri", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label3.Location = new Point(271, 282);
+            label3.Location = new Point(271, 271);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(98, 18);
@@ -101,7 +105,7 @@
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             label2.AutoSize = true;
             label2.Font = new Font("Calibri", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label2.Location = new Point(271, 228);
+            label2.Location = new Point(271, 217);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(45, 18);
@@ -112,7 +116,7 @@
             // 
             pwBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             pwBox.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            pwBox.Location = new Point(271, 249);
+            pwBox.Location = new Point(271, 238);
             pwBox.Margin = new Padding(4, 3, 4, 3);
             pwBox.Name = "pwBox";
             pwBox.PasswordChar = '*';
@@ -124,7 +128,7 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             label1.AutoSize = true;
             label1.Font = new Font("Calibri", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label1.Location = new Point(271, 173);
+            label1.Location = new Point(271, 162);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(33, 18);
@@ -135,7 +139,7 @@
             // 
             nameBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             nameBox.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            nameBox.Location = new Point(271, 194);
+            nameBox.Location = new Point(271, 183);
             nameBox.Margin = new Padding(4, 3, 4, 3);
             nameBox.Name = "nameBox";
             nameBox.Size = new Size(243, 31);
@@ -148,7 +152,7 @@
             welcomeLabel.Location = new Point(0, 0);
             welcomeLabel.Margin = new Padding(4, 0, 4, 0);
             welcomeLabel.Name = "welcomeLabel";
-            welcomeLabel.Size = new Size(800, 157);
+            welcomeLabel.Size = new Size(800, 146);
             welcomeLabel.TabIndex = 21;
             welcomeLabel.Text = "Üdvözöljük.";
             welcomeLabel.TextAlign = ContentAlignment.BottomCenter;
@@ -157,7 +161,7 @@
             // 
             linkLabel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(388, 319);
+            linkLabel1.Location = new Point(388, 308);
             linkLabel1.Margin = new Padding(4, 0, 4, 0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(40, 15);
@@ -165,19 +169,50 @@
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Mi ez?";
             // 
+            // topMenu
+            // 
+            topMenu.BackColor = Color.White;
+            topMenu.Items.AddRange(new ToolStripItem[] { welcomeToolStripMenuItem });
+            topMenu.Location = new Point(0, 0);
+            topMenu.Name = "topMenu";
+            topMenu.Size = new Size(800, 25);
+            topMenu.TabIndex = 1;
+            // 
+            // welcomeToolStripMenuItem
+            // 
+            welcomeToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
+            welcomeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { logoutToolStripMenuItem });
+            welcomeToolStripMenuItem.Font = new Font("Segoe UI", 9.75F, FontStyle.Underline, GraphicsUnit.Point, 238);
+            welcomeToolStripMenuItem.Name = "welcomeToolStripMenuItem";
+            welcomeToolStripMenuItem.Size = new Size(80, 21);
+            welcomeToolStripMenuItem.Text = "Üdv, Lajos";
+            // 
+            // logoutToolStripMenuItem
+            // 
+            logoutToolStripMenuItem.BackColor = Color.White;
+            logoutToolStripMenuItem.Font = new Font("Segoe UI", 9F);
+            logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            logoutToolStripMenuItem.Size = new Size(142, 22);
+            logoutToolStripMenuItem.Text = "Kijelentkezés";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(mainPanel);
+            Controls.Add(topMenu);
             Margin = new Padding(4, 3, 4, 3);
+            MinimumSize = new Size(816, 489);
             Name = "Form1";
             Text = "Megrendelés Karbantartó";
             Load += Form1_Load;
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
+            topMenu.ResumeLayout(false);
+            topMenu.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -192,5 +227,8 @@
         private TextBox nameBox;
         private Label welcomeLabel;
         private LinkLabel linkLabel1;
+        private MenuStrip topMenu;
+        private ToolStripMenuItem welcomeToolStripMenuItem;
+        private ToolStripMenuItem logoutToolStripMenuItem;
     }
 }

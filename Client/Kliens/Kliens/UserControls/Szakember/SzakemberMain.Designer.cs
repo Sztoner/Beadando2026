@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            loadButton = new Button();
             newButton = new Button();
             projectBox = new ComboBox();
             SuspendLayout();
             // 
-            // button1
+            // loadButton
             // 
-            button1.BackColor = Color.DodgerBlue;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 238);
-            button1.Location = new Point(420, 186);
-            button1.Name = "button1";
-            button1.Size = new Size(100, 100);
-            button1.TabIndex = 1;
-            button1.Text = "Betöltés";
-            button1.UseVisualStyleBackColor = false;
+            loadButton.BackColor = Color.DodgerBlue;
+            loadButton.FlatStyle = FlatStyle.Flat;
+            loadButton.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            loadButton.Location = new Point(420, 186);
+            loadButton.Name = "loadButton";
+            loadButton.Size = new Size(100, 100);
+            loadButton.TabIndex = 1;
+            loadButton.Text = "Betöltés";
+            loadButton.UseVisualStyleBackColor = false;
             // 
             // newButton
             // 
-            newButton.BackColor = Color.SkyBlue;
+            newButton.BackColor = Color.DodgerBlue;
             newButton.FlatStyle = FlatStyle.Flat;
             newButton.Font = new Font("Segoe UI", 39.75F, FontStyle.Bold, GraphicsUnit.Point, 238);
             newButton.Location = new Point(280, 186);
@@ -73,7 +73,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(projectBox);
-            Controls.Add(button1);
+            Controls.Add(loadButton);
             Controls.Add(newButton);
             Name = "SzakemberMain";
             Size = new Size(800, 450);
@@ -82,7 +82,7 @@
 
         #endregion
 
-        private Button button1;
+        private Button loadButton;
         private Button newButton;
         private ComboBox projectBox;
     }

@@ -28,13 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
-            saveToolStripMenuItem = new ToolStripMenuItem();
-            partToolStripMenuItem = new ToolStripMenuItem();
-            newPartToolStripMenuItem = new ToolStripMenuItem();
-            welcomeToolStripMenuItem = new ToolStripMenuItem();
-            logoutToolStripMenuItem = new ToolStripMenuItem();
             mainPanel = new Panel();
             addPartButton = new Button();
             panel1 = new Panel();
@@ -70,72 +63,12 @@
             label4 = new Label();
             filterBox = new ComboBox();
             partBox = new ListBox();
-            menuStrip1.SuspendLayout();
             mainPanel.SuspendLayout();
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)priceBox).BeginInit();
             SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            menuStrip1.BackColor = Color.White;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, partToolStripMenuItem, welcomeToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 27);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem });
-            fileToolStripMenuItem.Font = new Font("Segoe UI", 10F);
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(41, 23);
-            fileToolStripMenuItem.Text = "Fájl";
-            // 
-            // saveToolStripMenuItem
-            // 
-            saveToolStripMenuItem.BackColor = Color.White;
-            saveToolStripMenuItem.Font = new Font("Segoe UI", 9F);
-            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(115, 22);
-            saveToolStripMenuItem.Text = "Mentés";
-            // 
-            // partToolStripMenuItem
-            // 
-            partToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newPartToolStripMenuItem });
-            partToolStripMenuItem.Font = new Font("Segoe UI", 10F);
-            partToolStripMenuItem.Name = "partToolStripMenuItem";
-            partToolStripMenuItem.Size = new Size(76, 23);
-            partToolStripMenuItem.Text = "Alkatrész";
-            // 
-            // newPartToolStripMenuItem
-            // 
-            newPartToolStripMenuItem.BackColor = Color.White;
-            newPartToolStripMenuItem.Font = new Font("Segoe UI", 9F);
-            newPartToolStripMenuItem.Name = "newPartToolStripMenuItem";
-            newPartToolStripMenuItem.Size = new Size(87, 22);
-            newPartToolStripMenuItem.Text = "Új";
-            // 
-            // welcomeToolStripMenuItem
-            // 
-            welcomeToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
-            welcomeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { logoutToolStripMenuItem });
-            welcomeToolStripMenuItem.Font = new Font("Segoe UI", 9.75F, FontStyle.Underline, GraphicsUnit.Point, 238);
-            welcomeToolStripMenuItem.Name = "welcomeToolStripMenuItem";
-            welcomeToolStripMenuItem.Size = new Size(80, 23);
-            welcomeToolStripMenuItem.Text = "Üdv, Lajos";
-            // 
-            // logoutToolStripMenuItem
-            // 
-            logoutToolStripMenuItem.BackColor = Color.White;
-            logoutToolStripMenuItem.Font = new Font("Segoe UI", 9F);
-            logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            logoutToolStripMenuItem.Size = new Size(180, 22);
-            logoutToolStripMenuItem.Text = "Kijelentkezés";
             // 
             // mainPanel
             // 
@@ -144,9 +77,9 @@
             mainPanel.Controls.Add(filterBox);
             mainPanel.Controls.Add(partBox);
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(0, 27);
+            mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(800, 423);
+            mainPanel.Size = new Size(800, 450);
             mainPanel.TabIndex = 1;
             mainPanel.ControlAdded += DisableBackground;
             mainPanel.ControlRemoved += EnableBackground;
@@ -183,7 +116,7 @@
             panel1.Dock = DockStyle.Right;
             panel1.Location = new Point(462, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(338, 423);
+            panel1.Size = new Size(338, 450);
             panel1.TabIndex = 3;
             // 
             // flowLayoutPanel1
@@ -562,7 +495,7 @@
             partBox.ItemHeight = 19;
             partBox.Location = new Point(24, 79);
             partBox.Name = "partBox";
-            partBox.Size = new Size(370, 287);
+            partBox.Size = new Size(370, 306);
             partBox.TabIndex = 0;
             // 
             // RaktarvezetoMain
@@ -571,11 +504,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(mainPanel);
-            Controls.Add(menuStrip1);
             Name = "RaktarvezetoMain";
             Size = new Size(800, 450);
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
             mainPanel.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -583,18 +513,10 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)priceBox).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem partToolStripMenuItem;
         private Panel mainPanel;
-        private ToolStripMenuItem welcomeToolStripMenuItem;
-        private ToolStripMenuItem logoutToolStripMenuItem;
-        private ToolStripMenuItem newPartToolStripMenuItem;
         private ListBox partBox;
         private Panel panel1;
         private Label partIdLabel;
@@ -627,7 +549,6 @@
         private Button button19;
         private Button button20;
         private Button button21;
-        private ToolStripMenuItem saveToolStripMenuItem;
         private Label label4;
         private Button addPartButton;
     }
