@@ -3,7 +3,7 @@ CREATE TABLE alkatresz (
     tipus STRING,
     nev STRING,
     ar INT,
-    darabszam INTEGER,
+    maxdb INTEGER,
     statusz STRING,
     pozicio STRING,
     PRIMARY KEY(ID),
