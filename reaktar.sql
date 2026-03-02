@@ -3,5 +3,6 @@ CREATE TABLE raktar (
     alkatresz_id INT,
     darabszam INTEGER,
     PRIMARY KEY(rekeszID),
-    FOREIGN KEY (alkatresz_ID) REFERENCES rekesz(ID)
+    FOREIGN KEY alkatresz(ID) REFERENCES rekesz(ID)
+
 );
