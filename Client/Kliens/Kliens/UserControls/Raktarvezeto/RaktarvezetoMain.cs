@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Kliens.Shared;
 
 namespace Kliens.UserControls
 {
@@ -18,7 +19,7 @@ namespace Kliens.UserControls
         {
             UjAlkatresz ujAlkatresz = new UjAlkatresz();
             mainPanel.Controls.Add(ujAlkatresz);
-            CenterControl(ujAlkatresz);
+            ujAlkatresz.CenterControl();
             ujAlkatresz.BringToFront();
         }
 
@@ -45,19 +46,11 @@ namespace Kliens.UserControls
             }
         }
 
-        //UJ FILEBA ATIRAS MINT STATIC EXTENSIONMETHOD https://csharptutorial.hu/docs/hellovilag-hellocsharp/8-nyelvi-szolgaltatasok/extension-methods/
-        //barmelyik control kepernyo kozepere helyezese
-        private void CenterControl(Control c)
-        {
-            if(c.Parent != null)
-                c.Location = new Point(c.Parent.Size.Width / 2 - c.Size.Width / 2, c.Parent.Size.Height / 2 - c.Size.Height / 2);
-        }
-
         //addpart ablak kozepre helyezese ha lathato
         private void mainPanel_Resize(object sender, EventArgs e)
         {
             if (mainPanel.Controls.OfType<UjAlkatresz>().Any())
-                CenterControl(mainPanel.Controls.OfType<UjAlkatresz>().First());
+               mainPanel.Controls.OfType<UjAlkatresz>().First().CenterControl();
         }
 
         public RaktarvezetoMain()

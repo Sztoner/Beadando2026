@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Kliens.Shared
 {
-    internal class Methods
+    public static class Methods
     {
+        public static void CenterControl(this Control c)
+        {
+            if (c.Parent != null)
+                c.Location = new Point(c.Parent.Size.Width / 2 - c.Size.Width / 2, c.Parent.Size.Height / 2 - c.Size.Height / 2);
+        }
     }
 }
