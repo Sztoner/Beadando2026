@@ -15,7 +15,7 @@ namespace Kliens.UserControls
     public partial class RaktarvezetoMain : UserControl
     {
         //uj alkatresz hozzaadasa
-        private void AddPart(object sender, EventArgs e)
+        private void ShowAddPartDialog(object sender, EventArgs e)
         {
             UjAlkatresz ujAlkatresz = new UjAlkatresz();
             mainPanel.Controls.Add(ujAlkatresz);

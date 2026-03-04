@@ -205,6 +205,7 @@
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(816, 489);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Megrendelés Karbantartó";
             Load += Form1_Load;
             mainPanel.ResumeLayout(false);

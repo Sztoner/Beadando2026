@@ -97,7 +97,7 @@
             addPartButton.TabIndex = 4;
             addPartButton.Text = "+";
             addPartButton.UseVisualStyleBackColor = false;
-            addPartButton.Click += AddPart;
+            addPartButton.Click += ShowAddPartDialog;
             // 
             // panel1
             // 

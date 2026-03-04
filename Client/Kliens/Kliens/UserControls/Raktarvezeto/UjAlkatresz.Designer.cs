@@ -30,17 +30,17 @@
         {
             label1 = new Label();
             label2 = new Label();
-            textBox1 = new TextBox();
+            nameBox = new TextBox();
             label3 = new Label();
-            numericUpDown1 = new NumericUpDown();
+            priceBox = new NumericUpDown();
             label4 = new Label();
-            numericUpDown2 = new NumericUpDown();
+            rekeszdbBox = new NumericUpDown();
             label5 = new Label();
             label6 = new Label();
             saveButton = new Button();
             cancelButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)priceBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)rekeszdbBox).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -63,13 +63,13 @@
             label2.TabIndex = 1;
             label2.Text = "Alaktrész Neve:";
             // 
-            // textBox1
+            // nameBox
             // 
-            textBox1.Font = new Font("Segoe UI", 10F);
-            textBox1.Location = new Point(145, 65);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(221, 25);
-            textBox1.TabIndex = 2;
+            nameBox.Font = new Font("Segoe UI", 10F);
+            nameBox.Location = new Point(145, 65);
+            nameBox.Name = "nameBox";
+            nameBox.Size = new Size(221, 25);
+            nameBox.TabIndex = 2;
             // 
             // label3
             // 
@@ -81,14 +81,14 @@
             label3.TabIndex = 3;
             label3.Text = "Alaktrész Ára:";
             // 
-            // numericUpDown1
+            // priceBox
             // 
-            numericUpDown1.Font = new Font("Segoe UI", 10F);
-            numericUpDown1.Location = new Point(145, 112);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.RightToLeft = RightToLeft.Yes;
-            numericUpDown1.Size = new Size(196, 25);
-            numericUpDown1.TabIndex = 4;
+            priceBox.Font = new Font("Segoe UI", 10F);
+            priceBox.Location = new Point(145, 112);
+            priceBox.Name = "priceBox";
+            priceBox.RightToLeft = RightToLeft.Yes;
+            priceBox.Size = new Size(196, 25);
+            priceBox.TabIndex = 4;
             // 
             // label4
             // 
@@ -100,14 +100,14 @@
             label4.TabIndex = 5;
             label4.Text = "Ft";
             // 
-            // numericUpDown2
+            // rekeszdbBox
             // 
-            numericUpDown2.Font = new Font("Segoe UI", 10F);
-            numericUpDown2.Location = new Point(145, 161);
-            numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.RightToLeft = RightToLeft.Yes;
-            numericUpDown2.Size = new Size(106, 25);
-            numericUpDown2.TabIndex = 7;
+            rekeszdbBox.Font = new Font("Segoe UI", 10F);
+            rekeszdbBox.Location = new Point(145, 161);
+            rekeszdbBox.Name = "rekeszdbBox";
+            rekeszdbBox.RightToLeft = RightToLeft.Yes;
+            rekeszdbBox.Size = new Size(106, 25);
+            rekeszdbBox.TabIndex = 7;
             // 
             // label5
             // 
@@ -138,6 +138,7 @@
             saveButton.TabIndex = 9;
             saveButton.Text = "Mentés";
             saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += AddPart;
             // 
             // cancelButton
             // 
@@ -158,18 +159,18 @@
             Controls.Add(cancelButton);
             Controls.Add(saveButton);
             Controls.Add(label6);
-            Controls.Add(numericUpDown2);
+            Controls.Add(rekeszdbBox);
             Controls.Add(label5);
             Controls.Add(label4);
-            Controls.Add(numericUpDown1);
+            Controls.Add(priceBox);
             Controls.Add(label3);
-            Controls.Add(textBox1);
+            Controls.Add(nameBox);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "UjAlkatresz";
             Size = new Size(510, 300);
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)priceBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)rekeszdbBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -178,11 +179,11 @@
 
         private Label label1;
         private Label label2;
-        private TextBox textBox1;
+        private TextBox nameBox;
         private Label label3;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown priceBox;
         private Label label4;
-        private NumericUpDown numericUpDown2;
+        private NumericUpDown rekeszdbBox;
         private Label label5;
         private Label label6;
         private Button saveButton;
