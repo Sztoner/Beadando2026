@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto"
 
 CREATE TABLE felhasznalo_adatok (
-    ID UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    ID INT,
     szerepkor STRING,
     jelszoHash BYTEA,
     jelszoSalt BYTEA, 
