@@ -5,6 +5,5 @@ CREATE TABLE alkatresz (
     ar INT,
     maxdb INTEGER,
     statusz STRING,
-    pozicio STRING,
     PRIMARY KEY(ID),
 );
