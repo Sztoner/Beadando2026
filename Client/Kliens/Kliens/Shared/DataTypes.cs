@@ -17,6 +17,14 @@ namespace Kliens.Shared
         public int MaxDb { get; set; }//max elhelyezheto dbszam egy rekeszben
     }
 
+    //kétfaktoros hitelesítéshez használt osztály 
+    public class LoginBeleptetes
+    {
+        public int UserId {  get; set; }
+        public bool Ketlepcsos { get; set; }
+        public string Secret { get; set; }
+    }
+
     public class Alkalmazott //alkalmazott adatai
     {
         public string Nev { get; set; }
