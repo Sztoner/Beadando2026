@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
+using Kliens.Shared;
 
 public class LoginRepo : ILoginRepo
 {
@@ -8,7 +10,7 @@ public class LoginRepo : ILoginRepo
     {
         ConnectionString = dbContext.ConnectionString;
     }
-    public async Task<int> bejelentkezes(string name, string password, string role)
+    public async Task<LoginBeleptetes> bejelentkezes(string name, string password, string role)
     {
         await using (PgProcedure procedure = new PgProcedure(ConnectionString, "bejelentkezes"))
         {
@@ -25,12 +27,18 @@ public class LoginRepo : ILoginRepo
                     return new LoginBeleptetes
                     {
                         UserId = reader.GetInt32(1),
-                        Ketlepcsos = reader.GetBoolean32(2),
-                        Secret = reader.GetBoolean32(3),
+                        Ketlepcsos = reader.GetBoolean(2),
+                        Secret = reader.GetString(3)
                     };
                 }
             }
-            return -1;
+            return new LoginBeleptetes();
         }
     }
+
+    Task<int> ILoginRepo.bejelentkezes(string name, string password, string role)
+    {
+        throw new NotImplementedException();
+    }
+}
 

@@ -1,13 +1,13 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kliens
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
+            var services = new ServiceCollection();
 
             // Add services to the container.
             DbContext dbContext = new DbContext(
@@ -17,17 +17,16 @@ namespace Kliens
                 "Username=postgres;" +
                 "Password=adat");
 
-            builder.Services.AddSingleton(typeof(DbContext), dbContext);
+            services.AddSingleton<DbContext>(dbContext);
 
-            //repok hozzáadása
-            builder.Services.AddSingleton<ILoginRepo, LoginRepo>();
+            // repositories
+            services.AddSingleton<ILoginRepo, LoginRepo>();
 
+            // services
+            services.AddSingleton<IAuthService, AuthService>();
 
-            //servicek hozzáadása
-            builder.Services.AddSingleton<IAuthService, AuthService>();
+            var serviceProvider = services.BuildServiceProvider();
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
         }

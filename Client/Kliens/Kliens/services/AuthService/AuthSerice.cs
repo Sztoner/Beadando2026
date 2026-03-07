@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Security.Cryptography;
 
 public class AuthService : IAuthService
 {
@@ -30,18 +32,6 @@ public class AuthService : IAuthService
         return bejelentkezes;
     }
 
-
-        AktivBejelentkezes bejelentkezes = new AktivBejelentkezes
-        {
-            felhasznalo_id = felhasznalo_id,
-            ervenyesseg = DateTime.UtcNow.AddDays(1),
-            token = token,
-        };
-
-        tokenek.TryAdd(token, bejelentkezes);
-        return bejelentkezes;
-    }
-
     public async Task<AktivBejelentkezes> tokenellenorzes(string token)
     {
         if (tokenek.TryGetValue(token, out var bejelentkezes))
@@ -62,6 +52,11 @@ public class AuthService : IAuthService
         byte[] token = new byte[16];
         RandomNumberGenerator.Fill(token);
         return new Guid(token).ToString();
+    }
+
+    public Task<AktivBejelentkezes> bejelentkezes(string szerepkor, string password)
+    {
+        throw new NotImplementedException();
     }
 }
 
