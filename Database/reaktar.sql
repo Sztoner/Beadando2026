@@ -1,7 +1,7 @@
 CREATE TABLE raktar (
-    rekeszID STRING,
+    rekeszID TEXT,
     alkatresz_id INT,
-    darabszam INTEGER,
+    darabszam INT,
     PRIMARY KEY(rekeszID),
     FOREIGN KEY(alkatresz_id) REFERENCES alkatresz(ID)
 );
