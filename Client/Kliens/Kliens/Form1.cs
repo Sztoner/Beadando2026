@@ -39,36 +39,36 @@ namespace Kliens
                 ApiKliens.SetJWTToken(result.token);
 
                 string role = ApiKliens.GetRoleFromToken();
-                //switch(role)
+                switch (role)
+                {
+                    case "raktaros":
+                        break;
+                    case "szakember":
+                        break;
+                    case "raktarvezeto":
+                        RaktarvezetoMain rMain = new RaktarvezetoMain();
+                        LoadControl(rMain);
+                        break;
+                }
+
+                //try
                 //{
-                //    case "raktaros":
-                //        break;
-                //    case "szakember":
-                //        break;
-                //    case "raktarvezeto":
-                //        RaktarvezetoMain rMain = new RaktarvezetoMain();
-                //        LoadControl(rMain);
-                //        break;
+                //    var resp = await ApiKliens.Client.GetAsync("api/Alkatresz");
+
+                //    if (resp.IsSuccessStatusCode)
+                //    {
+                //        var data = await resp.Content.ReadAsStringAsync();
+                //        MessageBox.Show("Admin adat: " + data);
+                //    }
+                //    else
+                //    {
+                //        MessageBox.Show("Hozzáférés megtagadva: " + response.StatusCode);
+                //    }
                 //}
-
-                try
-                {
-                    var resp = await ApiKliens.Client.GetAsync("api/Alkatresz");
-
-                    if (resp.IsSuccessStatusCode)
-                    {
-                        var data = await resp.Content.ReadAsStringAsync();
-                        MessageBox.Show("Admin adat: " + data);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Hozzáférés megtagadva: " + response.StatusCode);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Hiba a szerverrel: " + ex.Message);
-                }
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show("Hiba a szerverrel: " + ex.Message);
+                //}
             }
             else
             {

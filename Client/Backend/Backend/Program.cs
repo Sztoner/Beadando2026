@@ -33,9 +33,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
-//Ez is auth
-builder.Services.AddAuthentication();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,9 +44,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-//Ez is auth
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
