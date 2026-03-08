@@ -1,7 +1,12 @@
 using Kliens.UserControls;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
 using System.Drawing.Text;
+using System.Text;
+using System.Text.Json;
+using System.Text;
+using Kliens.Shared;
 
 namespace Kliens
 {
@@ -15,12 +20,60 @@ namespace Kliens
             mainPanel.Controls.Add(uc);
         }
 
-        private void Login(object sender, EventArgs e)
+        private async void Login(object sender, EventArgs e)
         {
-            //Beléptetö kód majd ide
+            var loginData = new
+            {
+                nev = nameBox.Text,
+                jelszo = pwBox.Text
+            };
 
-            RaktarvezetoMain rMain = new RaktarvezetoMain();
-            LoadControl(rMain);
+            var json = JsonSerializer.Serialize(loginData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await ApiKliens.Client.PostAsync("auth/login", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<TokenResponse>(responseString);
+                ApiKliens.SetJWTToken(result.token);
+
+                string role = ApiKliens.GetRoleFromToken();
+                //switch(role)
+                //{
+                //    case "raktaros":
+                //        break;
+                //    case "szakember":
+                //        break;
+                //    case "raktarvezeto":
+                //        RaktarvezetoMain rMain = new RaktarvezetoMain();
+                //        LoadControl(rMain);
+                //        break;
+                //}
+
+                try
+                {
+                    var resp = await ApiKliens.Client.GetAsync("api/Alkatresz");
+
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        var data = await resp.Content.ReadAsStringAsync();
+                        MessageBox.Show("Admin adat: " + data);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Hozzáférés megtagadva: " + response.StatusCode);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba a szerverrel: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hibás login");
+            }
         }
 
         public Form1()
