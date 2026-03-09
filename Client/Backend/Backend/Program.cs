@@ -12,13 +12,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//DbContext bejegyzése
+//DbContext bejegyzese
 builder.Services.AddDbContext<PostgreDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//Auth bejegyzése
+//Kulcs kiolvasas appsettingsbol
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
+//JWT Authentikacio beallitasa
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {

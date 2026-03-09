@@ -58,9 +58,9 @@
             mainPanel.Controls.Add(welcomeLabel);
             mainPanel.Controls.Add(linkLabel1);
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(0, 25);
+            mainPanel.Location = new Point(0, 24);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(800, 425);
+            mainPanel.Size = new Size(800, 426);
             mainPanel.TabIndex = 0;
             // 
             // codeBox
@@ -131,9 +131,9 @@
             label1.Location = new Point(271, 162);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(33, 18);
+            label1.Size = new Size(104, 18);
             label1.TabIndex = 23;
-            label1.Text = "Név";
+            label1.Text = "Felhasználónév";
             // 
             // nameBox
             // 
@@ -175,7 +175,7 @@
             topMenu.Items.AddRange(new ToolStripItem[] { welcomeToolStripMenuItem });
             topMenu.Location = new Point(0, 0);
             topMenu.Name = "topMenu";
-            topMenu.Size = new Size(800, 25);
+            topMenu.Size = new Size(800, 24);
             topMenu.TabIndex = 1;
             // 
             // welcomeToolStripMenuItem
@@ -184,8 +184,9 @@
             welcomeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { logoutToolStripMenuItem });
             welcomeToolStripMenuItem.Font = new Font("Segoe UI", 9.75F, FontStyle.Underline, GraphicsUnit.Point, 238);
             welcomeToolStripMenuItem.Name = "welcomeToolStripMenuItem";
-            welcomeToolStripMenuItem.Size = new Size(80, 21);
-            welcomeToolStripMenuItem.Text = "Üdv, Lajos";
+            welcomeToolStripMenuItem.Size = new Size(46, 21);
+            welcomeToolStripMenuItem.Text = "Üdv,";
+            welcomeToolStripMenuItem.Visible = false;
             // 
             // logoutToolStripMenuItem
             // 
@@ -194,6 +195,7 @@
             logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
             logoutToolStripMenuItem.Size = new Size(142, 22);
             logoutToolStripMenuItem.Text = "Kijelentkezés";
+            logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
             // 
             // Form1
             // 

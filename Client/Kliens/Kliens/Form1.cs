@@ -1,12 +1,12 @@
+using Kliens.Shared;
 using Kliens.UserControls;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
 using System.Drawing.Text;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Text;
-using Kliens.Shared;
 
 namespace Kliens
 {
@@ -34,46 +34,30 @@ namespace Kliens
 
             if (response.IsSuccessStatusCode)
             {
-                var responseString = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<TokenResponse>(responseString);
+                var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 ApiKliens.SetJWTToken(result.token);
+                welcomeToolStripMenuItem.Visible = true;
+                welcomeToolStripMenuItem.Text = "Üdv, " + nameBox.Text;
 
                 string role = ApiKliens.GetRoleFromToken();
                 switch (role)
                 {
                     case "raktaros":
+                        MessageBox.Show("Sikeres login!");
                         break;
                     case "szakember":
+                        MessageBox.Show("Sikeres login!");
                         break;
                     case "raktarvezeto":
                         RaktarvezetoMain rMain = new RaktarvezetoMain();
                         LoadControl(rMain);
                         break;
+                    default:
+                        MessageBox.Show("Érvénytelen szerepkör!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
                 }
-
-                //try
-                //{
-                //    var resp = await ApiKliens.Client.GetAsync("api/Alkatresz");
-
-                //    if (resp.IsSuccessStatusCode)
-                //    {
-                //        var data = await resp.Content.ReadAsStringAsync();
-                //        MessageBox.Show("Admin adat: " + data);
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show("Hozzáférés megtagadva: " + response.StatusCode);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show("Hiba a szerverrel: " + ex.Message);
-                //}
             }
-            else
-            {
-                MessageBox.Show("Hibás login");
-            }
+            else MessageBox.Show("Hibás felhasználónév vagy jelszó", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public Form1()
@@ -84,6 +68,11 @@ namespace Kliens
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
     }
 }

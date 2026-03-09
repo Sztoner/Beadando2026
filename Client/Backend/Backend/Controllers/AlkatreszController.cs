@@ -21,7 +21,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs
-        [Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto,raktaros")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Alkatresz>>> GetAlkatreszek()
         {
@@ -77,10 +77,17 @@ namespace Backend.Controllers
 
         // POST: api/Alkatreszs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpPost]
         public async Task<ActionResult<Alkatresz>> PostAlkatresz(Alkatresz alkatresz)
         {
+            bool letezik = await _context.Alkatreszek.AnyAsync(a => a.Nev.ToLower() == alkatresz.Nev.ToLower());
+
+            if (letezik)
+            {
+                return BadRequest("Már létezik ilyen nevű alkatrész.");
+            }
+
             _context.Alkatreszek.Add(alkatresz);
             await _context.SaveChangesAsync();
 

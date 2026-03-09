@@ -85,6 +85,7 @@
             // 
             priceBox.Font = new Font("Segoe UI", 10F);
             priceBox.Location = new Point(145, 112);
+            priceBox.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
             priceBox.Name = "priceBox";
             priceBox.RightToLeft = RightToLeft.Yes;
             priceBox.Size = new Size(196, 25);

@@ -4,6 +4,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BCrypt.Net;
 
 [ApiController]
 [Route("auth")]
@@ -18,6 +19,12 @@ public class AuthController : ControllerBase
         _config = config;
     }
 
+    [HttpPost("hashpw")]
+    public IActionResult HashPw([FromBody] string pw)
+    {
+       return Ok(BCrypt.Net.BCrypt.HashPassword(pw));
+    }
+
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
@@ -28,7 +35,7 @@ public class AuthController : ControllerBase
             return Unauthorized();
 
         // Itt normally hash ellenőrzés lenne
-        if (user.JelszoHash != request.Jelszo)
+        if (!BCrypt.Net.BCrypt.Verify(request.Jelszo, user.JelszoHash))
             return Unauthorized();
 
         var token = GenerateJwtToken(user);

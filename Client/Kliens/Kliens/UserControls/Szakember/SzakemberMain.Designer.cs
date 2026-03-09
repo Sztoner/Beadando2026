@@ -138,7 +138,7 @@
             projectDescLabel.Font = new Font("Calibri", 11F);
             projectDescLabel.Location = new Point(4, 114);
             projectDescLabel.Name = "projectDescLabel";
-            projectDescLabel.Size = new Size(365, 616);
+            projectDescLabel.Size = new Size(365, 200);
             projectDescLabel.TabIndex = 2;
             projectDescLabel.Text = "Leírás";
             // 

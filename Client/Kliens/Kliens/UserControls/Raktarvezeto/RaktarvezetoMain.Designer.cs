@@ -54,7 +54,7 @@
             button21 = new Button();
             label3 = new Label();
             button1 = new Button();
-            numericUpDown1 = new NumericUpDown();
+            dbBox = new NumericUpDown();
             label2 = new Label();
             priceBox = new NumericUpDown();
             priceLabel = new Label();
@@ -66,7 +66,7 @@
             mainPanel.SuspendLayout();
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dbBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)priceBox).BeginInit();
             SuspendLayout();
             // 
@@ -106,7 +106,7 @@
             panel1.Controls.Add(flowLayoutPanel1);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(button1);
-            panel1.Controls.Add(numericUpDown1);
+            panel1.Controls.Add(dbBox);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(priceBox);
             panel1.Controls.Add(priceLabel);
@@ -409,13 +409,14 @@
             button1.TabIndex = 6;
             button1.Text = "Mentés";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += UpdatePart;
             // 
-            // numericUpDown1
+            // dbBox
             // 
-            numericUpDown1.Location = new Point(159, 98);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(59, 23);
-            numericUpDown1.TabIndex = 5;
+            dbBox.Location = new Point(159, 98);
+            dbBox.Name = "dbBox";
+            dbBox.Size = new Size(59, 23);
+            dbBox.TabIndex = 5;
             // 
             // label2
             // 
@@ -430,6 +431,7 @@
             // priceBox
             // 
             priceBox.Location = new Point(16, 98);
+            priceBox.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
             priceBox.Name = "priceBox";
             priceBox.Size = new Size(111, 23);
             priceBox.TabIndex = 3;
@@ -497,6 +499,7 @@
             partBox.Name = "partBox";
             partBox.Size = new Size(370, 306);
             partBox.TabIndex = 0;
+            partBox.SelectedValueChanged += partBox_SelectedValueChanged;
             // 
             // RaktarvezetoMain
             // 
@@ -506,11 +509,12 @@
             Controls.Add(mainPanel);
             Name = "RaktarvezetoMain";
             Size = new Size(800, 450);
+            Load += RaktarvezetoMain_Load;
             mainPanel.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dbBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)priceBox).EndInit();
             ResumeLayout(false);
         }
@@ -522,7 +526,7 @@
         private Label partIdLabel;
         private Label partNameLabel;
         private ComboBox filterBox;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown dbBox;
         private Label label2;
         private NumericUpDown priceBox;
         private Label priceLabel;
