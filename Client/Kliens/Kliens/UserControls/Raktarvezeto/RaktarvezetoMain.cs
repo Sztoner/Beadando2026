@@ -76,11 +76,14 @@ namespace Kliens.UserControls
         {
             selectedAlkatresz = (Alkatresz)partBox.SelectedItem;
 
-            //alkatresz adatainak beallitasa
-            partNameLabel.Text = selectedAlkatresz.Nev;
-            partIdLabel.Text = selectedAlkatresz.Id.ToString();
-            priceBox.Value = selectedAlkatresz.Ar;
-            dbBox.Value = selectedAlkatresz.MaxDb;
+            if(selectedAlkatresz != null)
+            {
+                //alkatresz adatainak beallitasa
+                partNameLabel.Text = selectedAlkatresz.Nev;
+                partIdLabel.Text = selectedAlkatresz.Id.ToString();
+                priceBox.Value = selectedAlkatresz.Ar;
+                dbBox.Value = selectedAlkatresz.MaxDb;
+            }
         }
 
         public async void UpdatePart(object sender, EventArgs e)
