@@ -28,17 +28,24 @@ namespace Kliens.UserControls.Raktarvezeto
                 alkatresz.Ar = (int)priceBox.Value;
                 alkatresz.MaxDb = (int)rekeszdbBox.Value;
                 //az uj alkatresz felvitele az adatbazisba
-                var response = await ApiKliens.Client.PostAsJsonAsync("api/Alkatresz", alkatresz);
-                if (!response.IsSuccessStatusCode)
-                { 
-                    string error = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show(error, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                try
+                {
+                    var response = await ApiKliens.Client.PostAsJsonAsync("api/Alkatresz", alkatresz);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string error = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show(error, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    OnPartAdded?.Invoke();
+                    this.Dispose();
                 }
-                OnPartAdded?.Invoke();
-                this.Dispose();
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public Action? OnPartAdded;

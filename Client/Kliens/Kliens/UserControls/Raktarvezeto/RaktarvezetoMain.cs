@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http.Json;
@@ -16,7 +17,7 @@ namespace Kliens.UserControls
     public partial class RaktarvezetoMain : UserControl
     {
         public List<Alkatresz> alkatreszek = new List<Alkatresz>();
-        public Alkatresz selectedAlkatresz;
+        public Alkatresz selectedAlkatresz = new Alkatresz();
 
         //uj alkatresz hozzaadasa
         private void ShowAddPartDialog(object sender, EventArgs e)
@@ -66,9 +67,16 @@ namespace Kliens.UserControls
 
         public async Task UpdatePartBox()
         {
-            alkatreszek = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("api/Alkatresz");
-            partBox.DataSource = alkatreszek;
-            partBox.DisplayMember = "Nev";
+            try
+            {
+                alkatreszek = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("api/Alkatresz");
+                partBox.DataSource = alkatreszek;
+                partBox.DisplayMember = "Nev";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         //Kiválásztott alkatrész adatainak betöltése
@@ -88,19 +96,29 @@ namespace Kliens.UserControls
 
         public async void UpdatePart(object sender, EventArgs e)
         {
-            if(priceBox.Value > 0 && dbBox.Value > 0)
+            if (selectedAlkatresz != null)
             {
-                selectedAlkatresz.Ar = (int)priceBox.Value;
-                selectedAlkatresz.MaxDb = (int)dbBox.Value;
-
-                var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{selectedAlkatresz.Id}", selectedAlkatresz);
-
-                if (!response.IsSuccessStatusCode)
+                if (priceBox.Value > 0 && dbBox.Value > 0)
                 {
-                    string hiba = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show(hiba, response.StatusCode.ToString());
-                }
-            }
+                    selectedAlkatresz.Ar = (int)priceBox.Value;
+                    selectedAlkatresz.MaxDb = (int)dbBox.Value;
+
+                    try
+                    {
+                        var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{selectedAlkatresz.Id}", selectedAlkatresz);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            string hiba = await response.Content.ReadAsStringAsync();
+                            MessageBox.Show(hiba, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public RaktarvezetoMain()

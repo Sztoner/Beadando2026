@@ -30,34 +30,41 @@ namespace Kliens
 
             var json = JsonSerializer.Serialize(loginData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await ApiKliens.Client.PostAsync("auth/login", content);
-
-            if (response.IsSuccessStatusCode)
+            try 
             {
-                var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
-                ApiKliens.SetJWTToken(result.token);
-                welcomeToolStripMenuItem.Visible = true;
-                welcomeToolStripMenuItem.Text = "Üdv, " + nameBox.Text;
+                var response = await ApiKliens.Client.PostAsync("auth/login", content);
 
-                string role = ApiKliens.GetRoleFromToken();
-                switch (role)
+                if (response.IsSuccessStatusCode)
                 {
-                    case "raktaros":
-                        MessageBox.Show("Sikeres login!");
-                        break;
-                    case "szakember":
-                        MessageBox.Show("Sikeres login!");
-                        break;
-                    case "raktarvezeto":
-                        RaktarvezetoMain rMain = new RaktarvezetoMain();
-                        LoadControl(rMain);
-                        break;
-                    default:
-                        MessageBox.Show("Érvénytelen szerepkör!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
+                    var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    ApiKliens.SetJWTToken(result.token);
+                    welcomeToolStripMenuItem.Visible = true;
+                    welcomeToolStripMenuItem.Text = "Üdv, " + nameBox.Text;
+
+                    string role = ApiKliens.GetRoleFromToken();
+                    switch (role)
+                    {
+                        case "raktaros":
+                            MessageBox.Show("Sikeres login!");
+                            break;
+                        case "szakember":
+                            MessageBox.Show("Sikeres login!");
+                            break;
+                        case "raktarvezeto":
+                            RaktarvezetoMain rMain = new RaktarvezetoMain();
+                            LoadControl(rMain);
+                            break;
+                        default:
+                            MessageBox.Show("Érvénytelen szerepkör!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                    }
                 }
+                else MessageBox.Show("Hibás felhasználónév vagy jelszó", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else MessageBox.Show("Hibás felhasználónév vagy jelszó", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public Form1()

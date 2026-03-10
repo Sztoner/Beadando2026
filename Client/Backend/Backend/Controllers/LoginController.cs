@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BCrypt.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
 
 [ApiController]
 [Route("auth")]
@@ -26,15 +27,14 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var user = _context.Felhasznalok
-            .FirstOrDefault(x => x.Nev == request.Nev);
+        var user = await _context.Felhasznalok
+            .FirstOrDefaultAsync(x => x.Nev == request.Nev);
 
         if (user == null)
             return Unauthorized();
 
-        // Itt normally hash ellenőrzés lenne
         if (!BCrypt.Net.BCrypt.Verify(request.Jelszo, user.JelszoHash))
             return Unauthorized();
 
