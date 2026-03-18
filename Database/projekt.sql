@@ -5,7 +5,8 @@ CREATE TABLE projekt (
     megrendelo TEXT,
     leiras TEXT,
 	statusz TEXT,
-    munkaido DATE,
+    munkaido INT,
+    munkadij INT,
 	ar INT,
-    PRIMARY KEY(ID),
+    PRIMARY KEY(ID)
 );

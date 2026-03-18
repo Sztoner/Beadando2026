@@ -1,7 +1,7 @@
 CREATE TABLE alkatresz (
     ID SERIAL,
-    nev VARCHAR(50),
+    nev TEXT,
     ar INT,
     maxdb INT,
-    PRIMARY KEY(ID),
+    PRIMARY KEY(ID)
 );

@@ -12,7 +12,7 @@ CREATE TABLE felhasznalo_adatok (
 
 CREATE TABLE alkatresz (
     ID SERIAL,
-    nev VARCHAR(50),
+    nev TEXT,
     ar INT,
     maxdb INT,
     PRIMARY KEY(ID)
@@ -33,15 +33,17 @@ CREATE TABLE projekt (
     megrendelo TEXT,
     leiras TEXT,
 	statusz TEXT,
-    munkaido DATE,
+    munkaido INT,
+    munkadij INT,
 	ar INT,
     PRIMARY KEY(ID)
 );
 
-CREATE TABLE projekt_alkatesz (
+CREATE TABLE projekt_alkatresz (
     projekt_id INT,
     alkatresz_id INT,
     darabszam INT,
+    hianydb INT,
 	PRIMARY KEY(alkatresz_id, projekt_id),
     FOREIGN KEY(alkatresz_id) REFERENCES alkatresz(ID),
 	FOREIGN KEY(projekt_id) REFERENCES projekt(ID)
