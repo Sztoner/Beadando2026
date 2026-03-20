@@ -36,6 +36,7 @@
             dataGridView1 = new DataGridView();
             partsLabel = new Label();
             detailsPanel = new Panel();
+            closeProjectButton = new Button();
             savePriceButton = new Button();
             label6 = new Label();
             label5 = new Label();
@@ -52,7 +53,6 @@
             topPanel = new Panel();
             projectBox = new ComboBox();
             addProjectButton = new Button();
-            closeProjectButton = new Button();
             mainPanel.SuspendLayout();
             PartsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -165,6 +165,21 @@
             detailsPanel.Name = "detailsPanel";
             detailsPanel.Size = new Size(783, 239);
             detailsPanel.TabIndex = 5;
+            // 
+            // closeProjectButton
+            // 
+            closeProjectButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            closeProjectButton.BackColor = Color.DodgerBlue;
+            closeProjectButton.FlatStyle = FlatStyle.Flat;
+            closeProjectButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            closeProjectButton.ForeColor = Color.Black;
+            closeProjectButton.Location = new Point(566, 7);
+            closeProjectButton.Name = "closeProjectButton";
+            closeProjectButton.Size = new Size(89, 28);
+            closeProjectButton.TabIndex = 16;
+            closeProjectButton.Text = "Lezárás";
+            closeProjectButton.UseVisualStyleBackColor = false;
+            closeProjectButton.Visible = false;
             // 
             // savePriceButton
             // 
@@ -347,21 +362,7 @@
             addProjectButton.TabIndex = 5;
             addProjectButton.Text = "+";
             addProjectButton.UseVisualStyleBackColor = false;
-            // 
-            // closeProjectButton
-            // 
-            closeProjectButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            closeProjectButton.BackColor = Color.DodgerBlue;
-            closeProjectButton.FlatStyle = FlatStyle.Flat;
-            closeProjectButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            closeProjectButton.ForeColor = Color.Black;
-            closeProjectButton.Location = new Point(566, 7);
-            closeProjectButton.Name = "closeProjectButton";
-            closeProjectButton.Size = new Size(89, 28);
-            closeProjectButton.TabIndex = 16;
-            closeProjectButton.Text = "Lezárás";
-            closeProjectButton.UseVisualStyleBackColor = false;
-            closeProjectButton.Visible = false;
+            addProjectButton.Click += AddProject;
             // 
             // SzakemberMain
             // 
@@ -372,6 +373,7 @@
             Controls.Add(topPanel);
             Name = "SzakemberMain";
             Size = new Size(800, 450);
+            Load += SzakemberMain_Load;
             mainPanel.ResumeLayout(false);
             PartsPanel.ResumeLayout(false);
             PartsPanel.PerformLayout();
