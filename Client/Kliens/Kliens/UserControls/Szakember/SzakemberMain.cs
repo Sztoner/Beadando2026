@@ -12,9 +12,12 @@ namespace Kliens.UserControls.Szakember
 {
     public partial class SzakemberMain : UserControl
     {
+        public string[] statuses = {"New","Draft","Wait", "Scheduled", "InProgress", "Finished", "Failed"};
         public SzakemberMain()
         {
             InitializeComponent();
+            laborcostBox.Controls[0].Visible = false;
+            joblenghtBox.Controls[0].Visible = false;
         }
     }
 }

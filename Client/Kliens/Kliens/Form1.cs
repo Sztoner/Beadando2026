@@ -1,5 +1,6 @@
 using Kliens.Shared;
 using Kliens.UserControls;
+using Kliens.UserControls.Szakember;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
@@ -48,7 +49,8 @@ namespace Kliens
                             MessageBox.Show("Sikeres login!");
                             break;
                         case "szakember":
-                            MessageBox.Show("Sikeres login!");
+                            SzakemberMain szMain = new SzakemberMain();
+                            LoadControl(szMain);
                             break;
                         case "raktarvezeto":
                             RaktarvezetoMain rMain = new RaktarvezetoMain();
