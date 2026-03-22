@@ -142,7 +142,7 @@ namespace Kliens.UserControls
                 //alkatresz elhelyezese
                 try
                 {
-                    var response = await ApiKliens.Client.PostAsJsonAsync("/raktar", partToPlace);
+                    var response = await ApiKliens.Client.PostAsJsonAsync("api/Raktar", partToPlace);
 
                     if (!response.IsSuccessStatusCode)
                     {

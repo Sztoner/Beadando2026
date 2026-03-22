@@ -31,7 +31,7 @@ namespace Kliens.UserControls.Szakember
         {
             try
             {
-                projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/projekt");
+                projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
                 projectBox.DataSource = projects;
                 projectBox.DisplayMember = "Nev";
             }

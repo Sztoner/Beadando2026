@@ -30,7 +30,7 @@ namespace Kliens.UserControls.Szakember
 
                 try
                 {
-                    var response = await ApiKliens.Client.PostAsJsonAsync("raktar/", newProject);
+                    var response = await ApiKliens.Client.PostAsJsonAsync("/api/Projekt/", newProject);
                     if (!response.IsSuccessStatusCode)
                     {
                         string error = await response.Content.ReadAsStringAsync();
