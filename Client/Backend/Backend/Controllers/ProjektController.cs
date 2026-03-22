@@ -17,7 +17,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt
-        [Authorize(Roles = "szakember")]
+        //[Authorize(Roles = "szakember")]
         [HttpPost]
         public async Task<IActionResult> Create(Projekt projekt)
         {
@@ -27,7 +27,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt
-        [Authorize(Roles = "szakember,raktaros")]
+        //[Authorize(Roles = "szakember,raktaros")]
         [HttpGet]
         public async Task<List<Projekt>> GetAll()
         {
@@ -35,7 +35,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt/{id}
-        [Authorize(Roles = "szakember,raktaros")]
+        //[Authorize(Roles = "szakember,raktaros")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -47,7 +47,7 @@ namespace Backend.Controllers
         }
 
         // PUT: api/projekt
-        [Authorize(Roles = "szakember")]
+        //[Authorize(Roles = "szakember")]
         [HttpPut]
         public async Task<IActionResult> Update(Projekt projekt)
         {
@@ -63,7 +63,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt/{id}/alkatresz
-        [Authorize(Roles = "szakember")]
+        //[Authorize(Roles = "szakember")]
         [HttpPost("{id}/alkatresz")]
         public async Task<IActionResult> AddAlkatresz(int id, List<ProjektAlkatresz> alkatreszLista)
         {
@@ -84,7 +84,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt/{id}/alkatresz
-        [Authorize(Roles = "szakember,raktaros")]
+        //[Authorize(Roles = "szakember,raktaros")]
         [HttpGet("{id}/alkatresz")]
         public async Task<IActionResult> GetAlkatreszek(int id)
         {
@@ -112,7 +112,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt/naplo
-        [Authorize(Roles = "szakember")]
+        //[Authorize(Roles = "szakember")]
         [HttpPost("naplo")]
         public async Task<IActionResult> Naplo(Naplo naplo)
         {

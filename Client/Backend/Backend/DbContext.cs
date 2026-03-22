@@ -13,4 +13,10 @@ public class PostgreDbContext : DbContext
     public DbSet<Projekt> Projektek { get; set; }
     public DbSet<ProjektAlkatresz> ProjektAlkatreszek { get; set; }
     public DbSet<Naplo> Naplok { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProjektAlkatresz>()
+            .HasKey(pa => new { pa.ProjektId, pa.AlkatreszId });
+    }
 }

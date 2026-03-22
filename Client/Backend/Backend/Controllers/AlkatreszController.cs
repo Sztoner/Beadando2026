@@ -21,7 +21,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs
-        [Authorize(Roles = "raktarvezeto,raktaros")]
+        //[Authorize(Roles = "raktarvezeto,raktaros")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Alkatresz>>> GetAlkatreszek()
         {
@@ -29,7 +29,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs/5
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Alkatresz>> GetAlkatresz(int id)
         {
@@ -50,7 +50,7 @@ namespace Backend.Controllers
 
         // PUT: api/Alkatreszs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAlkatresz(int id, Alkatresz alkatresz)
         {
@@ -100,7 +100,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/Alkatreszs/5
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlkatresz(int id)
         {
@@ -122,7 +122,7 @@ namespace Backend.Controllers
         }
 
 
-        [Authorize(Roles = "raktarvezeto,raktaros")]
+        //[Authorize(Roles = "raktarvezeto,raktaros")]
         [HttpGet("{id}/elerhetoseg")]
         public async Task<IActionResult> GetElerhetoseg(int id)
         {
