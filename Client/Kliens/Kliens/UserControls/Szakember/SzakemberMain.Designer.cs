@@ -122,7 +122,7 @@
             button1.TabIndex = 8;
             button1.Text = "Lefoglalás";
             button1.UseVisualStyleBackColor = false;
-            button1.Visible = false;
+            button1.Click += AddParts;
             // 
             // dataGridView1
             // 
@@ -349,6 +349,7 @@
             projectBox.Name = "projectBox";
             projectBox.Size = new Size(238, 29);
             projectBox.TabIndex = 6;
+            projectBox.SelectedValueChanged += SelectProjekt;
             // 
             // addProjectButton
             // 

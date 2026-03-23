@@ -45,7 +45,7 @@ namespace Backend.Controllers
             //await _context.SaveChangesAsync();
             //return alkatresz
 
-            return Ok();
+            return Ok(alkatresz);
         }
 
         // PUT: api/Alkatreszs/5

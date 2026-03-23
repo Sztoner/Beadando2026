@@ -27,6 +27,20 @@ namespace Kliens.UserControls.Szakember
             ujProjekt.OnProjectAdded = async () => { await UpdateProjectBox(); };
         }
 
+        private void SelectProjekt(object sender, EventArgs e)
+        {
+            if(projectBox.SelectedItem != null)
+            {
+                selectedProject = (Projekt)projectBox.SelectedItem;
+            }
+        }
+
+        private void AddParts(object sender, EventArgs e)
+        {
+            AlkatreszLefoglalas alkatreszLefoglalas = new AlkatreszLefoglalas(selectedProject);
+            alkatreszLefoglalas.ShowDialog(this.FindForm());
+        }
+
         private async Task UpdateProjectBox()
         {
             try
