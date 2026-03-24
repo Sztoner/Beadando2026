@@ -100,7 +100,7 @@
             avaLabel.Name = "avaLabel";
             avaLabel.Size = new Size(50, 15);
             avaLabel.TabIndex = 15;
-            avaLabel.Text = "Elérhetö";
+            avaLabel.Text = "Elérhető";
             avaLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3

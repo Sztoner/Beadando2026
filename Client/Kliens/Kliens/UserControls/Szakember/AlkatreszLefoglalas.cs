@@ -127,60 +127,93 @@ namespace Kliens.UserControls.Szakember
 
         private async void saveButton_Click(object sender, EventArgs e)
         {
-            if (selectedParts.Count > 0)
+            try
             {
-                bool vanHianyzo = false;
-                List<ProjektAlkatresz> projektParts = new List<ProjektAlkatresz>();
-                foreach(Alkatresz a in selectedParts)
+                if (selectedParts.Count > 0)
                 {
-                    AlkatreszElerhetoseg elerhetoseg = await ApiKliens.Client.GetFromJsonAsync<AlkatreszElerhetoseg>($"/api/Alkatresz/{a.Id}/elerhetoseg");
-                    int elerhetodb = elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb;
+                    bool vanHianyzo = false;
+                    List<ProjektAlkatresz> projektParts = new List<ProjektAlkatresz>();
+                    foreach (Alkatresz a in selectedParts)
+                    {
+                        AlkatreszElerhetoseg elerhetoseg = await ApiKliens.Client.GetFromJsonAsync<AlkatreszElerhetoseg>($"/api/Alkatresz/{a.Id}/elerhetoseg");
+                        int elerhetodb = 0;
+                        if (elerhetoseg != null)
+                            elerhetodb = elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb;
+                        else
+                        {
+                            MessageBox.Show("Nem található ilyen alkatrész", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
-                    ProjektAlkatresz partToAdd = new ProjektAlkatresz
+                        ProjektAlkatresz partToAdd = new ProjektAlkatresz
+                        {
+                            ProjektId = selectedProjekt.Id,
+                            AlkatreszId = a.Id,
+                            Darabszam = a.MaxDb,
+                        };
+
+                        if (elerhetodb < partToAdd.Darabszam)
+                        {
+                            partToAdd.HianyDb = (elerhetodb - partToAdd.Darabszam) * (-1);
+                            vanHianyzo = true;
+                        }
+                        else partToAdd.HianyDb = 0;
+
+                        projektParts.Add(partToAdd);
+                    }
+
+                    var response = await ApiKliens.Client.PostAsJsonAsync<List<ProjektAlkatresz>>($"api/Projekt/{selectedProjekt.Id}/alkatresz", projektParts);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Nem sikerült az alkatrészek lefoglalása!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    Naplo projektNaplo = new Naplo
                     {
                         ProjektId = selectedProjekt.Id,
-                        AlkatreszId = a.Id,
-                        Darabszam = a.MaxDb,
+                        Datum = DateTime.UtcNow.Date
                     };
 
-                    if (elerhetodb < partToAdd.Darabszam)
-                    {
-                        partToAdd.HianyDb = (elerhetodb - partToAdd.Darabszam) * (-1);
-                        vanHianyzo = true;
-                    }
-                    else partToAdd.HianyDb = 0;
-
-                    projektParts.Add(partToAdd);
-                }
-
-                var response = await ApiKliens.Client.PostAsJsonAsync<List<ProjektAlkatresz>>($"api/Projekt/{selectedProjekt.Id}/alkatresz", projektParts);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Nem sikerült az alkatrészek lefoglalása!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                Naplo projektNaplo = new Naplo
-                {
-                    ProjektId = selectedProjekt.Id,
-                    Datum = DateTime.Now.Date
-                };
-
-                selectedProjekt.Statusz = "Draft";
-                projektNaplo.Statusz = selectedProjekt.Statusz;
-                var naploresponse = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo",projektNaplo);
-
-                if(vanHianyzo)
-                {
-                    selectedProjekt.Statusz = "Wait";
+                    selectedProjekt.Statusz = "Draft";
                     projektNaplo.Statusz = selectedProjekt.Statusz;
-                     naploresponse = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
-                }
+                    response = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo", projektNaplo);
 
-                await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string hiba = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    if (vanHianyzo)
+                    {
+                        selectedProjekt.Statusz = "Wait";
+                        projektNaplo.Statusz = selectedProjekt.Statusz;
+                        response = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+                    response = await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Dispose();
+                }
+                else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            catch(Exception ex)
+            {
+                MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
