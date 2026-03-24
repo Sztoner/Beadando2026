@@ -1,11 +1,11 @@
 ﻿using Kliens.Shared;
+using Kliens.UserControls.Raktarvezeto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -16,55 +16,63 @@ namespace Kliens.UserControls.Szakember
 {
     public partial class SzakemberMain : UserControl
     {
-        public string[] statuses = { "New", "Draft", "Wait", "Scheduled", "InProgress", "Finished", "Failed" };
-        public Projekt selectedProject;
         public List<Projekt> projects;
 
         private void AddProject(object sender, EventArgs e)
         {
             UjProjekt ujProjekt = new UjProjekt();
+            ujProjekt.OnProjectAdded = async () => await UpdateProjectsBox();
             ujProjekt.ShowDialog(this.FindForm());
-            ujProjekt.OnProjectAdded = async () => { await UpdateProjectBox(); };
         }
 
-        private void SelectProjekt(object sender, EventArgs e)
-        {
-            if(projectBox.SelectedItem != null)
-            {
-                selectedProject = (Projekt)projectBox.SelectedItem;
-            }
-        }
 
-        private void AddParts(object sender, EventArgs e)
-        {
-            AlkatreszLefoglalas alkatreszLefoglalas = new AlkatreszLefoglalas(selectedProject);
-            alkatreszLefoglalas.ShowDialog(this.FindForm());
-        }
-
-        private async Task UpdateProjectBox()
+        private async Task UpdateProjectsBox()
         {
             try
             {
-                projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
-                projectBox.DataSource = projects;
-                projectBox.DisplayMember = "Nev";
+                projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("api/Projekt");
+                projects = projects.OrderBy(x => x.Id).ToList();
+
+                projectsGridView.DataSource = projects.Select(x => new
+                {
+                    x.Id,
+                    x.Nev,
+                    x.Helyszin,
+                    x.Megrendelo,
+                    x.Statusz
+                }).ToList();
+                projectsGridView.Columns["Id"].HeaderText = "Azonosító";
+                projectsGridView.Columns["Nev"].HeaderText = "Név";
+                projectsGridView.Columns["Helyszin"].HeaderText = "Helyszín";
+                projectsGridView.Columns["Megrendelo"].HeaderText = "Megrendelö";
+                projectsGridView.Columns["Statusz"].HeaderText = "Státusz";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message.ToString(), "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private async void SzakemberMain_Load(object sender, EventArgs e)
+        private void LoadProject(object sender, EventArgs e)
         {
-            await UpdateProjectBox();
+            int projectId = (int)projectsGridView.SelectedRows[0].Cells[0].Value;
+            Debug.WriteLine(projectId);
+            ProjektInfo pInfo = new ProjektInfo(projectId);
+            pInfo.OnClosing = async () => await UpdateProjectsBox(); 
+            mainPanel.Controls.Add(pInfo);
+            pInfo.Dock = DockStyle.Fill;
+            pInfo.BringToFront();
         }
 
         public SzakemberMain()
         {
             InitializeComponent();
-            laborcostBox.Controls[0].Visible = false;
-            joblenghtBox.Controls[0].Visible = false;
+            projectsGridView.MultiSelect = false;
+        }
+
+        private async void SzakemberMain_Load(object sender, EventArgs e)
+        {
+            await UpdateProjectsBox();
         }
     }
 }

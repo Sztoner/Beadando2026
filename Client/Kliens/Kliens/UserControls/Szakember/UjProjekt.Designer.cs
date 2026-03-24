@@ -69,7 +69,6 @@
             descriptionBox.BorderStyle = BorderStyle.FixedSingle;
             descriptionBox.Location = new Point(72, 150);
             descriptionBox.Name = "descriptionBox";
-            descriptionBox.ScrollBars = RichTextBoxScrollBars.Vertical;
             descriptionBox.Size = new Size(250, 61);
             descriptionBox.TabIndex = 36;
             descriptionBox.Text = "";

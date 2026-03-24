@@ -67,9 +67,12 @@
             // dbBox
             // 
             dbBox.Location = new Point(253, 103);
+            dbBox.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            dbBox.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             dbBox.Name = "dbBox";
             dbBox.Size = new Size(50, 23);
             dbBox.TabIndex = 35;
+            dbBox.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // cancelButton
             // 

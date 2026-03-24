@@ -19,6 +19,8 @@ namespace Kliens.UserControls.Szakember
         private Projekt selectedProjekt;
         private List<Alkatresz> parts = new List<Alkatresz>();
         private List<Alkatresz> selectedParts = new List<Alkatresz>();
+        public Action? OnPartsAdded;
+
 
         private void UpdatePartsBox()
         {
@@ -206,6 +208,7 @@ namespace Kliens.UserControls.Szakember
                     }
 
                     MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OnPartsAdded?.Invoke();
                     this.Dispose();
                 }
                 else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
