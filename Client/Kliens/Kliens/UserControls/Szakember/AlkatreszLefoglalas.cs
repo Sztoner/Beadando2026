@@ -91,7 +91,8 @@ namespace Kliens.UserControls.Szakember
                 try
                 { 
                     AlkatreszElerhetoseg elerhetoseg  = await ApiKliens.Client.GetFromJsonAsync<AlkatreszElerhetoseg>($"/api/Alkatresz/{parts[partsBox.SelectedIndex].Id}/elerhetoseg");
-                    avaLabel.Text = "Elérhetö"+ "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString()+"db";
+                    if(elerhetoseg != null)
+                        avaLabel.Text = "Elérhetö"+ "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString()+"db";
                 }
                 catch(Exception ex)
                 {
@@ -124,23 +125,60 @@ namespace Kliens.UserControls.Szakember
             this.Dispose();
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private async void saveButton_Click(object sender, EventArgs e)
         {
             if (selectedParts.Count > 0)
             {
+                bool vanHianyzo = false;
                 List<ProjektAlkatresz> projektParts = new List<ProjektAlkatresz>();
                 foreach(Alkatresz a in selectedParts)
                 {
-                    projektParts.Add(
-                        new ProjektAlkatresz
-                        {
-                            ProjektId = selectedProjekt.Id,
-                            AlkatreszId = a.Id,
-                            Darabszam = a.MaxDb,
-                            HianyDb = 0
-                        }
-                    );
+                    AlkatreszElerhetoseg elerhetoseg = await ApiKliens.Client.GetFromJsonAsync<AlkatreszElerhetoseg>($"/api/Alkatresz/{a.Id}/elerhetoseg");
+                    int elerhetodb = elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb;
+
+                    ProjektAlkatresz partToAdd = new ProjektAlkatresz
+                    {
+                        ProjektId = selectedProjekt.Id,
+                        AlkatreszId = a.Id,
+                        Darabszam = a.MaxDb,
+                    };
+
+                    if (elerhetodb < partToAdd.Darabszam)
+                    {
+                        partToAdd.HianyDb = (elerhetodb - partToAdd.Darabszam) * (-1);
+                        vanHianyzo = true;
+                    }
+                    else partToAdd.HianyDb = 0;
+
+                    projektParts.Add(partToAdd);
                 }
+
+                var response = await ApiKliens.Client.PostAsJsonAsync<List<ProjektAlkatresz>>($"api/Projekt/{selectedProjekt.Id}/alkatresz", projektParts);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Nem sikerült az alkatrészek lefoglalása!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Naplo projektNaplo = new Naplo
+                {
+                    ProjektId = selectedProjekt.Id,
+                    Datum = DateTime.Now.Date
+                };
+
+                selectedProjekt.Statusz = "Draft";
+                projektNaplo.Statusz = selectedProjekt.Statusz;
+                var naploresponse = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo",projektNaplo);
+
+                if(vanHianyzo)
+                {
+                    selectedProjekt.Statusz = "Wait";
+                    projektNaplo.Statusz = selectedProjekt.Statusz;
+                     naploresponse = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
+                }
+
+                await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
             }
             else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
