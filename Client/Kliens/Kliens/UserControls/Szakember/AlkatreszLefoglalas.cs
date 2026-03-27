@@ -94,7 +94,12 @@ namespace Kliens.UserControls.Szakember
                 { 
                     AlkatreszElerhetoseg elerhetoseg  = await ApiKliens.Client.GetFromJsonAsync<AlkatreszElerhetoseg>($"/api/Alkatresz/{parts[partsBox.SelectedIndex].Id}/elerhetoseg");
                     if(elerhetoseg != null)
-                        avaLabel.Text = "Elérhetö"+ "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString()+"db";
+                    {
+                        int elerhetoDb = elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb;
+                        if(elerhetoDb >= 0)
+                            avaLabel.Text = "Elérhetö" + "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString() + "db";
+                        else avaLabel.Text = "Hiányzik" + "\n" + (((elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb))*(-1)).ToString() + "db";
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -164,6 +169,7 @@ namespace Kliens.UserControls.Szakember
                         projektParts.Add(partToAdd);
                     }
 
+                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PostAsJsonAsync<List<ProjektAlkatresz>>($"api/Projekt/{selectedProjekt.Id}/alkatresz", projektParts);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -217,6 +223,8 @@ namespace Kliens.UserControls.Szakember
             {
                 MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            { ((Button)sender).Enabled = true; }
         }
     }
 }

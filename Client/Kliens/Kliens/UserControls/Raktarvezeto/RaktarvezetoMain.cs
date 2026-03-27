@@ -111,6 +111,7 @@ namespace Kliens.UserControls
 
                     try
                     {
+                        ((Button)sender).Enabled = false;
                         var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{selectedPart.Id}", selectedPart);
 
                         if (!response.IsSuccessStatusCode)
@@ -123,6 +124,8 @@ namespace Kliens.UserControls
                     {
                         MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    finally
+                    { ((Button)sender).Enabled = true; }
                 }else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -142,6 +145,7 @@ namespace Kliens.UserControls
                 //alkatresz elhelyezese
                 try
                 {
+                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PostAsJsonAsync("api/Raktar", partToPlace);
 
                     if (!response.IsSuccessStatusCode)
@@ -154,6 +158,8 @@ namespace Kliens.UserControls
                 {
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                finally
+                { ((Button)sender).Enabled = true; }
             }
         }
 

@@ -125,6 +125,7 @@ namespace Kliens.UserControls.Szakember
 
                 try
                 {
+                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProject);
 
                     if (!response.IsSuccessStatusCode)
@@ -135,6 +136,8 @@ namespace Kliens.UserControls.Szakember
                 }
                 catch(Exception ex)
                 { MessageBox.Show(ex.ToString(), "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                finally
+                { ((Button)sender).Enabled = true; }
             }
         }
 

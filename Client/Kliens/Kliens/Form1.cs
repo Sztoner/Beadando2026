@@ -33,6 +33,7 @@ namespace Kliens
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try 
             {
+                ((Button)sender).Enabled = false;
                 var response = await ApiKliens.Client.PostAsync("auth/login", content);
 
                 if (response.IsSuccessStatusCode)
@@ -67,6 +68,8 @@ namespace Kliens
             {
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            { ((Button)sender).Enabled = true; }
         }
 
         public Form1()

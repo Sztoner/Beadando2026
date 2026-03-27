@@ -132,6 +132,8 @@
             partGridView.Location = new Point(12, 47);
             partGridView.Name = "partGridView";
             partGridView.ReadOnly = true;
+            partGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            partGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             partGridView.Size = new Size(436, 230);
             partGridView.TabIndex = 5;
             // 
