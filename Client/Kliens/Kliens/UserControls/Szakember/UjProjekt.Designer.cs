@@ -66,8 +66,9 @@
             // 
             // descriptionBox
             // 
+            descriptionBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             descriptionBox.BorderStyle = BorderStyle.FixedSingle;
-            descriptionBox.Location = new Point(72, 150);
+            descriptionBox.Location = new Point(128, 158);
             descriptionBox.Name = "descriptionBox";
             descriptionBox.Size = new Size(250, 61);
             descriptionBox.TabIndex = 36;
@@ -77,7 +78,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label4.Location = new Point(12, 150);
+            label4.Location = new Point(68, 158);
             label4.Name = "label4";
             label4.Size = new Size(54, 21);
             label4.TabIndex = 35;
@@ -85,16 +86,18 @@
             // 
             // locationBox
             // 
+            locationBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             locationBox.Font = new Font("Segoe UI", 10F);
-            locationBox.Location = new Point(89, 113);
+            locationBox.Location = new Point(145, 121);
             locationBox.Name = "locationBox";
             locationBox.Size = new Size(233, 25);
             locationBox.TabIndex = 34;
             // 
             // clientBox
             // 
+            clientBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             clientBox.Font = new Font("Segoe UI", 10F);
-            clientBox.Location = new Point(115, 77);
+            clientBox.Location = new Point(171, 85);
             clientBox.Name = "clientBox";
             clientBox.Size = new Size(207, 25);
             clientBox.TabIndex = 33;
@@ -125,7 +128,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label5.Location = new Point(12, 113);
+            label5.Location = new Point(68, 121);
             label5.Name = "label5";
             label5.Size = new Size(71, 21);
             label5.TabIndex = 30;
@@ -135,7 +138,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label3.Location = new Point(12, 77);
+            label3.Location = new Point(68, 85);
             label3.Name = "label3";
             label3.Size = new Size(97, 21);
             label3.TabIndex = 29;
@@ -143,8 +146,9 @@
             // 
             // nameBox
             // 
+            nameBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             nameBox.Font = new Font("Segoe UI", 10F);
-            nameBox.Location = new Point(59, 42);
+            nameBox.Location = new Point(115, 50);
             nameBox.Name = "nameBox";
             nameBox.Size = new Size(263, 25);
             nameBox.TabIndex = 28;
@@ -153,7 +157,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label2.Location = new Point(12, 42);
+            label2.Location = new Point(68, 50);
             label2.Name = "label2";
             label2.Size = new Size(41, 21);
             label2.TabIndex = 27;

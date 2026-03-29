@@ -167,7 +167,7 @@ namespace Kliens.UserControls
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally { ((Button)sender).Enabled = true; }
-            }
+            }else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public RaktarvezetoMain()
