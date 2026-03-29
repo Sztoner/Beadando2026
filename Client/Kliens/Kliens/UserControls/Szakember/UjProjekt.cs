@@ -19,7 +19,7 @@ namespace Kliens.UserControls.Szakember
         public Action? OnProjectAdded;
         private async void CreateProject(object sender, EventArgs e)
         {
-            if (nameBox.Text.Length > 3 && clientBox.Text.Length > 3 && locationBox.Text.Length > 3 && descriptionBox.Text.Length > 3)
+            if (nameBox.Text.Length > 0 && clientBox.Text.Length > 0 && locationBox.Text.Length > 0 && descriptionBox.Text.Length > 0)
             {
                 Projekt newProject = new Projekt();
                 newProject.Nev = nameBox.Text;
@@ -30,6 +30,7 @@ namespace Kliens.UserControls.Szakember
 
                 try
                 {
+                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PostAsJsonAsync("/api/Projekt/", newProject);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -44,6 +45,7 @@ namespace Kliens.UserControls.Szakember
                 {
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                finally { ((Button)sender).Enabled = true; }
             }
             else MessageBox.Show("Kérem az összes mezöt töltse ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }

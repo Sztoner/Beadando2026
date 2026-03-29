@@ -105,27 +105,35 @@ namespace Kliens.UserControls
             {
                 if (priceBox.Value > 0 && maxdbBox.Value > 0)
                 {
-                    selectedPart.Ar = (int)priceBox.Value;
-                    selectedPart.MaxDb = (int)maxdbBox.Value;
-                    dbBox.Maximum = selectedPart.MaxDb;
+                    Alkatresz partToSend = new Alkatresz
+                    {
+                        Id = selectedPart.Id,
+                        Nev = selectedPart.Nev,
+                        Ar = (int)priceBox.Value,
+                        MaxDb = (int)maxdbBox.Value
+                    };
 
                     try
                     {
                         ((Button)sender).Enabled = false;
-                        var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{selectedPart.Id}", selectedPart);
+                        var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{partToSend.Id}", partToSend);
 
                         if (!response.IsSuccessStatusCode)
                         {
                             string hiba = await response.Content.ReadAsStringAsync();
                             MessageBox.Show(hiba, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
+
+                        selectedPart.Ar = partToSend.Ar;
+                        selectedPart.MaxDb = partToSend.MaxDb;
+                        dbBox.Maximum = selectedPart.MaxDb;
                     }
                     catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    finally
-                    { ((Button)sender).Enabled = true; }
+                    finally{ ((Button)sender).Enabled = true; }
                 }else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -158,8 +166,7 @@ namespace Kliens.UserControls
                 {
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                finally
-                { ((Button)sender).Enabled = true; }
+                finally { ((Button)sender).Enabled = true; }
             }
         }
 

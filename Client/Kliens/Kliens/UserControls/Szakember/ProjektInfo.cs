@@ -99,21 +99,13 @@ namespace Kliens.UserControls.Szakember
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString(), "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private async void ProjektInfo_Load(object sender, EventArgs e)
         {
-            try
-            {
-                selectedProject = await ApiKliens.Client.GetFromJsonAsync<Projekt>($"/api/Projekt/{selectedId}");
-                LoadProject();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show( ex.ToString() );
-            }
+            await UpdateProjektInfo();
         }
 
         private async void UpdatePriceInfo(object sender, EventArgs e)
@@ -136,8 +128,7 @@ namespace Kliens.UserControls.Szakember
                 }
                 catch(Exception ex)
                 { MessageBox.Show(ex.ToString(), "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-                finally
-                { ((Button)sender).Enabled = true; }
+                finally { ((Button)sender).Enabled = true; }
             }
         }
 

@@ -45,8 +45,7 @@ namespace Kliens.UserControls.Raktarvezeto
                 {
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                finally
-                { ((Button)sender).Enabled = true; }
+                finally { ((Button)sender).Enabled = true; }
             }
             else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }

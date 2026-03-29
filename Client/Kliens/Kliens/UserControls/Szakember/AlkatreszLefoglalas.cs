@@ -129,7 +129,7 @@ namespace Kliens.UserControls.Szakember
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
 
         private async void saveButton_Click(object sender, EventArgs e)
@@ -215,7 +215,7 @@ namespace Kliens.UserControls.Szakember
 
                     MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OnPartsAdded?.Invoke();
-                    this.Dispose();
+                    this.Close();
                 }
                 else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -223,8 +223,7 @@ namespace Kliens.UserControls.Szakember
             {
                 MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            { ((Button)sender).Enabled = true; }
+            finally { ((Button)sender).Enabled = true; }
         }
     }
 }
