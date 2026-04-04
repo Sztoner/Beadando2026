@@ -91,6 +91,10 @@
             // 
             // projectsGridView
             // 
+            projectsGridView.AllowUserToAddRows = false;
+            projectsGridView.AllowUserToDeleteRows = false;
+            projectsGridView.AllowUserToResizeColumns = false;
+            projectsGridView.AllowUserToResizeRows = false;
             projectsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             projectsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             projectsGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;

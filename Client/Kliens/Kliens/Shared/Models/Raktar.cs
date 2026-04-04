@@ -10,7 +10,7 @@ namespace Kliens.Shared
     {
         public string RekeszId { get; set; }
         public int AlkatreszId { get; set; }
-        public int? AlkatreszNev { get; set; }
+        public string? AlkatreszNev { get; set; }
         public int Darabszam { get; set; }
     }
 

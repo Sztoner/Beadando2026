@@ -12,7 +12,7 @@ namespace Backend.Models
         [Column("alkatresz_id")]
         public int AlkatreszId { get; set; }
         [NotMapped]
-        public int? AlkatreszNev { get; set; }
+        public string? AlkatreszNev { get; set; }
         [Column("darabszam")]
         public int Darabszam { get; set; }
     }

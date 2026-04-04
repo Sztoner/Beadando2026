@@ -188,11 +188,20 @@
             // 
             // warehouseBox
             // 
+            warehouseBox.AllowUserToAddRows = false;
+            warehouseBox.AllowUserToDeleteRows = false;
+            warehouseBox.AllowUserToResizeColumns = false;
+            warehouseBox.AllowUserToResizeRows = false;
             warehouseBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            warehouseBox.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            warehouseBox.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            warehouseBox.BackgroundColor = Color.White;
             warehouseBox.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             warehouseBox.Location = new Point(24, 92);
             warehouseBox.Name = "warehouseBox";
             warehouseBox.ReadOnly = true;
+            warehouseBox.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            warehouseBox.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             warehouseBox.Size = new Size(494, 233);
             warehouseBox.TabIndex = 6;
             // 
@@ -340,11 +349,12 @@
             filterBox.BackColor = SystemColors.Window;
             filterBox.Font = new Font("Segoe UI", 11F);
             filterBox.FormattingEnabled = true;
-            filterBox.Items.AddRange(new object[] { "Összes", "Hiányzó", "Lefoglalt" });
+            filterBox.Items.AddRange(new object[] { "Raktár", "Hiányzó", "Lefoglalt" });
             filterBox.Location = new Point(419, 58);
             filterBox.Name = "filterBox";
             filterBox.Size = new Size(99, 28);
             filterBox.TabIndex = 2;
+            filterBox.SelectedIndexChanged += filterBox_SelectedIndexChanged;
             // 
             // RaktarvezetoMain
             // 

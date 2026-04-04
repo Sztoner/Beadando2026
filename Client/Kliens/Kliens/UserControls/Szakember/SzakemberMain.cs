@@ -18,6 +18,8 @@ namespace Kliens.UserControls.Szakember
     {
         public List<Projekt> projects;
 
+
+        //Uj projekt form megjelenitese
         private void AddProject(object sender, EventArgs e)
         {
             UjProjekt ujProjekt = new UjProjekt();
@@ -25,7 +27,7 @@ namespace Kliens.UserControls.Szakember
             ujProjekt.ShowDialog(this.FindForm());
         }
 
-
+        //A projektek megjelenitese a ProjectsBoxban
         private async Task UpdateProjectsBox()
         {
             try
@@ -53,6 +55,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Kivalasztott projekt betoltese
         private void LoadProject(object sender, EventArgs e)
         {
             try

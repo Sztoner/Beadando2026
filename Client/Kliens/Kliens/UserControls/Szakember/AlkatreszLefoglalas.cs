@@ -21,7 +21,7 @@ namespace Kliens.UserControls.Szakember
         private List<Alkatresz> selectedParts = new List<Alkatresz>();
         public Action? OnPartsAdded;
 
-
+        //PartsBoxban megjelenitett alkatreszek frissitese
         private void UpdatePartsBox()
         {
             partsBox.Items.Clear();
@@ -31,6 +31,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //ProjektPartsBoxban megjelenitett alkatreszek frissitese
         private void UpdateProjektPartsBox()
         {
             projektpartsBox.Items.Clear();
@@ -40,6 +41,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Alkatreszek athelyezese a parts listabol a selectedPartsba
         private void MovePart(object sender, EventArgs e)
         {
             if (parts.Count > 0 && partsBox.SelectedIndex < parts.Count && partsBox.SelectedIndex >= 0)
@@ -60,6 +62,8 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+
+        //Alkatreszek visszahelyezese a selectedParts listabol a parts listaba
         private void MovePartBack(object sender, EventArgs e)
         {
             if (selectedParts.Count > 0 && projektpartsBox.SelectedIndex < selectedParts.Count && projektpartsBox.SelectedIndex >= 0)
@@ -86,6 +90,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Kivalasztott alkatresz elerhetosegenek ellenorzese
         private async void GetPartAvaiablity(object sender, EventArgs e)
         {
             if(parts.Count > 0 && partsBox.SelectedIndex < parts.Count && partsBox.SelectedIndex >= 0)
@@ -108,12 +113,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
-        public AlkatreszLefoglalas(Projekt p)
-        {
-            InitializeComponent();
-            selectedProjekt = p;
-        }
-
+        //Alkatreszek lekerese, a form elete alatt tobbet nem frissul
         private async void AlkatreszLefoglalas_Load(object sender, EventArgs e)
         {
             try
@@ -131,7 +131,8 @@ namespace Kliens.UserControls.Szakember
         {
             this.Close();
         }
-
+        
+        //Kivalaszott alkatreszek atalakitasa ProjektAlkatresz listava majd postolas, es naplo generalas
         private async void saveButton_Click(object sender, EventArgs e)
         {
             try
@@ -224,6 +225,12 @@ namespace Kliens.UserControls.Szakember
                 MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally { ((Button)sender).Enabled = true; }
+        }
+
+        public AlkatreszLefoglalas(Projekt p)
+        {
+            InitializeComponent();
+            selectedProjekt = p;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Kliens.UserControls.Szakember
         public Action? OnClosing;
 
 
-
+        //Projekt lefoglas form megjelenitese
         private void AddParts(object sender, EventArgs e)
         {
             AlkatreszLefoglalas alkatreszLefoglalas = new AlkatreszLefoglalas(selectedProject);
@@ -31,6 +31,7 @@ namespace Kliens.UserControls.Szakember
             alkatreszLefoglalas.ShowDialog(this.FindForm());
         }
 
+        //Kivalasztott projekt betoltese
         private void LoadProject()
         {
             if (selectedProject != null)
@@ -46,6 +47,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Kivalasztott projekt statuszanak betoltese
         private void LoadStatus()
         { 
             if (statuses.Contains(selectedProject.Statusz))
@@ -68,6 +70,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Ha a kivalasztott projekt megfelelo statuszban van a hozza tartozo alkatreszek betoltese
         private async void LoadParts()
         {
             try
@@ -90,6 +93,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Projekt lekerese id alapjan
         private async Task UpdateProjektInfo()
         {
             try
@@ -108,6 +112,7 @@ namespace Kliens.UserControls.Szakember
             await UpdateProjektInfo();
         }
 
+        //A munkadij es munkaido frissitese
         private async void UpdatePriceInfo(object sender, EventArgs e)
         {
             if(joblenghtBox.Value > 0 && laborcostBox.Value > 0)
@@ -132,6 +137,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
+        //Vissza a SzakemberMainbe
         private void GoBack(object sender, EventArgs e)
         {
             OnClosing?.Invoke();
