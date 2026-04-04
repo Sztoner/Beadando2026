@@ -168,7 +168,10 @@ namespace Kliens.UserControls
                     {
                         string hiba = await response.Content.ReadAsStringAsync();
                         MessageBox.Show(hiba, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
+
+                    await UpdateWarehouseBox();
                 }
                 catch (Exception ex)
                 {
