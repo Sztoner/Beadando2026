@@ -16,9 +16,10 @@ namespace Kliens.UserControls
 {
     public partial class RaktarvezetoMain : UserControl
     {
-        public List<Alkatresz> alkatreszek = new List<Alkatresz>();
-        public Alkatresz selectedAlkatresz = new Alkatresz();
+        public List<Alkatresz> parts = new List<Alkatresz>();
+        public Alkatresz selectedPart;
 
+        #region UI Logic
         //uj alkatresz hozzaadasa
         private void ShowAddPartDialog(object sender, EventArgs e)
         {
@@ -58,6 +59,7 @@ namespace Kliens.UserControls
             if (mainPanel.Controls.OfType<UjAlkatresz>().Any())
                 mainPanel.Controls.OfType<UjAlkatresz>().First().CenterControl();
         }
+        #endregion
 
         //PartBox frissitese ha megnyilik a usercontrol
         private async void RaktarvezetoMain_Load(object sender, EventArgs e)
@@ -65,12 +67,18 @@ namespace Kliens.UserControls
             await UpdatePartBox();
         }
 
+        //WarehouseBox frissitese ha valtozik a kivalasztott filter
+        private async void filterBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await UpdateWarehouseBox();
+        }
+
         public async Task UpdatePartBox()
         {
             try
             {
-                alkatreszek = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("api/Alkatresz");
-                partBox.DataSource = alkatreszek;
+                parts = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("api/Alkatresz");
+                partBox.DataSource = parts;
                 partBox.DisplayMember = "Nev";
             }
             catch (Exception ex)
@@ -80,45 +88,128 @@ namespace Kliens.UserControls
         }
 
         //Kiválásztott alkatrész adatainak betöltése
-        private void partBox_SelectedValueChanged(object sender, EventArgs e)
+        private void SelectPart(object sender, EventArgs e)
         {
-            selectedAlkatresz = (Alkatresz)partBox.SelectedItem;
+            selectedPart = partBox.SelectedItem as Alkatresz;
 
-            if(selectedAlkatresz != null)
+            if (selectedPart != null)
             {
                 //alkatresz adatainak beallitasa
-                partNameLabel.Text = selectedAlkatresz.Nev;
-                partIdLabel.Text = selectedAlkatresz.Id.ToString();
-                priceBox.Value = selectedAlkatresz.Ar;
-                dbBox.Value = selectedAlkatresz.MaxDb;
+                partNameLabel.Text = selectedPart.Nev;
+                partIdLabel.Text = "ID: " + selectedPart.Id.ToString();
+                priceBox.Value = selectedPart.Ar;
+                maxdbBox.Value = selectedPart.MaxDb;
+                //maximum elhelyezheto dbszam beallitasa
+                dbBox.Maximum = selectedPart.MaxDb;
             }
         }
 
+        //alkatresz frissitese a Mentes gomb megnyomasa utan
         public async void UpdatePart(object sender, EventArgs e)
         {
-            if (selectedAlkatresz != null)
+            if (selectedPart != null)
             {
-                if (priceBox.Value > 0 && dbBox.Value > 0)
+                if (priceBox.Value > 0 && maxdbBox.Value > 0)
                 {
-                    selectedAlkatresz.Ar = (int)priceBox.Value;
-                    selectedAlkatresz.MaxDb = (int)dbBox.Value;
+                    Alkatresz partToSend = new Alkatresz
+                    {
+                        Id = selectedPart.Id,
+                        Nev = selectedPart.Nev,
+                        Ar = (int)priceBox.Value,
+                        MaxDb = (int)maxdbBox.Value
+                    };
 
                     try
                     {
-                        var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{selectedAlkatresz.Id}", selectedAlkatresz);
+                        ((Button)sender).Enabled = false;
+                        var response = await ApiKliens.Client.PutAsJsonAsync($"api/Alkatresz/{partToSend.Id}", partToSend);
 
                         if (!response.IsSuccessStatusCode)
                         {
                             string hiba = await response.Content.ReadAsStringAsync();
                             MessageBox.Show(hiba, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
+
+                        selectedPart.Ar = partToSend.Ar;
+                        selectedPart.MaxDb = partToSend.MaxDb;
+                        dbBox.Maximum = selectedPart.MaxDb;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    finally { ((Button)sender).Enabled = true; }
+                }
+                else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        //alkatresz elhelyezese a raktarban
+        public async void PlacePart(object sender, EventArgs e)
+        {
+            if (selectedPart != null)
+            {
+                //alkatresz adatainak beallitasa
+                string rekeszID = $"{rowBox.Value.ToString()},{colBox.Value.ToString()},{compBox.Value.ToString()}";
+                Raktar partToPlace = new Raktar();
+                partToPlace.AlkatreszId = selectedPart.Id;
+                partToPlace.RekeszId = rekeszID;
+                partToPlace.Darabszam = (int)dbBox.Value;
+
+                //alkatresz elhelyezese
+                try
+                {
+                    ((Button)sender).Enabled = false;
+                    var response = await ApiKliens.Client.PostAsJsonAsync("api/Raktar", partToPlace);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string hiba = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show(hiba, response.StatusCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    await UpdateWarehouseBox();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally { ((Button)sender).Enabled = true; }
+            }
+            else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        //Az alkatrészek kilistázása kiválasztott filtertol függöen
+        private async Task UpdateWarehouseBox()
+        {
+            int selectedFilter = filterBox.SelectedIndex;
+            switch (selectedFilter)
+            {
+                //Osszes raktarban levo alkatresz listazasa
+                case 0:
+                    List<Raktar> raktar = await ApiKliens.Client.GetFromJsonAsync<List<Raktar>>("/api/Raktar");
+
+                    if (raktar != null)
+                    {
+                        warehouseBox.DataSource = raktar.Select(x => new
+                        {
+                            x.RekeszId,
+                            x.AlkatreszNev,
+                            x.Darabszam
+                        }).ToList();
+                        warehouseBox.Columns["RekeszId"].HeaderText = "Pozíció";
+                        warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
+                        warehouseBox.Columns["Darabszam"].HeaderText = "Darabszám";
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
         }
 
         public RaktarvezetoMain()

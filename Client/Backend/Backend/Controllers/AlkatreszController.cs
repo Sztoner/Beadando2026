@@ -21,7 +21,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs
-        [Authorize(Roles = "raktarvezeto,raktaros")]
+        //[Authorize(Roles = "raktarvezeto,raktaros")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Alkatresz>>> GetAlkatreszek()
         {
@@ -29,7 +29,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs/5
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Alkatresz>> GetAlkatresz(int id)
         {
@@ -40,12 +40,17 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            return alkatresz;
+            //ezt én tettem hozzá, nem tudom hogy jó-e
+            //_context.Entry(alkatresz).CurrentValues.SetValues(alkatresz);
+            //await _context.SaveChangesAsync();
+            //return alkatresz
+
+            return Ok(alkatresz);
         }
 
         // PUT: api/Alkatreszs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAlkatresz(int id, Alkatresz alkatresz)
         {
@@ -95,7 +100,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/Alkatreszs/5
-        [Authorize(Roles = "raktarvezeto")]
+        //[Authorize(Roles = "raktarvezeto")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlkatresz(int id)
         {
@@ -114,6 +119,32 @@ namespace Backend.Controllers
         private bool AlkatreszExists(int id)
         {
             return _context.Alkatreszek.Any(e => e.Id == id);
+        }
+
+
+        //[Authorize(Roles = "raktarvezeto,raktaros")]
+        [HttpGet("{id}/elerhetoseg")]
+        public async Task<IActionResult> GetElerhetoseg(int id)
+        {
+            var raktarDb = await _context.Raktar
+                .Where(x => x.AlkatreszId == id)
+                .SumAsync(x => x.Darabszam);
+
+            var foglaltDb = await _context.ProjektAlkatreszek
+                .Where(x => x.AlkatreszId == id /*&& x.HianyDb == 0*/)
+                .Join(_context.Projektek,
+                    pa => pa.ProjektId,
+                    p => p.Id,
+                    (pa, p) => new { pa, p })
+                .Where(x => x.p.Statusz == "Draft" || x.p.Statusz == "Wait" || x.p.Statusz == "Scheduled")
+                .SumAsync(x => x.pa.Darabszam);
+
+            return Ok(new
+            {
+                AlkatreszId = id,
+                RaktarDb = raktarDb,
+                FoglaltDb = foglaltDb
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 using Kliens.Shared;
 using Kliens.UserControls;
+using Kliens.UserControls.Szakember;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
@@ -32,6 +33,7 @@ namespace Kliens
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try 
             {
+                ((Button)sender).Enabled = false;
                 var response = await ApiKliens.Client.PostAsync("auth/login", content);
 
                 if (response.IsSuccessStatusCode)
@@ -48,7 +50,8 @@ namespace Kliens
                             MessageBox.Show("Sikeres login!");
                             break;
                         case "szakember":
-                            MessageBox.Show("Sikeres login!");
+                            SzakemberMain szMain = new SzakemberMain();
+                            LoadControl(szMain);
                             break;
                         case "raktarvezeto":
                             RaktarvezetoMain rMain = new RaktarvezetoMain();
@@ -65,6 +68,8 @@ namespace Kliens
             {
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            { ((Button)sender).Enabled = true; }
         }
 
         public Form1()

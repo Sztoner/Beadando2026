@@ -30,6 +30,7 @@ namespace Kliens.UserControls.Raktarvezeto
                 //az uj alkatresz felvitele az adatbazisba
                 try
                 {
+                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PostAsJsonAsync("api/Alkatresz", alkatresz);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -44,6 +45,7 @@ namespace Kliens.UserControls.Raktarvezeto
                 {
                     MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                finally { ((Button)sender).Enabled = true; }
             }
             else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
