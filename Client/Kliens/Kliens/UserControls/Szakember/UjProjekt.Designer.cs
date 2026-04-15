@@ -71,7 +71,7 @@
             descriptionBox.Location = new Point(128, 158);
             descriptionBox.Name = "descriptionBox";
             descriptionBox.Size = new Size(250, 61);
-            descriptionBox.TabIndex = 36;
+            descriptionBox.TabIndex = 31;
             descriptionBox.Text = "";
             // 
             // label4
@@ -91,7 +91,7 @@
             locationBox.Location = new Point(145, 121);
             locationBox.Name = "locationBox";
             locationBox.Size = new Size(233, 25);
-            locationBox.TabIndex = 34;
+            locationBox.TabIndex = 30;
             // 
             // clientBox
             // 
@@ -100,7 +100,7 @@
             clientBox.Location = new Point(171, 85);
             clientBox.Name = "clientBox";
             clientBox.Size = new Size(207, 25);
-            clientBox.TabIndex = 33;
+            clientBox.TabIndex = 29;
             // 
             // cancelButton
             // 
@@ -108,7 +108,7 @@
             cancelButton.Location = new Point(115, 256);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(99, 32);
-            cancelButton.TabIndex = 32;
+            cancelButton.TabIndex = 38;
             cancelButton.Text = "Mégse";
             cancelButton.UseVisualStyleBackColor = true;
             cancelButton.Click += cancelButton_Click;
@@ -119,7 +119,7 @@
             saveButton.Location = new Point(10, 256);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(99, 32);
-            saveButton.TabIndex = 31;
+            saveButton.TabIndex = 37;
             saveButton.Text = "Mentés";
             saveButton.UseVisualStyleBackColor = true;
             saveButton.Click += CreateProject;

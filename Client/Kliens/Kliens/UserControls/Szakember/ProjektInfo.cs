@@ -43,6 +43,19 @@ namespace Kliens.UserControls.Szakember
                 clientLabel.Text = selectedProject.Megrendelo;
                 laborcostBox.Value = selectedProject.Munkadij;
                 joblenghtBox.Value = selectedProject.Munkaido;
+
+                //Ha a munkaido es a munkadij mar rogzitesre kerult akkor a mentes gomb eltunetese
+                if (selectedProject.Munkadij > 0 && selectedProject.Munkaido > 0)
+                {
+                    savePriceButton.Visible = false;
+                    joblenghtBox.Enabled = false;
+                    laborcostBox.Enabled = false;
+
+                    calcPriceButton.Visible = true;
+                    partPriceLabel.Visible = true;
+                    priceLabel.Visible = true;
+                }
+
                 LoadStatus();
             }
         }
@@ -65,6 +78,12 @@ namespace Kliens.UserControls.Szakember
                     partGridView.Visible = true;
                     partsLabel.Text = "Alkatrészek";
                     PartsButton.Visible = false;
+                    
+                    if(statusIndex == 3)
+                    {
+                        calcPriceButton.Visible = false;
+                    }
+
                     LoadParts();
                 }
             }
@@ -113,7 +132,7 @@ namespace Kliens.UserControls.Szakember
         }
 
         //A munkadij es munkaido frissitese
-        private async void UpdatePriceInfo(object sender, EventArgs e)
+        private async void UpdatePriceInfo(object sender, EventArgs e)  
         {
             if(joblenghtBox.Value > 0 && laborcostBox.Value > 0)
             {
@@ -129,12 +148,15 @@ namespace Kliens.UserControls.Szakember
                     {
                         string hiba = await response.Content.ReadAsStringAsync();
                         MessageBox.Show("Nem sikerült elmenti a változtatásokat", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
+                    LoadProject();
                 }
                 catch(Exception ex)
                 { MessageBox.Show(ex.ToString(), "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 finally { ((Button)sender).Enabled = true; }
             }
+            else { MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
         }
 
         //Vissza a SzakemberMainbe
@@ -143,6 +165,7 @@ namespace Kliens.UserControls.Szakember
             OnClosing?.Invoke();
             if(this.Parent != null)
                 this.Parent.Controls.Remove(this);
+            OnClosing = null;
             this.Dispose();
         }
         public ProjektInfo(int id)

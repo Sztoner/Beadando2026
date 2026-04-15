@@ -30,13 +30,14 @@
         {
             mainPanel = new Panel();
             PartsPanel = new Panel();
-            priceLabel = new Label();
-            partPriceLabel = new Label();
             PartsButton = new Button();
             partGridView = new DataGridView();
             partsLabel = new Label();
             detailsPanel = new Panel();
+            calcPriceButton = new Button();
+            priceLabel = new Label();
             closeProjectButton = new Button();
+            partPriceLabel = new Label();
             savePriceButton = new Button();
             label6 = new Label();
             label5 = new Label();
@@ -74,8 +75,6 @@
             // 
             // PartsPanel
             // 
-            PartsPanel.Controls.Add(priceLabel);
-            PartsPanel.Controls.Add(partPriceLabel);
             PartsPanel.Controls.Add(PartsButton);
             PartsPanel.Controls.Add(partGridView);
             PartsPanel.Controls.Add(partsLabel);
@@ -84,30 +83,6 @@
             PartsPanel.Name = "PartsPanel";
             PartsPanel.Size = new Size(783, 280);
             PartsPanel.TabIndex = 6;
-            // 
-            // priceLabel
-            // 
-            priceLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            priceLabel.AutoSize = true;
-            priceLabel.Font = new Font("Segoe UI", 13F);
-            priceLabel.Location = new Point(454, 72);
-            priceLabel.Name = "priceLabel";
-            priceLabel.Size = new Size(81, 25);
-            priceLabel.TabIndex = 12;
-            priceLabel.Text = "Össz. Ár:";
-            priceLabel.Visible = false;
-            // 
-            // partPriceLabel
-            // 
-            partPriceLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            partPriceLabel.AutoSize = true;
-            partPriceLabel.Font = new Font("Segoe UI", 13F);
-            partPriceLabel.Location = new Point(454, 47);
-            partPriceLabel.Name = "partPriceLabel";
-            partPriceLabel.Size = new Size(133, 25);
-            partPriceLabel.TabIndex = 11;
-            partPriceLabel.Text = "Akatrészek Ára:";
-            partPriceLabel.Visible = false;
             // 
             // PartsButton
             // 
@@ -125,8 +100,9 @@
             // 
             // partGridView
             // 
-            partGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            partGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             partGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            partGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             partGridView.BackgroundColor = Color.White;
             partGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             partGridView.Location = new Point(12, 47);
@@ -149,7 +125,10 @@
             // 
             // detailsPanel
             // 
+            detailsPanel.Controls.Add(calcPriceButton);
+            detailsPanel.Controls.Add(priceLabel);
             detailsPanel.Controls.Add(closeProjectButton);
+            detailsPanel.Controls.Add(partPriceLabel);
             detailsPanel.Controls.Add(savePriceButton);
             detailsPanel.Controls.Add(label6);
             detailsPanel.Controls.Add(label5);
@@ -169,6 +148,33 @@
             detailsPanel.Size = new Size(783, 239);
             detailsPanel.TabIndex = 5;
             // 
+            // calcPriceButton
+            // 
+            calcPriceButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            calcPriceButton.BackColor = Color.DodgerBlue;
+            calcPriceButton.FlatStyle = FlatStyle.Flat;
+            calcPriceButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            calcPriceButton.ForeColor = Color.Black;
+            calcPriceButton.Location = new Point(566, 168);
+            calcPriceButton.Name = "calcPriceButton";
+            calcPriceButton.Size = new Size(89, 28);
+            calcPriceButton.TabIndex = 17;
+            calcPriceButton.Text = "Árkalkuláció";
+            calcPriceButton.UseVisualStyleBackColor = false;
+            calcPriceButton.Visible = false;
+            // 
+            // priceLabel
+            // 
+            priceLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            priceLabel.AutoSize = true;
+            priceLabel.Font = new Font("Segoe UI", 13F);
+            priceLabel.Location = new Point(566, 140);
+            priceLabel.Name = "priceLabel";
+            priceLabel.Size = new Size(93, 25);
+            priceLabel.TabIndex = 12;
+            priceLabel.Text = "Össz. Ár: -";
+            priceLabel.Visible = false;
+            // 
             // closeProjectButton
             // 
             closeProjectButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -183,6 +189,18 @@
             closeProjectButton.Text = "Lezárás";
             closeProjectButton.UseVisualStyleBackColor = false;
             closeProjectButton.Visible = false;
+            // 
+            // partPriceLabel
+            // 
+            partPriceLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            partPriceLabel.AutoSize = true;
+            partPriceLabel.Font = new Font("Segoe UI", 13F);
+            partPriceLabel.Location = new Point(566, 115);
+            partPriceLabel.Name = "partPriceLabel";
+            partPriceLabel.Size = new Size(145, 25);
+            partPriceLabel.TabIndex = 11;
+            partPriceLabel.Text = "Akatrészek Ára: -";
+            partPriceLabel.Visible = false;
             // 
             // savePriceButton
             // 
@@ -403,5 +421,6 @@
         private Label priceLabel;
         private Button closeProjectButton;
         private Button backButton;
+        private Button calcPriceButton;
     }
 }
