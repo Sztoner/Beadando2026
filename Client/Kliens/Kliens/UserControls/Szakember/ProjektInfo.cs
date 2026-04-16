@@ -61,6 +61,7 @@ namespace Kliens.UserControls.Szakember
         }
 
         //Kivalasztott projekt statuszanak betoltese
+        //TODO: az else if atirasa hogy az osszes maradek statuszra igaz legyen ne csak 3-ig es a calcPriceButton lathatosaganak letiltasa Scheduled felett
         private void LoadStatus()
         { 
             if (statuses.Contains(selectedProject.Statusz))
