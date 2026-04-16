@@ -45,7 +45,7 @@ namespace Backend.Controllers
             //await _context.SaveChangesAsync();
             //return alkatresz
 
-            return Ok();
+            return Ok(alkatresz);
         }
 
         // PUT: api/Alkatreszs/5
@@ -131,7 +131,7 @@ namespace Backend.Controllers
                 .SumAsync(x => x.Darabszam);
 
             var foglaltDb = await _context.ProjektAlkatreszek
-                .Where(x => x.AlkatreszId == id && x.HianyDb == 0)
+                .Where(x => x.AlkatreszId == id /*&& x.HianyDb == 0*/)
                 .Join(_context.Projektek,
                     pa => pa.ProjektId,
                     p => p.Id,

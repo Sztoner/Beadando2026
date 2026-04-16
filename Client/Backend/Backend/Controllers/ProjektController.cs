@@ -39,11 +39,9 @@ namespace Backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var projektLista = await _context.Projektek
-                .Where(x => x.Id == id)
-                .ToListAsync();
+            var projekt = await _context.Projektek.FindAsync(id);
 
-            return Ok(projektLista);
+            return Ok(projekt);
         }
 
         // PUT: api/projekt
