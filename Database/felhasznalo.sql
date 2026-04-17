@@ -2,10 +2,11 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto"
 
 CREATE TABLE felhasznalo_adatok (
     ID INT,
-	nev TEXT
+	nev TEXT,
     szerepkor TEXT,
-    jelszoHash TEXT, 
-    two_factor_secret TEXT,
-    two_factor_enabled BOOLEAN DEFAULT FALSE
+    jelszoHash TEXT,
+	email TEXT,
+    two_factor_secret INT,
+	two_factor_valid_date TIMESTAMPTZ
     PRIMARY KEY(ID),
 );

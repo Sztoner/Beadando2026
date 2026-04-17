@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using NuGet.Packaging.Signing;
+using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("felhasznalo_adatok")]
  public class FelhasznaloAdatok
@@ -11,8 +12,10 @@
     public string Szerepkor { get; set; }
     [Column("jelszohash")]
     public string JelszoHash { get; set; }
+    [Column("email")]
+    public string Email { get; set; }
     [Column("two_factor_secret")]
-    public string TwoFactorSecret { get; set; }
-    [Column("two_factor_enabled")]
-    public bool TwoFactorEnabled { get; set; }
+    public int TwoFactorSecret { get; set; }
+    [Column("two_factor_valid_date")]
+    public DateTime TwoFactorValidDate { get; set; }
 }

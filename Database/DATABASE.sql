@@ -4,10 +4,11 @@ CREATE TABLE felhasznalo_adatok (
     ID INT,
 	nev TEXT,
     szerepkor TEXT,
-    jelszoHash TEXT, 
-    two_factor_secret TEXT,
-    two_factor_enabled BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY(ID)
+    jelszoHash TEXT,
+	email TEXT,
+    two_factor_secret INT,
+	two_factor_valid_date TIMESTAMPTZ
+    PRIMARY KEY(ID),
 );
 
 CREATE TABLE alkatresz (
