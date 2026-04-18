@@ -14,6 +14,7 @@ namespace Backend.Controllers
     public class AlkatreszController : ControllerBase
     {
         private readonly PostgreDbContext _context;
+        private int id;
 
         public AlkatreszController(PostgreDbContext context)
         {
@@ -146,5 +147,45 @@ namespace Backend.Controllers
                 FoglaltDb = foglaltDb
             });
         }
+
+        [HttpGet("hianyzok")]
+        public async Task<ActionResult<List<Alkatresz>>> GetHianyzok()
+        {
+            var result = await _context.ProjektAlkatreszek
+       .Where(pa => pa.HianyDb > 0)
+       .GroupBy(pa => pa.AlkatreszId)
+       .Select(g => new
+       {
+           AlkatreszId = g.Key,
+           MaxHiany = g.Max(x => x.HianyDb)
+       })
+        .Join(_context.Alkatreszek,
+            g => g.AlkatreszId,
+            a => a.Id,
+            (g, a) => new Alkatresz
+            {
+                Id = a.Id,
+                Nev = a.Nev,
+                Ar = a.Ar,
+                MaxDb = g.MaxHiany
+            })
+        .ToListAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("{id}/alkatreszar")]
+        public async Task<ActionResult<int>> GetALkatreszAr(int i)
+        {
+            var osszeg = await _context.ProjektAlkatreszek
+                .Where(pa => pa.ProjektId == id)
+        .Join(_context.Alkatreszek,
+            pa => pa.AlkatreszId,
+            a => a.Id,
+            (pa, a) => new { pa, a })
+        .SumAsync(x => x.pa.Darabszam * x.a.Ar);
+            return Ok(osszeg);
+        }
+
+        
     }
 }

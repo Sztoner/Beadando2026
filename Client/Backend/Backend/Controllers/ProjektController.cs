@@ -118,5 +118,13 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpGet("scheduled")]
+        public async Task<ActionResult<List<Projekt>>> GetScheduled()
+        {
+            return await _context.Projektek
+                .Where(p => p.Statusz == "Scheduled")
+                .ToListAsync();
+        }
     }
 }
