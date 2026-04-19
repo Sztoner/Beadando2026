@@ -10,6 +10,8 @@ namespace Backend.Controllers
     public class RaktarController : ControllerBase
     {
         private readonly PostgreDbContext _context;
+        private int id;
+        private IEnumerable<object> projektAlkatreszek;
 
         public RaktarController(PostgreDbContext context)
         {
@@ -21,7 +23,37 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Raktar raktar)
         {
-            _context.Set<Raktar>().Add(raktar);
+            _context.Raktar.Add(raktar);
+            await _context.SaveChangesAsync();
+
+            int maradek = raktar.Darabszam;
+
+            var hianyosLista = await _context.ProjektAlkatreszek
+                .Where(pa => pa.AlkatreszId == raktar.AlkatreszId && pa.HianyDb > 0)
+                .Join(_context.Projektek,
+                    pa => pa.ProjektId,
+                    p => p.Id,
+                    (pa, p) => new { pa, p })
+                .Where(x => x.p.Statusz == "Wait")
+                .Select(x => x.pa)
+                .ToListAsync();
+
+            foreach (var item in hianyosLista)
+            {
+                if (maradek <= 0)
+                    break;
+
+                if (item.HianyDb <= maradek)
+                {
+                    //maradek -= item.HianyDb;
+                    item.HianyDb = 0;
+                }
+                else
+                {
+                    item.HianyDb -= maradek;
+                    //maradek = 0;
+                }
+            }
             await _context.SaveChangesAsync();
             return Ok();
         }
