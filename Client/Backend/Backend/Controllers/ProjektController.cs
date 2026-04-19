@@ -185,6 +185,7 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
+                                AlkatreszNev = r.AlkatreszNev,
                                 Darabszam = r.Darabszam
                             });
 
