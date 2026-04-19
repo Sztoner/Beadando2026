@@ -171,21 +171,6 @@ namespace Backend.Controllers
             })
         .ToListAsync();
             return Ok(result);
-        }
-
-        [HttpGet("{id}/alkatreszar")]
-        public async Task<ActionResult<int>> GetALkatreszAr(int i)
-        {
-            var osszeg = await _context.ProjektAlkatreszek
-                .Where(pa => pa.ProjektId == id)
-        .Join(_context.Alkatreszek,
-            pa => pa.AlkatreszId,
-            a => a.Id,
-            (pa, a) => new { pa, a })
-        .SumAsync(x => x.pa.Darabszam * x.a.Ar);
-            return Ok(osszeg);
-        }
-
-        
+        }        
     }
 }

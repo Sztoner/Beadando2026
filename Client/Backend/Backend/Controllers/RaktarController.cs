@@ -45,13 +45,13 @@ namespace Backend.Controllers
 
                 if (item.HianyDb <= maradek)
                 {
-                    maradek -= item.HianyDb;
+                    //maradek -= item.HianyDb;
                     item.HianyDb = 0;
                 }
                 else
                 {
                     item.HianyDb -= maradek;
-                    maradek = 0;
+                    //maradek = 0;
                 }
             }
             await _context.SaveChangesAsync();
@@ -111,84 +111,6 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-        }
-
-        [HttpGet("{id}/kivitelez")]
-        public async Task<ActionResult<List<Raktar>>> Kivitelez(int id)
-        {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
-            {
-                var felhasznaltRaktarKeszlet = new List<Raktar>();
-
-                var projektAlkatreszek = await _context.ProjektAlkatreszek
-                    .Where(pa => pa.ProjektId == id)
-                    .ToListAsync();
-
-                foreach (var pa in projektAlkatreszek)
-                {
-                    int szuksegesDb = pa.Darabszam;
-
-                    var raktarLista = await _context.Raktar
-                        .Where(r => r.AlkatreszId == pa.AlkatreszId)
-                        .OrderBy(r => r.Darabszam)
-                        .ToListAsync();
-
-                    int osszes = raktarLista.Sum(r => r.Darabszam);
-
-                    // ✔ hibakezelés
-                    if (osszes < szuksegesDb)
-                    {
-                        await transaction.RollbackAsync();
-                        return BadRequest($"Nincs elég készlet az alkatrészhez: {pa.AlkatreszId}");
-                    }
-
-                    foreach (var r in raktarLista)
-                    {
-                        if (szuksegesDb <= 0)
-                            break;
-
-                        if (r.Darabszam <= szuksegesDb)
-                        {
-                            // teljes kivét
-                            szuksegesDb -= r.Darabszam;
-
-                            felhasznaltRaktarKeszlet.Add(new Raktar
-                            {
-                                RekeszId = r.RekeszId,
-                                AlkatreszId = r.AlkatreszId,
-                                Darabszam = r.Darabszam
-                            });
-
-                            _context.Raktar.Remove(r);
-                        }
-                        else
-                        {
-                            // részleges kivét
-                            felhasznaltRaktarKeszlet.Add(new Raktar
-                            {
-                                RekeszId = r.RekeszId,
-                                AlkatreszId = r.AlkatreszId,
-                                Darabszam = szuksegesDb
-                            });
-
-                            r.Darabszam -= szuksegesDb;
-                            szuksegesDb = 0;
-                        }
-                    }
-                }
-
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return Ok(felhasznaltRaktarKeszlet);
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                return BadRequest(ex.Message);
-            }
         }
     }
 }
