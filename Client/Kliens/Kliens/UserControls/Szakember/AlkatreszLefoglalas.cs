@@ -178,41 +178,41 @@ namespace Kliens.UserControls.Szakember
                         return;
                     }
 
-                    Naplo projektNaplo = new Naplo
-                    {
-                        ProjektId = selectedProjekt.Id,
-                        Datum = DateTime.UtcNow.Date
-                    };
+                    //Naplo projektNaplo = new Naplo
+                    //{
+                    //    ProjektId = selectedProjekt.Id,
+                    //    Datum = DateTime.UtcNow.Date
+                    //};
 
-                    selectedProjekt.Statusz = "Draft";
-                    projektNaplo.Statusz = selectedProjekt.Statusz;
-                    response = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo", projektNaplo);
+                    //selectedProjekt.Statusz = "Draft";
+                    //projektNaplo.Statusz = selectedProjekt.Statusz;
+                    //response = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo", projektNaplo);
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        string hiba = await response.Content.ReadAsStringAsync();
-                        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    //if (!response.IsSuccessStatusCode)
+                    //{
+                    //    string hiba = await response.Content.ReadAsStringAsync();
+                    //    MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    return;
+                    //}
 
-                    if (vanHianyzo)
-                    {
-                        selectedProjekt.Statusz = "Wait";
-                        projektNaplo.Statusz = selectedProjekt.Statusz;
-                        response = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
+                    //if (vanHianyzo)
+                    //{
+                    //    selectedProjekt.Statusz = "Wait";
+                    //    projektNaplo.Statusz = selectedProjekt.Statusz;
+                    //    response = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
+                    //    if (!response.IsSuccessStatusCode)
+                    //    {
+                    //        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //        return;
+                    //    }
+                    //}
 
-                    response = await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    //response = await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
+                    //if (!response.IsSuccessStatusCode)
+                    //{
+                    //    MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    return;
+                    //}
 
                     MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OnPartsAdded?.Invoke();

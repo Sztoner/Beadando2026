@@ -1,6 +1,8 @@
 ﻿using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Evaluation;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers
@@ -23,6 +25,18 @@ namespace Backend.Controllers
         {
             _context.Projektek.Add(projekt);
             await _context.SaveChangesAsync();
+
+            //Naplo letrehozasa
+            var naplo = new Naplo
+            {
+                ProjektId = projekt.Id,
+                Statusz = projekt.Statusz,
+                Datum = DateTime.UtcNow
+            };
+
+            _context.Naplok.Add(naplo);
+            await _context.SaveChangesAsync();
+
             return Ok();
         }
 
@@ -76,6 +90,23 @@ namespace Backend.Controllers
                 alkatresz.ProjektId = id;
                 _context.ProjektAlkatreszek.Add(alkatresz);
             }
+
+            //Projekt statuszanak beallitasa
+            bool vanHiany = alkatreszLista.Any(a => a.HianyDb > 0);
+            var projekt = await _context.Projektek.FindAsync(id);
+            if (projekt == null)
+                return NotFound("Projekt nem található");
+            projekt.Statusz = vanHiany ? "Wait" : "Draft";
+
+            // Naplo letrehozasa
+            var naplo = new Naplo
+            {
+                ProjektId = projekt.Id,
+                Statusz = projekt.Statusz,
+                Datum = DateTime.UtcNow
+            };
+
+            _context.Naplok.Add(naplo);
 
             await _context.SaveChangesAsync();
             return Ok();
@@ -164,7 +195,7 @@ namespace Backend.Controllers
 
                     int osszes = raktarLista.Sum(r => r.Darabszam);
 
-                    // ✔ hibakezelés
+                    // hibakezelés
                     if (osszes < szuksegesDb)
                     {
                         await transaction.RollbackAsync();
@@ -185,7 +216,6 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
-                                AlkatreszNev = r.AlkatreszNev,
                                 Darabszam = r.Darabszam
                             });
 
@@ -206,6 +236,20 @@ namespace Backend.Controllers
                         }
                     }
                 }
+
+                //Projekt statuszanak beallitasa
+                var projekt = await _context.Projektek.FindAsync(id);
+                projekt.Statusz = "InProgress";
+
+                // Naplo letrehozasa
+                var naplo = new Naplo
+                {
+                    ProjektId = projekt.Id,
+                    Statusz = projekt.Statusz,
+                    Datum = DateTime.UtcNow
+                };
+
+                _context.Naplok.Add(naplo);
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
