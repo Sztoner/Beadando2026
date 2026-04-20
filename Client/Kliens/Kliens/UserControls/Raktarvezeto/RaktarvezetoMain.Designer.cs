@@ -349,7 +349,7 @@
             filterBox.BackColor = SystemColors.Window;
             filterBox.Font = new Font("Segoe UI", 11F);
             filterBox.FormattingEnabled = true;
-            filterBox.Items.AddRange(new object[] { "Raktár", "Hiányzó", "Lefoglalt" });
+            filterBox.Items.AddRange(new object[] { "Raktár", "Lefoglalt", "Hiányzó" });
             filterBox.Location = new Point(419, 58);
             filterBox.Name = "filterBox";
             filterBox.Size = new Size(99, 28);

@@ -190,24 +190,57 @@ namespace Kliens.UserControls
             {
                 //Osszes raktarban levo alkatresz listazasa
                 case 0:
-                    List<Raktar> raktar = await ApiKliens.Client.GetFromJsonAsync<List<Raktar>>("/api/Raktar");
-
-                    if (raktar != null)
+                    try
                     {
-                        warehouseBox.DataSource = raktar.Select(x => new
+                        List<Raktar> raktar = await ApiKliens.Client.GetFromJsonAsync<List<Raktar>>("/api/Raktar");
+
+                        if (raktar != null)
                         {
-                            x.RekeszId,
-                            x.AlkatreszNev,
-                            x.Darabszam
-                        }).ToList();
-                        warehouseBox.Columns["RekeszId"].HeaderText = "Pozíció";
-                        warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
-                        warehouseBox.Columns["Darabszam"].HeaderText = "Darabszám";
+                            warehouseBox.DataSource = raktar
+                                .OrderBy(x => x.RekeszId)
+                                .Select(x => new
+                                {
+                                    x.RekeszId,
+                                    x.AlkatreszNev,
+                                    x.Darabszam
+                                }).ToList();
+                            warehouseBox.Columns["RekeszId"].HeaderText = "Pozíció";
+                            warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
+                            warehouseBox.Columns["Darabszam"].HeaderText = "Darabszám";
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     break;
                 case 1:
                     break;
                 case 2:
+                    try
+                    {
+                        List<Alkatresz> hianyzoAlkatreszek = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("/api/Alkatresz/hianyzok");
+
+                        if (hianyzoAlkatreszek != null)
+                        {
+                            warehouseBox.DataSource = hianyzoAlkatreszek
+                                .OrderBy(x => x.MaxDb)
+                                .Select(x => new
+                                {
+                                    x.Id,
+                                    x.Nev,
+                                    x.MaxDb
+                                }).ToList();
+
+                            warehouseBox.Columns["Id"].HeaderText = "Azonosító";
+                            warehouseBox.Columns["Nev"].HeaderText = "Név";
+                            warehouseBox.Columns["MaxDb"].HeaderText = "Hiányzó darabszám";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     break;
             }
         }
