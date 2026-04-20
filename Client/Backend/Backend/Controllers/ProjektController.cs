@@ -188,18 +188,13 @@ namespace Backend.Controllers
                 {
                     int szuksegesDb = pa.Darabszam;
 
+                    var alkatreszNev = await _context.Alkatreszek
+                        .Where(a => a.Id == pa.AlkatreszId)
+                        .Select(a => a.Nev)
+                        .FirstAsync();
+
                     var raktarLista = await _context.Raktar
                         .Where(r => r.AlkatreszId == pa.AlkatreszId)
-                        .Join(_context.Alkatreszek,
-                            r => r.AlkatreszId,
-                            a => a.Id,
-                            (r, a) => new Raktar
-                            {
-                                RekeszId = r.RekeszId,
-                                AlkatreszId = r.AlkatreszId,
-                                AlkatreszNev = a.Nev,
-                                Darabszam = r.Darabszam
-                            })
                         .OrderBy(r => r.Darabszam)
                         .ToListAsync();
 
@@ -226,7 +221,7 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
-                                AlkatreszNev = r.AlkatreszNev,
+                                AlkatreszNev = alkatreszNev,
                                 Darabszam = r.Darabszam
                             });
 
@@ -239,7 +234,7 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
-                                AlkatreszNev = r.AlkatreszNev,
+                                AlkatreszNev = alkatreszNev,
                                 Darabszam = szuksegesDb
                             });
 
@@ -251,6 +246,12 @@ namespace Backend.Controllers
 
                 //Projekt statuszanak beallitasa
                 var projekt = await _context.Projektek.FindAsync(id);
+                if (projekt == null)
+                {
+                    await transaction.RollbackAsync();
+                    return NotFound("Projekt nem található");
+                }
+
                 projekt.Statusz = "InProgress";
 
                 // Naplo letrehozasa

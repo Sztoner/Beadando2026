@@ -73,6 +73,36 @@ namespace Kliens.UserControls
             await UpdateWarehouseBox();
         }
 
+        private async void projectsBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if(filterBox.SelectedIndex == 1 && projectsBox.DataSource != null)
+            {
+                int pId = (projectsBox.SelectedItem as Projekt).Id;
+
+                try
+                {
+                    List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{pId}/alkatresz");
+                
+                    if(projectParts != null)
+                    {
+                        warehouseBox.DataSource = projectParts
+                                .OrderBy(x => x.Darabszam)
+                                .Select(x => new
+                                {
+                                    x.AlkatreszNev,
+                                    x.Darabszam,
+                                    x.HianyDb
+                                }).ToList();
+                        warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
+                        warehouseBox.Columns["Darabszam"].HeaderText = "Foglalt Darabszám";
+                        warehouseBox.Columns["HianyDb"].HeaderText = "Kivitelezéshez hiányzó";
+                    }
+                }
+                catch(Exception ex)
+                { MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            }
+        }
+
         public async Task UpdatePartBox()
         {
             try
@@ -190,6 +220,8 @@ namespace Kliens.UserControls
             {
                 //Osszes raktarban levo alkatresz listazasa
                 case 0:
+                    projectsBox.Enabled = false;
+                    warehouseBox.DataSource = null;
                     try
                     {
                         List<Raktar> raktar = await ApiKliens.Client.GetFromJsonAsync<List<Raktar>>("/api/Raktar");
@@ -209,14 +241,20 @@ namespace Kliens.UserControls
                             warehouseBox.Columns["Darabszam"].HeaderText = "Darabszám";
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     break;
+                //Projektek alkatreszeinek listazasa
                 case 1:
+                    warehouseBox.DataSource = null;
+                    await UpdateProjectsBox();
                     break;
+                //Hianyzo alkatreszek kilistazasa
                 case 2:
+                    projectsBox.Enabled = false;
+                    warehouseBox.DataSource = null;
                     try
                     {
                         List<Alkatresz> hianyzoAlkatreszek = await ApiKliens.Client.GetFromJsonAsync<List<Alkatresz>>("/api/Alkatresz/hianyzok");
@@ -242,6 +280,27 @@ namespace Kliens.UserControls
                         MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     break;
+            }
+        }
+
+        private async Task UpdateProjectsBox()
+        {
+            try
+            {
+                List<Projekt> projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
+
+                if (projects != null)
+                {
+                    projectsBox.DataSource = projects;
+                    projectsBox.DisplayMember = "Nev";
+                    projectsBox.Enabled = true;
+                }
+                else projectsBox.Enabled = false;
+            }
+            catch(Exception ex)
+            {
+                projectsBox.Enabled = false;
+                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
