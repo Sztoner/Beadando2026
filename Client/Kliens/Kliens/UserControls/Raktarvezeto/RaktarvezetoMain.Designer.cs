@@ -84,9 +84,6 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(800, 450);
             mainPanel.TabIndex = 1;
-            mainPanel.ControlAdded += DisableBackground;
-            mainPanel.ControlRemoved += EnableBackground;
-            mainPanel.Resize += mainPanel_Resize;
             // 
             // projectsBox
             // 

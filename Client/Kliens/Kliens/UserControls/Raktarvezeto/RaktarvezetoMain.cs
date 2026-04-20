@@ -19,47 +19,13 @@ namespace Kliens.UserControls
         public List<Alkatresz> parts = new List<Alkatresz>();
         public Alkatresz selectedPart;
 
-        #region UI Logic
         //uj alkatresz hozzaadasa
         private void ShowAddPartDialog(object sender, EventArgs e)
         {
-            UjAlkatresz ujAlkatresz = new UjAlkatresz();
-            ujAlkatresz.OnPartAdded = async () => await UpdatePartBox();
-            mainPanel.Controls.Add(ujAlkatresz);
-            ujAlkatresz.CenterControl();
-            ujAlkatresz.BringToFront();
+            AlkatreszLetrehozas alkatreszLetrehozas = new AlkatreszLetrehozas();
+            alkatreszLetrehozas.OnPartAdded = async () => await UpdatePartBox();
+            alkatreszLetrehozas.ShowDialog();
         }
-
-        //hatter engedelyezese miutan bezartuk az addpart ablakot
-        public void EnableBackground(object sender, ControlEventArgs e)
-        {
-            if (mainPanel.Controls[0].Enabled == false)
-            {
-                foreach (Control c in mainPanel.Controls)
-                    c.Enabled = true;
-            }
-        }
-
-        //hatter deaktivalasa addig amig az addpart ablak lathato
-        private void DisableBackground(object sender, ControlEventArgs e)
-        {
-            if (mainPanel.Controls.OfType<UjAlkatresz>().Any())
-            {
-                foreach (Control c in mainPanel.Controls)
-                {
-                    if (c != mainPanel.Controls.OfType<UjAlkatresz>().First())
-                        c.Enabled = false;
-                }
-            }
-        }
-
-        //addpart ablak kozepre helyezese ha lathato
-        private void mainPanel_Resize(object sender, EventArgs e)
-        {
-            if (mainPanel.Controls.OfType<UjAlkatresz>().Any())
-                mainPanel.Controls.OfType<UjAlkatresz>().First().CenterControl();
-        }
-        #endregion
 
         //PartBox frissitese ha megnyilik a usercontrol
         private async void RaktarvezetoMain_Load(object sender, EventArgs e)
