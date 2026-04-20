@@ -276,8 +276,8 @@ namespace Backend.Controllers
             }
         }
 
-        //[Authorize(Roles = "szakember")]
-        [HttpPut("{id}/arkalkulacio")]
+        //[Authorize(Roles = "szakember")]  
+        [HttpPost("{id}/arkalkulacio")]
         public async Task<IActionResult> Arkalkulacio(int id)
         {
             var meglevoProjekt = await _context.Projektek.FindAsync(id);
