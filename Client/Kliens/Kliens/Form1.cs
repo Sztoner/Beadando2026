@@ -1,5 +1,6 @@
 using Kliens.Shared;
 using Kliens.UserControls;
+using Kliens.UserControls.Raktaros;
 using Kliens.UserControls.Raktarvezeto;
 using Kliens.UserControls.Szakember;
 using Newtonsoft.Json.Linq;
@@ -65,7 +66,8 @@ namespace Kliens
             switch (role)
             {
                 case "raktaros":
-                    MessageBox.Show("Sikeres login!");
+                    RaktarosMain rsMain = new RaktarosMain();
+                    LoadControl(rsMain);
                     break;
                 case "szakember":
                     SzakemberMain szMain = new SzakemberMain();

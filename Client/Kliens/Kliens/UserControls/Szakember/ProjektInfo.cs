@@ -217,7 +217,7 @@ namespace Kliens.UserControls.Szakember
                     "Sikeresen zárult a projekt?",
                     "Projekt lezárása", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
-                if (valasz == DialogResult.Yes) finalStatus = "Completed";
+                if (valasz == DialogResult.Yes) finalStatus = "Finished";
                 else if (valasz == DialogResult.No) finalStatus = "Failed";
             }
 
