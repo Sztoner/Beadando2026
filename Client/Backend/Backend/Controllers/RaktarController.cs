@@ -21,41 +21,62 @@ namespace Backend.Controllers
         // POST: api/raktar
         //[Authorize(Roles = "raktarvezeto")]
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Create(Raktar raktar)
         {
-            _context.Raktar.Add(raktar);
-            await _context.SaveChangesAsync();
+            using var adatbazisTranzakcio = await _context.Database.BeginTransactionAsync();
 
-            int maradek = raktar.Darabszam;
-
-            var hianyosLista = await _context.ProjektAlkatreszek
-                .Where(pa => pa.AlkatreszId == raktar.AlkatreszId && pa.HianyDb > 0)
-                .Join(_context.Projektek,
-                    pa => pa.ProjektId,
-                    p => p.Id,
-                    (pa, p) => new { pa, p })
-                .Where(x => x.p.Statusz == "Wait")
-                .Select(x => x.pa)
-                .ToListAsync();
-
-            foreach (var item in hianyosLista)
+            try
             {
-                if (maradek <= 0)
-                    break;
+                // ✔ ÚJ: rekesz ellenőrzés
+                bool letezik = await _context.Raktar
+                    .AnyAsync(r => r.RekeszId == raktar.RekeszId);
 
-                if (item.HianyDb <= maradek)
+                if (letezik)
+                    return BadRequest("A rekesz már foglalt");
+
+                _context.Raktar.Add(raktar);
+                await _context.SaveChangesAsync();
+
+                int maradek = raktar.Darabszam;
+
+                var hianyosLista = await _context.ProjektAlkatreszek
+                    .Where(pa => pa.AlkatreszId == raktar.AlkatreszId && pa.HianyDb > 0)
+                    .Join(_context.Projektek,
+                        pa => pa.ProjektId,
+                        p => p.Id,
+                        (pa, p) => new { pa, p })
+                    .Where(x => x.p.Statusz == "Wait")
+                    .Select(x => x.pa)
+                    .ToListAsync();
+
+                foreach (var item in hianyosLista)
                 {
-                    //maradek -= item.HianyDb;
-                    item.HianyDb = 0;
+                    if (maradek <= 0)
+                        break;
+
+                    if (item.HianyDb <= maradek)
+                    {
+                        maradek -= item.HianyDb;
+                        item.HianyDb = 0;
+                    }
+                    else
+                    {
+                        item.HianyDb -= maradek;
+                        maradek = 0;
+                    }
                 }
-                else
-                {
-                    item.HianyDb -= maradek;
-                    //maradek = 0;
-                }
+
+                await _context.SaveChangesAsync();
+                await adatbazisTranzakcio.CommitAsync();
+
+                return Ok();
             }
-            await _context.SaveChangesAsync();
-            return Ok();
+            catch (Exception ex)
+            {
+                await adatbazisTranzakcio.RollbackAsync();
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/raktar
