@@ -39,7 +39,6 @@ namespace Kliens.UserControls.Raktaros
         private async void ExecuteProject(object sender, EventArgs e)
         {
             ((Button) sender).Enabled = false;
-            warehouseBox.DataSource = null;
             if (projectsBox.SelectedItem is not Projekt)
             {
                 MessageBox.Show("Válasszon ki egy projektet!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -47,12 +46,23 @@ namespace Kliens.UserControls.Raktaros
                 return;
             }
 
+            warehouseBox.DataSource = null;
             try
             {
                 int pId = (projectsBox.SelectedItem as Projekt).Id;
-                List<Raktar> selectedParts = await ApiKliens.Client.GetFromJsonAsync<List<Raktar>>($"/api/Projekt/{pId}/kivitelez");
+                var response = await ApiKliens.Client.PostAsync($"/api/Projekt/{pId}/kivitelez", null);
 
-                if(selectedParts != null)
+                if(!response.IsSuccessStatusCode)
+                {
+                    var hiba = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(hiba, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var selectedParts = await response.Content
+                    .ReadFromJsonAsync<List<Raktar>>();
+
+                if (selectedParts != null)
                 {
                     selectedParts = selectedParts
                         .OrderBy(x => int.Parse(x.RekeszId.Split(',')[0]))
@@ -60,7 +70,12 @@ namespace Kliens.UserControls.Raktaros
                         .ThenBy(x => int.Parse(x.RekeszId.Split(',')[2]))
                         .ToList();
 
-                    warehouseBox.DataSource = selectedParts;
+                    warehouseBox.DataSource = selectedParts.Select(x => new
+                    {
+                        x.RekeszId,
+                        x.AlkatreszNev,
+                        x.Darabszam
+                    }).ToList();
                     warehouseBox.Columns["RekeszId"].HeaderText = "Pozíció";
                     warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
                     warehouseBox.Columns["Darabszam"].HeaderText = "Kiveendö darabszám";

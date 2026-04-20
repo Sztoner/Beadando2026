@@ -171,7 +171,7 @@ namespace Backend.Controllers
             return Ok(osszeg);
         }
 
-        [HttpGet("{id}/kivitelez")]
+        [HttpPost("{id}/kivitelez")]
         public async Task<ActionResult<List<Raktar>>> Kivitelez(int id)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -286,7 +286,7 @@ namespace Backend.Controllers
                 return NotFound("Nincs ilyen projekt");
 
             if (meglevoProjekt.Munkaido <= 0 || meglevoProjekt.Munkadij <= 0)
-                return BadRequest("Munkaidő és munkadíj nagyobb kell legyen mint 0");
+                return BadRequest("Munkaidő és munkadíj nélkül nem végezhető árkalkuláció!");
 
             bool vanAlkatresz = await _context.ProjektAlkatreszek
                 .AnyAsync(pa => pa.ProjektId == id);
