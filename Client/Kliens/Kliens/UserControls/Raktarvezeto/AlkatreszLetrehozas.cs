@@ -22,7 +22,7 @@ namespace Kliens.UserControls.Raktarvezeto
         private async void AddPart(object sender, EventArgs e)
         {
             Alkatresz alkatresz = new Alkatresz();
-            if (nameBox.Text.Length >= 3 && priceBox.Value > 0 && rekeszdbBox.Value > 0)
+            if (nameBox.Text.Length > 0 && priceBox.Value > 0 && rekeszdbBox.Value > 0)
             {
                 alkatresz.Nev = nameBox.Text.Trim();
                 alkatresz.Ar = (int)priceBox.Value;
@@ -48,7 +48,7 @@ namespace Kliens.UserControls.Raktarvezeto
                 }
                 finally { ((Button)sender).Enabled = true; }
             }
-            else MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else MessageBox.Show("Kérem minden mezöt tötlsön ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public Action? OnPartAdded;
