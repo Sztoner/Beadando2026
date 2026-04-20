@@ -190,6 +190,16 @@ namespace Backend.Controllers
 
                     var raktarLista = await _context.Raktar
                         .Where(r => r.AlkatreszId == pa.AlkatreszId)
+                        .Join(_context.Alkatreszek,
+                            r => r.AlkatreszId,
+                            a => a.Id,
+                            (r, a) => new Raktar
+                            {
+                                RekeszId = r.RekeszId,
+                                AlkatreszId = r.AlkatreszId,
+                                AlkatreszNev = a.Nev,
+                                Darabszam = r.Darabszam
+                            })
                         .OrderBy(r => r.Darabszam)
                         .ToListAsync();
 
@@ -216,6 +226,7 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
+                                AlkatreszNev = r.AlkatreszNev,
                                 Darabszam = r.Darabszam
                             });
 
@@ -228,6 +239,7 @@ namespace Backend.Controllers
                             {
                                 RekeszId = r.RekeszId,
                                 AlkatreszId = r.AlkatreszId,
+                                AlkatreszNev = r.AlkatreszNev,
                                 Darabszam = szuksegesDb
                             });
 
@@ -259,6 +271,66 @@ namespace Backend.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize(Roles = "szakember")]
+        [HttpPut("{id}/arkalkulacio")]
+        public async Task<IActionResult> Arkalkulacio(int id)
+        {
+            var meglevoProjekt = await _context.Projektek.FindAsync(id);
+
+            if (meglevoProjekt == null)
+                return NotFound("Nincs ilyen projekt");
+
+            if (meglevoProjekt.Munkaido <= 0 || meglevoProjekt.Munkadij <= 0)
+                return BadRequest("Munkaidő és munkadíj nagyobb kell legyen mint 0");
+
+            bool vanAlkatresz = await _context.ProjektAlkatreszek
+                .AnyAsync(pa => pa.ProjektId == id);
+
+            if (!vanAlkatresz)
+                return BadRequest("A projekthez nem tartozik alkatrész");
+
+            bool vanHiany = await _context.ProjektAlkatreszek
+                .AnyAsync(pa => pa.ProjektId == id && pa.HianyDb > 0);
+
+            if (vanHiany)
+                return BadRequest("Van hiányzó alkatrész");
+
+            using var adatbazisTranzakcio = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var alkatreszAr = await _context.ProjektAlkatreszek
+                    .Where(pa => pa.ProjektId == id)
+                    .Join(_context.Alkatreszek,
+                        pa => pa.AlkatreszId,
+                        a => a.Id,
+                        (pa, a) => new { pa, a })
+                    .SumAsync(x => x.pa.Darabszam * x.a.Ar);
+
+                meglevoProjekt.Ar = meglevoProjekt.Munkadij * meglevoProjekt.Munkaido + alkatreszAr;
+                meglevoProjekt.Statusz = "Scheduled";
+
+                var naplo = new Naplo
+                {
+                    ProjektId = meglevoProjekt.Id,
+                    Statusz = meglevoProjekt.Statusz,
+                    Datum = DateTime.UtcNow
+                };
+
+                _context.Naplok.Add(naplo);
+
+                await _context.SaveChangesAsync();
+                await adatbazisTranzakcio.CommitAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await adatbazisTranzakcio.RollbackAsync();
                 return BadRequest(ex.Message);
             }
         }
