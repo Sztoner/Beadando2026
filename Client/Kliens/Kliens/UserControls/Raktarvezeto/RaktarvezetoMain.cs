@@ -41,10 +41,9 @@ namespace Kliens.UserControls
 
         private async void projectsBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if(filterBox.SelectedIndex == 1 && projectsBox.DataSource != null)
+            if(filterBox.SelectedIndex == 1 && projectsBox.DataSource != null && projectsBox.SelectedItem is Projekt )
             {
                 int pId = (projectsBox.SelectedItem as Projekt).Id;
-
                 try
                 {
                     List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{pId}/alkatresz");
