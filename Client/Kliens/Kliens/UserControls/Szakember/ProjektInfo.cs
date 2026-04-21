@@ -62,7 +62,6 @@ namespace Kliens.UserControls.Szakember
         }
 
         //Kivalasztott projekt statuszanak betoltese
-        //TODO: az else if atirasa hogy az osszes maradek statuszra igaz legyen ne csak 3-ig es a calcPriceButton lathatosaganak letiltasa Scheduled felett
         private void LoadStatus()
         { 
             if (statuses.Contains(selectedProject.Statusz))
@@ -145,7 +144,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
-        //A munkadij es munkaido frissitese
+        //A munkadij es munkaido mentese
         private async void UpdatePriceInfo(object sender, EventArgs e)  
         {
             if(joblenghtBox.Value > 0 && laborcostBox.Value > 0)
@@ -173,6 +172,7 @@ namespace Kliens.UserControls.Szakember
             else { MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
         }
 
+        //Arkalkulacio elvegzese, allapot valtasa
         private async void CalculatePrice(object sender, EventArgs e)
         {
             try
@@ -195,6 +195,7 @@ namespace Kliens.UserControls.Szakember
             finally { ((Button)sender).Enabled = true; };
         }
 
+        #region Projekt lezarasa
         private async void CloseProject(object sender, EventArgs e)
         {
             if (selectedProject == null || !statuses.Contains(selectedProject.Statusz)) 
@@ -255,6 +256,7 @@ namespace Kliens.UserControls.Szakember
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion
 
         //Vissza a SzakemberMainbe
         private void GoBack(object sender, EventArgs e)

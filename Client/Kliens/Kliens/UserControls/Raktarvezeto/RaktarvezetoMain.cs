@@ -19,53 +19,11 @@ namespace Kliens.UserControls
         public List<Alkatresz> parts = new List<Alkatresz>();
         public Alkatresz selectedPart;
 
-        //uj alkatresz hozzaadasa
-        private void ShowAddPartDialog(object sender, EventArgs e)
-        {
-            AlkatreszLetrehozas alkatreszLetrehozas = new AlkatreszLetrehozas();
-            alkatreszLetrehozas.OnPartAdded = async () => await UpdatePartBox();
-            alkatreszLetrehozas.ShowDialog();
-        }
-
+        #region Elerheto alkatresz lista frissitese
         //PartBox frissitese ha megnyilik a usercontrol
         private async void RaktarvezetoMain_Load(object sender, EventArgs e)
         {
             await UpdatePartBox();
-        }
-
-        //WarehouseBox frissitese ha valtozik a kivalasztott filter
-        private async void filterBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            await UpdateWarehouseBox();
-        }
-
-        private async void projectsBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if(filterBox.SelectedIndex == 1 && projectsBox.DataSource != null && projectsBox.SelectedItem is Projekt )
-            {
-                int pId = (projectsBox.SelectedItem as Projekt).Id;
-                try
-                {
-                    List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{pId}/alkatresz");
-                
-                    if(projectParts != null)
-                    {
-                        warehouseBox.DataSource = projectParts
-                                .OrderBy(x => x.Darabszam)
-                                .Select(x => new
-                                {
-                                    x.AlkatreszNev,
-                                    x.Darabszam,
-                                    x.HianyDb
-                                }).ToList();
-                        warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
-                        warehouseBox.Columns["Darabszam"].HeaderText = "Foglalt Darabszám";
-                        warehouseBox.Columns["HianyDb"].HeaderText = "Kivitelezéshez hiányzó";
-                    }
-                }
-                catch(Exception ex)
-                { MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-            }
         }
 
         public async Task UpdatePartBox()
@@ -80,6 +38,15 @@ namespace Kliens.UserControls
             {
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        #endregion
+
+        //uj alkatresz hozzaadasa
+        private void ShowAddPartDialog(object sender, EventArgs e)
+        {
+            AlkatreszLetrehozas alkatreszLetrehozas = new AlkatreszLetrehozas();
+            alkatreszLetrehozas.OnPartAdded = async () => await UpdatePartBox();
+            alkatreszLetrehozas.ShowDialog();
         }
 
         //Kiválásztott alkatrész adatainak betöltése
@@ -167,6 +134,8 @@ namespace Kliens.UserControls
                     }
 
                     await UpdateWarehouseBox();
+                    if (filterBox.SelectedIndex == 1)
+                        await LoadProjectParts();
                 }
                 catch (Exception ex)
                 {
@@ -177,6 +146,7 @@ namespace Kliens.UserControls
             else MessageBox.Show("Kérem válasszon ki egy alkatrészt!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
+        #region Alkatresz Filterezes
         //Az alkatrészek kilistázása kiválasztott filtertol függöen
         private async Task UpdateWarehouseBox()
         {
@@ -214,7 +184,7 @@ namespace Kliens.UserControls
                 //Projektek alkatreszeinek listazasa
                 case 1:
                     warehouseBox.DataSource = null;
-                    await UpdateProjectsBox();
+                    await UpdateProjectsBox(projectsBox.SelectedIndex);
                     break;
                 //Hianyzo alkatreszek kilistazasa
                 case 2:
@@ -248,17 +218,21 @@ namespace Kliens.UserControls
             }
         }
 
-        private async Task UpdateProjectsBox()
+        //Elerheto projektek betoltese ha a megfelelo filter van kivalasztva
+        private async Task UpdateProjectsBox(int index)
         {
             try
             {
                 List<Projekt> projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
 
-                if (projects != null)
+                if (projects != null && projects.Count > 0)
                 {
                     projectsBox.DataSource = projects;
                     projectsBox.DisplayMember = "Nev";
                     projectsBox.Enabled = true;
+
+                    if (index >= 0 && index < projects.Count)
+                        projectsBox.SelectedIndex = index;
                 }
                 else projectsBox.Enabled = false;
             }
@@ -268,6 +242,52 @@ namespace Kliens.UserControls
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        //Kivalasztott projekthez tartozo alkatreszek betoltese
+        private async Task LoadProjectParts()
+        {
+            if (filterBox.SelectedIndex == 1 && projectsBox.DataSource != null)
+            {
+                if (projectsBox.SelectedItem is not Projekt selectedProjekt)
+                    return;
+
+                int pId = selectedProjekt.Id;
+                try
+                {
+                    List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{pId}/alkatresz");
+
+                    if (projectParts != null)
+                    {
+                        warehouseBox.DataSource = projectParts
+                                .OrderBy(x => x.Darabszam)
+                                .Select(x => new
+                                {
+                                    x.AlkatreszNev,
+                                    x.Darabszam,
+                                    x.HianyDb
+                                }).ToList();
+                        warehouseBox.Columns["AlkatreszNev"].HeaderText = "Név";
+                        warehouseBox.Columns["Darabszam"].HeaderText = "Foglalt Darabszám";
+                        warehouseBox.Columns["HianyDb"].HeaderText = "Kivitelezéshez hiányzó";
+                    }
+                }
+                catch (Exception ex)
+                { MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            }
+        }
+
+        //WarehouseBox frissitese ha valtozik a kivalasztott filter
+        private async void filterBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await UpdateWarehouseBox();
+        }
+
+        //ProjectsBox frissitese ha valtozik a kivalasztott projekt
+        private async void projectsBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            await LoadProjectParts();
+        }
+        #endregion
 
         public RaktarvezetoMain()
         {

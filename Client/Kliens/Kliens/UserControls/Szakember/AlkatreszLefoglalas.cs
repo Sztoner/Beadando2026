@@ -132,14 +132,14 @@ namespace Kliens.UserControls.Szakember
             this.Close();
         }
         
-        //Kivalaszott alkatreszek atalakitasa ProjektAlkatresz listava majd postolas, es naplo generalas
+        //Kivalaszott alkatreszek atalakitasa ProjektAlkatresz listava majd postolas
         private async void saveButton_Click(object sender, EventArgs e)
         {
             try
             {
                 if (selectedParts.Count > 0)
                 {
-                    bool vanHianyzo = false;
+                    ((Button)sender).Enabled = false;
                     List<ProjektAlkatresz> projektParts = new List<ProjektAlkatresz>();
                     foreach (Alkatresz a in selectedParts)
                     {
@@ -163,14 +163,12 @@ namespace Kliens.UserControls.Szakember
                         if (elerhetodb < partToAdd.Darabszam)
                         {
                             partToAdd.HianyDb = (elerhetodb - partToAdd.Darabszam) * (-1);
-                            vanHianyzo = true;
                         }
                         else partToAdd.HianyDb = 0;
-
+                        
                         projektParts.Add(partToAdd);
                     }
 
-                    ((Button)sender).Enabled = false;
                     var response = await ApiKliens.Client.PostAsJsonAsync<List<ProjektAlkatresz>>($"api/Projekt/{selectedProjekt.Id}/alkatresz", projektParts);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -178,49 +176,13 @@ namespace Kliens.UserControls.Szakember
                         return;
                     }
 
-                    //Naplo projektNaplo = new Naplo
-                    //{
-                    //    ProjektId = selectedProjekt.Id,
-                    //    Datum = DateTime.UtcNow.Date
-                    //};
-
-                    //selectedProjekt.Statusz = "Draft";
-                    //projektNaplo.Statusz = selectedProjekt.Statusz;
-                    //response = await ApiKliens.Client.PostAsJsonAsync("api/Projekt/naplo", projektNaplo);
-
-                    //if (!response.IsSuccessStatusCode)
-                    //{
-                    //    string hiba = await response.Content.ReadAsStringAsync();
-                    //    MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //    return;
-                    //}
-
-                    //if (vanHianyzo)
-                    //{
-                    //    selectedProjekt.Statusz = "Wait";
-                    //    projektNaplo.Statusz = selectedProjekt.Statusz;
-                    //    response = await ApiKliens.Client.PostAsJsonAsync<Naplo>("api/Projekt/naplo", projektNaplo);
-                    //    if (!response.IsSuccessStatusCode)
-                    //    {
-                    //        MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //        return;
-                    //    }
-                    //}
-
-                    //response = await ApiKliens.Client.PutAsJsonAsync<Projekt>("/api/Projekt", selectedProjekt);
-                    //if (!response.IsSuccessStatusCode)
-                    //{
-                    //    MessageBox.Show("Nem sikerült naplót generálni!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //    return;
-                    //}
-
                     MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OnPartsAdded?.Invoke();
                     this.Close();
                 }
                 else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            catch(Exception ex)
+            catch
             {
                 MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
