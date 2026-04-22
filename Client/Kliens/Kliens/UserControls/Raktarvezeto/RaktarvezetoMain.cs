@@ -134,8 +134,6 @@ namespace Kliens.UserControls
                     }
 
                     await UpdateWarehouseBox();
-                    if (filterBox.SelectedIndex == 1)
-                        await LoadProjectParts();
                 }
                 catch (Exception ex)
                 {
@@ -219,21 +217,26 @@ namespace Kliens.UserControls
         }
 
         //Elerheto projektek betoltese ha a megfelelo filter van kivalasztva
+        bool isUpdatingProjects = false;
         private async Task UpdateProjectsBox(int index)
         {
             try
             {
+                isUpdatingProjects = true;
                 projectsBox.DataSource = null;
+
                 List<Projekt> projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
 
                 if (projects != null && projects.Count > 0)
                 {
                     projectsBox.DataSource = projects.OrderBy(x => x.Id).ToList();
                     projectsBox.DisplayMember = "Nev";
-                    projectsBox.Enabled = true;
 
                     if (index >= 0 && index < projects.Count)
                         projectsBox.SelectedIndex = index;
+
+                    projectsBox.Enabled = true;
+                    await LoadProjectParts();
                 }
                 else projectsBox.Enabled = false;
             }
@@ -242,6 +245,8 @@ namespace Kliens.UserControls
                 projectsBox.Enabled = false;
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {isUpdatingProjects = false;}
         }
 
         //Kivalasztott projekthez tartozo alkatreszek betoltese
@@ -286,7 +291,8 @@ namespace Kliens.UserControls
         //ProjectsBox frissitese ha valtozik a kivalasztott projekt
         private async void projectsBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            await LoadProjectParts();
+            if (!isUpdatingProjects)
+                await LoadProjectParts();
         }
         #endregion
 
