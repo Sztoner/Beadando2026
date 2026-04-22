@@ -61,7 +61,7 @@ namespace Kliens.UserControls.Szakember
             try
             {
                 int projectId = (int)projectsGridView.SelectedRows[0].Cells[0].Value;
-                Debug.WriteLine(projectId);
+                //Debug.WriteLine(projectId);
                 ProjektInfo pInfo = new ProjektInfo(projectId);
                 pInfo.OnClosing = async () => await UpdateProjectsBox();
                 mainPanel.Controls.Add(pInfo);

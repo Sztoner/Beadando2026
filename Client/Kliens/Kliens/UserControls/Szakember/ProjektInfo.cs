@@ -113,6 +113,9 @@ namespace Kliens.UserControls.Szakember
             try
             {
                 List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{selectedProject.Id}/alkatresz");
+                if (projectParts is null)
+                    return;
+                
                 partGridView.DataSource = projectParts.Select(x => new
                 {
                     x.AlkatreszNev,
@@ -159,7 +162,6 @@ namespace Kliens.UserControls.Szakember
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        string hiba = await response.Content.ReadAsStringAsync();
                         MessageBox.Show("Nem sikerült elmenti a változtatásokat", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -218,8 +220,10 @@ namespace Kliens.UserControls.Szakember
                     "Sikeresen zárult a projekt?",
                     "Projekt lezárása", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
-                if (valasz == DialogResult.Yes) finalStatus = "Finished";
-                else if (valasz == DialogResult.No) finalStatus = "Failed";
+                if (valasz == DialogResult.Yes) 
+                    finalStatus = "Finished";
+                else if (valasz == DialogResult.No) 
+                    finalStatus = "Failed";
             }
 
             if (finalStatus != null)

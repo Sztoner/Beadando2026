@@ -298,7 +298,7 @@ namespace Backend.Controllers
                 .AnyAsync(pa => pa.ProjektId == id && pa.HianyDb > 0);
 
             if (vanHiany)
-                return BadRequest("Van hiányzó alkatrész");
+                return BadRequest("Van hiányzó alkatrész ezért nem végezhető árkalkuláció");
 
             using var adatbazisTranzakcio = await _context.Database.BeginTransactionAsync();
 

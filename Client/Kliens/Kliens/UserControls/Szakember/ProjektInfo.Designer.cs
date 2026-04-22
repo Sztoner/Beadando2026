@@ -336,7 +336,6 @@
             // 
             // closeProjectButton
             // 
-            closeProjectButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             closeProjectButton.BackColor = Color.DodgerBlue;
             closeProjectButton.FlatStyle = FlatStyle.Flat;
             closeProjectButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);

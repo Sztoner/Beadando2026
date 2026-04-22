@@ -178,6 +178,7 @@ namespace Kliens.UserControls.Szakember
 
                     MessageBox.Show("A kiválasztott alkatrészek lefoglalása sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OnPartsAdded?.Invoke();
+                    OnPartsAdded = null;
                     this.Close();
                 }
                 else MessageBox.Show("Válasszon ki alkatrészeket!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);

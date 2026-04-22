@@ -39,6 +39,7 @@ namespace Kliens.UserControls.Szakember
                         return;
                     }
                     OnProjectAdded?.Invoke();
+                    OnProjectAdded = null;
                     this.Close();
                 }
                 catch (Exception ex)

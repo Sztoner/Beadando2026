@@ -1,5 +1,6 @@
 using Kliens.Shared;
 using Kliens.UserControls;
+using Kliens.UserControls.Admin;
 using Kliens.UserControls.Raktaros;
 using Kliens.UserControls.Raktarvezeto;
 using Kliens.UserControls.Szakember;
@@ -65,6 +66,10 @@ namespace Kliens
             string role = ApiKliens.GetRoleFromToken();
             switch (role)
             {
+                case "admin":
+                    AdminMain aMain = new AdminMain();
+                    LoadControl(aMain);
+                    break;
                 case "raktaros":
                     RaktarosMain rsMain = new RaktarosMain();
                     LoadControl(rsMain);

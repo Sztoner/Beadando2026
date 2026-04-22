@@ -39,6 +39,7 @@ namespace Kliens.UserControls.Raktarvezeto
                         return;
                     }
                     OnPartAdded?.Invoke();
+                    OnPartAdded = null;
                     this.Dispose();
                 }
                 catch(Exception ex)
