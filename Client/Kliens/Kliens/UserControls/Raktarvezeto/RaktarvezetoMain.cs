@@ -223,11 +223,12 @@ namespace Kliens.UserControls
         {
             try
             {
+                projectsBox.DataSource = null;
                 List<Projekt> projects = await ApiKliens.Client.GetFromJsonAsync<List<Projekt>>("/api/Projekt");
 
                 if (projects != null && projects.Count > 0)
                 {
-                    projectsBox.DataSource = projects;
+                    projectsBox.DataSource = projects.OrderBy(x => x.Id).ToList();
                     projectsBox.DisplayMember = "Nev";
                     projectsBox.Enabled = true;
 
