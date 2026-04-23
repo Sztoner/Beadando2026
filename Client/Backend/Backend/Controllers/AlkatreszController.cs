@@ -22,7 +22,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs
-        //[Authorize(Roles = "raktarvezeto,raktaros")]
+        [Authorize(Roles = "raktarvezeto,szakember")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Alkatresz>>> GetAlkatreszek()
         {
@@ -30,7 +30,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Alkatreszs/5
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto,szakember")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Alkatresz>> GetAlkatresz(int id)
         {
@@ -51,7 +51,7 @@ namespace Backend.Controllers
 
         // PUT: api/Alkatreszs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAlkatresz(int id, Alkatresz alkatresz)
         {
@@ -83,7 +83,7 @@ namespace Backend.Controllers
 
         // POST: api/Alkatreszs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPost]
         public async Task<ActionResult<Alkatresz>> PostAlkatresz(Alkatresz alkatresz)
         {
@@ -101,7 +101,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/Alkatreszs/5
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlkatresz(int id)
         {
@@ -123,7 +123,7 @@ namespace Backend.Controllers
         }
 
 
-        //[Authorize(Roles = "raktarvezeto,raktaros")]
+        [Authorize(Roles = "raktarvezeto,szakember")]
         [HttpGet("{id}/elerhetoseg")]
         public async Task<IActionResult> GetElerhetoseg(int id)
         {
@@ -148,6 +148,7 @@ namespace Backend.Controllers
             });
         }
 
+        [Authorize(Roles = "raktarvezeto")]
         [HttpGet("hianyzok")]
         public async Task<ActionResult<List<Alkatresz>>> GetHianyzok()
         {

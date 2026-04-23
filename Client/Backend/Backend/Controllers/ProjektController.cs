@@ -19,7 +19,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt
-        //[Authorize(Roles = "szakember")]
+        [Authorize(Roles = "szakember")]
         [HttpPost]
         public async Task<IActionResult> Create(Projekt projekt)
         {
@@ -41,7 +41,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt
-        //[Authorize(Roles = "szakember,raktaros")]
+        [Authorize(Roles = "szakember,raktarvezeto")]
         [HttpGet]
         public async Task<List<Projekt>> GetAll()
         {
@@ -49,7 +49,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt/{id}
-        //[Authorize(Roles = "szakember,raktaros")]
+        [Authorize(Roles = "szakember,raktarvezeto")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -59,7 +59,7 @@ namespace Backend.Controllers
         }
 
         // PUT: api/projekt
-        //[Authorize(Roles = "szakember")]
+        [Authorize(Roles = "szakember")]
         [HttpPut]
         public async Task<IActionResult> Update(Projekt projekt)
         {
@@ -75,7 +75,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt/{id}/alkatresz
-        //[Authorize(Roles = "szakember")]
+        [Authorize(Roles = "szakember")]
         [HttpPost("{id}/alkatresz")]
         public async Task<IActionResult> AddAlkatresz(int id, List<ProjektAlkatresz> alkatreszLista)
         {
@@ -113,7 +113,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/projekt/{id}/alkatresz
-        //[Authorize(Roles = "szakember,raktaros")]
+        [Authorize(Roles = "szakember,raktarvezeto")]
         [HttpGet("{id}/alkatresz")]
         public async Task<IActionResult> GetAlkatreszek(int id)
         {
@@ -141,7 +141,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/projekt/naplo
-        //[Authorize(Roles = "szakember")]
+        [Authorize(Roles = "szakember")]
         [HttpPost("naplo")]
         public async Task<IActionResult> Naplo(Naplo naplo)
         {
@@ -150,6 +150,7 @@ namespace Backend.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "raktaros")]
         [HttpGet("scheduled")]
         public async Task<ActionResult<List<Projekt>>> GetScheduled()
         {
@@ -158,6 +159,7 @@ namespace Backend.Controllers
                 .ToListAsync();
         }
 
+        [Authorize(Roles = "szakember")]
         [HttpGet("{id}/alkatreszar")]
         public async Task<ActionResult<int>> GetALkatreszAr(int id)
         {
@@ -171,6 +173,7 @@ namespace Backend.Controllers
             return Ok(osszeg);
         }
 
+        [Authorize(Roles = "raktaros")]
         [HttpPost("{id}/kivitelez")]
         public async Task<ActionResult<List<Raktar>>> Kivitelez(int id)
         {
@@ -276,7 +279,7 @@ namespace Backend.Controllers
             }
         }
 
-        //[Authorize(Roles = "szakember")]  
+        [Authorize(Roles = "szakember")]  
         [HttpPost("{id}/arkalkulacio")]
         public async Task<IActionResult> Arkalkulacio(int id)
         {

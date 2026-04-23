@@ -19,7 +19,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/raktar
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPost]
         public async Task<IActionResult> Create(Raktar raktar)
         {
@@ -79,7 +79,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/raktar
-        //[Authorize(Roles = "raktarvezeto,raktaros")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -100,7 +100,7 @@ namespace Backend.Controllers
         }
 
         // PUT: api/raktar
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPut]
         public async Task<IActionResult> Update(Raktar raktar)
         {
@@ -117,7 +117,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/raktar/{id}
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
