@@ -20,7 +20,7 @@ namespace Kliens.UserControls.Szakember
     {
         private int selectedId = 0;
 
-        public List<string> statuses = new List<string> { "New", "Draft", "Wait", "Scheduled", "InProgress", "Finished", "Failed" };
+        public List<string> statuses = new List<string> { "New", "Draft", "Wait", "Scheduled", "InProgress", "Completed", "Failed" };
         public Projekt selectedProject;
         public Action? OnClosing;
 
@@ -197,7 +197,7 @@ namespace Kliens.UserControls.Szakember
             finally { ((Button)sender).Enabled = true; };
         }
 
-        #region Projekt lezarasa
+            #region Projekt lezarasa
         private async void CloseProject(object sender, EventArgs e)
         {
             if (selectedProject == null || !statuses.Contains(selectedProject.Statusz)) 
@@ -221,7 +221,7 @@ namespace Kliens.UserControls.Szakember
                     "Projekt lezárása", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if (valasz == DialogResult.Yes) 
-                    finalStatus = "Finished";
+                    finalStatus = "Completed";
                 else if (valasz == DialogResult.No) 
                     finalStatus = "Failed";
             }

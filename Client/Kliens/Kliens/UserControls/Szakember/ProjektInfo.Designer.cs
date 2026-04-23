@@ -337,12 +337,13 @@
             // closeProjectButton
             // 
             closeProjectButton.BackColor = Color.DodgerBlue;
+            closeProjectButton.Dock = DockStyle.Left;
             closeProjectButton.FlatStyle = FlatStyle.Flat;
             closeProjectButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);
             closeProjectButton.ForeColor = Color.Black;
-            closeProjectButton.Location = new Point(0, 1);
+            closeProjectButton.Location = new Point(0, 0);
             closeProjectButton.Name = "closeProjectButton";
-            closeProjectButton.Size = new Size(89, 28);
+            closeProjectButton.Size = new Size(89, 30);
             closeProjectButton.TabIndex = 16;
             closeProjectButton.Text = "Lezárás";
             closeProjectButton.UseVisualStyleBackColor = false;
