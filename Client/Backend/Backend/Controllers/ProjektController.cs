@@ -79,6 +79,12 @@ namespace Backend.Controllers
         [HttpPost("{id}/alkatresz")]
         public async Task<IActionResult> AddAlkatresz(int id, List<ProjektAlkatresz> alkatreszLista)
         {
+            var projekt = await _context.Projektek.FindAsync(id);
+            if (projekt == null)
+                return NotFound("Projekt nem található");
+            if (projekt.Statusz != "New")
+                return BadRequest("Csak New projektekhez rendelhető alkatrész");
+
             foreach (var alkatresz in alkatreszLista)
             {
                 bool letezik = _context.ProjektAlkatreszek
@@ -93,9 +99,6 @@ namespace Backend.Controllers
 
             //Projekt statuszanak beallitasa
             bool vanHiany = alkatreszLista.Any(a => a.HianyDb > 0);
-            var projekt = await _context.Projektek.FindAsync(id);
-            if (projekt == null)
-                return NotFound("Projekt nem található");
             projekt.Statusz = vanHiany ? "Wait" : "Draft";
 
             // Naplo letrehozasa
@@ -177,8 +180,14 @@ namespace Backend.Controllers
         [HttpPost("{id}/kivitelez")]
         public async Task<ActionResult<List<Raktar>>> Kivitelez(int id)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            var projekt = await _context.Projektek.FindAsync(id);
+            if (projekt == null)
+                return NotFound("Nincs ilyen projekt");
 
+            if (projekt.Statusz != "Scheduled")
+                return BadRequest("Csak Scheduled projektek vitelezhetők ki");
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 var felhasznaltRaktarKeszlet = new List<Raktar>();
@@ -246,15 +255,7 @@ namespace Backend.Controllers
                         }
                     }
                 }
-
                 //Projekt statuszanak beallitasa
-                var projekt = await _context.Projektek.FindAsync(id);
-                if (projekt == null)
-                {
-                    await transaction.RollbackAsync();
-                    return NotFound("Projekt nem található");
-                }
-
                 projekt.Statusz = "InProgress";
 
                 // Naplo letrehozasa
@@ -264,7 +265,6 @@ namespace Backend.Controllers
                     Statusz = projekt.Statusz,
                     Datum = DateTime.UtcNow
                 };
-
                 _context.Naplok.Add(naplo);
 
                 await _context.SaveChangesAsync();
@@ -287,6 +287,9 @@ namespace Backend.Controllers
 
             if (meglevoProjekt == null)
                 return NotFound("Nincs ilyen projekt");
+
+            if (meglevoProjekt.Statusz != "Wait" && meglevoProjekt.Statusz != "Draft")
+                return BadRequest("Csak Wait és Draft projektekhez készíthető árkalkuláció");
 
             if (meglevoProjekt.Munkaido <= 0 || meglevoProjekt.Munkadij <= 0)
                 return BadRequest("Munkaidő és munkadíj nélkül nem végezhető árkalkuláció!");
