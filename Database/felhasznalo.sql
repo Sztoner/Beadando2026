@@ -8,5 +8,5 @@ CREATE TABLE felhasznalo_adatok (
 	email TEXT,
     two_factor_secret INT,
 	two_factor_valid_date TIMESTAMPTZ,
-    PRIMARY KEY(ID),
+    PRIMARY KEY(ID)
 );
