@@ -57,6 +57,7 @@
             usersGridView.BackgroundColor = Color.White;
             usersGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             usersGridView.Location = new Point(49, 106);
+            usersGridView.MultiSelect = false;
             usersGridView.Name = "usersGridView";
             usersGridView.ReadOnly = true;
             usersGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

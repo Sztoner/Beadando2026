@@ -101,6 +101,7 @@
             projectsGridView.BackgroundColor = Color.White;
             projectsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             projectsGridView.Location = new Point(41, 89);
+            projectsGridView.MultiSelect = false;
             projectsGridView.Name = "projectsGridView";
             projectsGridView.ReadOnly = true;
             projectsGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
