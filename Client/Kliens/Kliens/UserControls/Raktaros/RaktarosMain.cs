@@ -38,7 +38,7 @@ namespace Kliens.UserControls.Raktaros
 
         private async void ExecuteProject(object sender, EventArgs e)
         {
-            ((Button) sender).Enabled = false;
+            ((Button)sender).Enabled = false;
             if (projectsBox.SelectedItem is not Projekt)
             {
                 MessageBox.Show("Válasszon ki egy projektet!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -52,7 +52,7 @@ namespace Kliens.UserControls.Raktaros
                 int pId = (projectsBox.SelectedItem as Projekt).Id;
                 var response = await ApiKliens.Client.PostAsync($"/api/Projekt/{pId}/kivitelez", null);
 
-                if(!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
                     var hiba = await response.Content.ReadAsStringAsync();
                     MessageBox.Show(hiba, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -83,7 +83,7 @@ namespace Kliens.UserControls.Raktaros
                     await UpdateProjectsBox();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -92,6 +92,12 @@ namespace Kliens.UserControls.Raktaros
                 ((Button)sender).Enabled = true;
             }
 
+        }
+
+
+        private async void updateButton_Click(object sender, EventArgs e)
+        {
+            await UpdateProjectsBox();
         }
 
         public RaktarosMain()

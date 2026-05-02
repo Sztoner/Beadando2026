@@ -32,6 +32,7 @@
             warehouseBox = new DataGridView();
             partIdLabel = new Label();
             executeProjectButton = new Button();
+            updateButton = new Button();
             ((System.ComponentModel.ISupportInitialize)warehouseBox).BeginInit();
             SuspendLayout();
             // 
@@ -42,7 +43,7 @@
             projectsBox.Font = new Font("Segoe UI", 11F);
             projectsBox.FormattingEnabled = true;
             projectsBox.Items.AddRange(new object[] { "Raktár", "Lefoglalt", "Hiányzó" });
-            projectsBox.Location = new Point(20, 61);
+            projectsBox.Location = new Point(84, 62);
             projectsBox.Name = "projectsBox";
             projectsBox.Size = new Size(270, 28);
             projectsBox.TabIndex = 19;
@@ -81,7 +82,7 @@
             executeProjectButton.BackColor = Color.DodgerBlue;
             executeProjectButton.FlatStyle = FlatStyle.Flat;
             executeProjectButton.Font = new Font("Calibri", 11F);
-            executeProjectButton.Location = new Point(296, 61);
+            executeProjectButton.Location = new Point(360, 62);
             executeProjectButton.Name = "executeProjectButton";
             executeProjectButton.Size = new Size(76, 29);
             executeProjectButton.TabIndex = 22;
@@ -89,11 +90,25 @@
             executeProjectButton.UseVisualStyleBackColor = false;
             executeProjectButton.Click += ExecuteProject;
             // 
+            // updateButton
+            // 
+            updateButton.BackColor = Color.White;
+            updateButton.FlatStyle = FlatStyle.Flat;
+            updateButton.Font = new Font("Calibri", 11F);
+            updateButton.Location = new Point(20, 61);
+            updateButton.Name = "updateButton";
+            updateButton.Size = new Size(58, 29);
+            updateButton.TabIndex = 23;
+            updateButton.Text = "Frissít";
+            updateButton.UseVisualStyleBackColor = false;
+            updateButton.Click += updateButton_Click;
+            // 
             // RaktarosMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            Controls.Add(updateButton);
             Controls.Add(executeProjectButton);
             Controls.Add(partIdLabel);
             Controls.Add(warehouseBox);
@@ -112,5 +127,6 @@
         private DataGridView warehouseBox;
         private Label partIdLabel;
         private Button executeProjectButton;
+        private Button updateButton;
     }
 }
