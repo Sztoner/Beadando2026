@@ -102,7 +102,7 @@ namespace Kliens.UserControls.Szakember
                     {
                         int elerhetoDb = elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb;
                         if(elerhetoDb >= 0)
-                            avaLabel.Text = "Elérhetö" + "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString() + "db";
+                            avaLabel.Text = "Elérhető" + "\n" + (elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb).ToString() + "db";
                         else avaLabel.Text = "Hiányzik" + "\n" + (((elerhetoseg.RaktarDb - elerhetoseg.FoglaltDb))*(-1)).ToString() + "db";
                     }
                 }
@@ -185,7 +185,7 @@ namespace Kliens.UserControls.Szakember
             }
             catch
             {
-                MessageBox.Show("A mentés nem sikerült\nFeltehetöleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("A mentés nem sikerült\nFeltehetőleg szerverhiba történt", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally { ((Button)sender).Enabled = true; }
         }

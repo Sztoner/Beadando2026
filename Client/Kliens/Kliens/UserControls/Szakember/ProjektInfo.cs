@@ -123,7 +123,7 @@ namespace Kliens.UserControls.Szakember
                     x.HianyDb
                 }).ToList(); ;
                 partGridView.Columns["Darabszam"].HeaderText = "Lefoglalt db";
-                partGridView.Columns["HianyDb"].HeaderText = "Ebböl hiányzó";
+                partGridView.Columns["HianyDb"].HeaderText = "Ebből hiányzó";
                 partGridView.Columns["AlkatreszNev"].HeaderText = "Alkatrész";
             }
 

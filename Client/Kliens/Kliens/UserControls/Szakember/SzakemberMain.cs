@@ -46,7 +46,7 @@ namespace Kliens.UserControls.Szakember
                 projectsGridView.Columns["Id"].HeaderText = "Azonosító";
                 projectsGridView.Columns["Nev"].HeaderText = "Név";
                 projectsGridView.Columns["Helyszin"].HeaderText = "Helyszín";
-                projectsGridView.Columns["Megrendelo"].HeaderText = "Megrendelö";
+                projectsGridView.Columns["Megrendelo"].HeaderText = "Megrendelő";
                 projectsGridView.Columns["Statusz"].HeaderText = "Státusz";
             }
             catch (Exception ex)

@@ -48,7 +48,7 @@ namespace Kliens.UserControls.Raktarvezeto
                 }
                 finally { ((Button)sender).Enabled = true; }
             }
-            else MessageBox.Show("Kérem minden mezöt tötlsön ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else MessageBox.Show("Kérem minden mezőt töltsön ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public Action? OnPartAdded;

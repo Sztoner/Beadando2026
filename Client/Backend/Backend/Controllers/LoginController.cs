@@ -37,10 +37,10 @@ public class AuthController : ControllerBase
             .FirstOrDefaultAsync(x => x.Nev == request.Nev);
 
         if (user == null)
-            return Unauthorized();
+            return Unauthorized("Hibás felhasználónév vagy jelszó!");
 
         if (!BCrypt.Net.BCrypt.Verify(request.Jelszo, user.JelszoHash))
-            return Unauthorized();
+            return Unauthorized("Hibás felhasználónév vagy jelszó!");
 
 
         Random random = new Random();
@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
 
             mail.To.Add(user.Email);
             mail.Subject = "Hitelesítő kód";
-            mail.Body = $"A folytatáshoz használja a következő kódot\n({codeValidTime}percig érvényes)\n\n{code}";
+            mail.Body = $"A folytatáshoz használja a következő kódot\n({codeValidTime} percig érvényes)\n\n{code}";
 
             using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
             {

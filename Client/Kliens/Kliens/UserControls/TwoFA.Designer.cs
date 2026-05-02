@@ -43,7 +43,7 @@
             label1.Name = "label1";
             label1.Size = new Size(125, 24);
             label1.TabIndex = 24;
-            label1.Text = "Hitelesítö kód";
+            label1.Text = "Hitelesítő kód";
             // 
             // sendButton
             // 
@@ -87,7 +87,7 @@
             MinimumSize = new Size(330, 390);
             Name = "TwoFA";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Kétlépcsös Azonosítás";
+            Text = "Kétlépcsős Azonosítás";
             ResumeLayout(false);
             PerformLayout();
         }

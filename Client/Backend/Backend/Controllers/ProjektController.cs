@@ -23,6 +23,10 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Projekt projekt)
         {
+            var letezik = await _context.Projektek.AnyAsync(p => p.Nev.ToLower() == projekt.Nev.ToLower());
+            if (letezik)
+                return BadRequest("Már létezik ilyen nevű projekt!");
+
             _context.Projektek.Add(projekt);
             await _context.SaveChangesAsync();
 
@@ -298,7 +302,7 @@ namespace Backend.Controllers
                 .AnyAsync(pa => pa.ProjektId == id);
 
             if (!vanAlkatresz)
-                return BadRequest("A projekthez nem tartozik alkatrész");
+                return BadRequest("Az árkalkuláció nem végezhető el,\nmivel projekthez nem tartozik alkatrész");
 
             bool vanHiany = await _context.ProjektAlkatreszek
                 .AnyAsync(pa => pa.ProjektId == id && pa.HianyDb > 0);

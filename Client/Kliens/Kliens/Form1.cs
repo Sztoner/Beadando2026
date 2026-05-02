@@ -48,7 +48,11 @@ namespace Kliens
                     };
                     twoFa.ShowDialog(this.FindForm());
                 }
-                else MessageBox.Show("Hibás felhasználónév vagy jelszó", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(error, "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                }
             }
             catch(Exception ex)
             {
