@@ -1,5 +1,8 @@
 using Kliens.Shared;
 using Kliens.UserControls;
+using Kliens.UserControls.Admin;
+using Kliens.UserControls.Raktaros;
+using Kliens.UserControls.Raktarvezeto;
 using Kliens.UserControls.Szakember;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
@@ -38,31 +41,18 @@ namespace Kliens
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
-                    ApiKliens.SetJWTToken(result.token);
-                    welcomeToolStripMenuItem.Visible = true;
-                    welcomeToolStripMenuItem.Text = "Üdv, " + nameBox.Text;
-
-                    string role = ApiKliens.GetRoleFromToken();
-                    switch (role)
-                    {
-                        case "raktaros":
-                            MessageBox.Show("Sikeres login!");
-                            break;
-                        case "szakember":
-                            SzakemberMain szMain = new SzakemberMain();
-                            LoadControl(szMain);
-                            break;
-                        case "raktarvezeto":
-                            RaktarvezetoMain rMain = new RaktarvezetoMain();
-                            LoadControl(rMain);
-                            break;
-                        default:
-                            MessageBox.Show("Érvénytelen szerepkör!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            break;
-                    }
+                    TwoFA twoFa = new TwoFA(loginData.nev);
+                    twoFa.SuccessfulLogin = () => {
+                        twoFa.Close();
+                        LoadMainPage();
+                    };
+                    twoFa.ShowDialog(this.FindForm());
                 }
-                else MessageBox.Show("Hibás felhasználónév vagy jelszó", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(error, "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                }
             }
             catch(Exception ex)
             {
@@ -70,6 +60,36 @@ namespace Kliens
             }
             finally
             { ((Button)sender).Enabled = true; }
+        }
+
+        private void LoadMainPage()
+        {
+            welcomeToolStripMenuItem.Visible = true;
+            welcomeToolStripMenuItem.Text = "Üdv, " + nameBox.Text;
+
+            string role = ApiKliens.GetRoleFromToken();
+            switch (role)
+            {
+                case "admin":
+                    AdminMain aMain = new AdminMain();
+                    LoadControl(aMain);
+                    break;
+                case "raktaros":
+                    RaktarosMain rsMain = new RaktarosMain();
+                    LoadControl(rsMain);
+                    break;
+                case "szakember":
+                    SzakemberMain szMain = new SzakemberMain();
+                    LoadControl(szMain);
+                    break;
+                case "raktarvezeto":
+                    RaktarvezetoMain rMain = new RaktarvezetoMain();
+                    LoadControl(rMain);
+                    break;
+                default:
+                    MessageBox.Show("Érvénytelen szerepkör!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+            }
         }
 
         public Form1()

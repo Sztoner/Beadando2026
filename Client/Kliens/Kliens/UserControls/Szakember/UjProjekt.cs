@@ -39,6 +39,7 @@ namespace Kliens.UserControls.Szakember
                         return;
                     }
                     OnProjectAdded?.Invoke();
+                    OnProjectAdded = null;
                     this.Close();
                 }
                 catch (Exception ex)
@@ -47,7 +48,7 @@ namespace Kliens.UserControls.Szakember
                 }
                 finally { ((Button)sender).Enabled = true; }
             }
-            else MessageBox.Show("Kérem az összes mezöt töltse ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else MessageBox.Show("Kérem az összes mezőt töltse ki!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

@@ -36,7 +36,6 @@
             detailsPanel = new Panel();
             calcPriceButton = new Button();
             priceLabel = new Label();
-            closeProjectButton = new Button();
             partPriceLabel = new Label();
             savePriceButton = new Button();
             label6 = new Label();
@@ -51,6 +50,7 @@
             locationLabel = new Label();
             label1 = new Label();
             clientLabel = new Label();
+            closeProjectButton = new Button();
             topPanel = new Panel();
             backButton = new Button();
             mainPanel.SuspendLayout();
@@ -127,7 +127,6 @@
             // 
             detailsPanel.Controls.Add(calcPriceButton);
             detailsPanel.Controls.Add(priceLabel);
-            detailsPanel.Controls.Add(closeProjectButton);
             detailsPanel.Controls.Add(partPriceLabel);
             detailsPanel.Controls.Add(savePriceButton);
             detailsPanel.Controls.Add(label6);
@@ -162,6 +161,7 @@
             calcPriceButton.Text = "Árkalkuláció";
             calcPriceButton.UseVisualStyleBackColor = false;
             calcPriceButton.Visible = false;
+            calcPriceButton.Click += CalculatePrice;
             // 
             // priceLabel
             // 
@@ -174,21 +174,6 @@
             priceLabel.TabIndex = 12;
             priceLabel.Text = "Össz. Ár: -";
             priceLabel.Visible = false;
-            // 
-            // closeProjectButton
-            // 
-            closeProjectButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            closeProjectButton.BackColor = Color.DodgerBlue;
-            closeProjectButton.FlatStyle = FlatStyle.Flat;
-            closeProjectButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            closeProjectButton.ForeColor = Color.Black;
-            closeProjectButton.Location = new Point(566, 7);
-            closeProjectButton.Name = "closeProjectButton";
-            closeProjectButton.Size = new Size(89, 28);
-            closeProjectButton.TabIndex = 16;
-            closeProjectButton.Text = "Lezárás";
-            closeProjectButton.UseVisualStyleBackColor = false;
-            closeProjectButton.Visible = false;
             // 
             // partPriceLabel
             // 
@@ -317,7 +302,7 @@
             label2.Name = "label2";
             label2.Size = new Size(96, 25);
             label2.TabIndex = 9;
-            label2.Text = "Munkaidö:";
+            label2.Text = "Munkaidő:";
             // 
             // locationLabel
             // 
@@ -349,9 +334,26 @@
             clientLabel.TabIndex = 2;
             clientLabel.Text = "Megrendelö";
             // 
+            // closeProjectButton
+            // 
+            closeProjectButton.BackColor = Color.DodgerBlue;
+            closeProjectButton.Dock = DockStyle.Left;
+            closeProjectButton.FlatStyle = FlatStyle.Flat;
+            closeProjectButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            closeProjectButton.ForeColor = Color.Black;
+            closeProjectButton.Location = new Point(0, 0);
+            closeProjectButton.Name = "closeProjectButton";
+            closeProjectButton.Size = new Size(89, 30);
+            closeProjectButton.TabIndex = 16;
+            closeProjectButton.Text = "Lezárás";
+            closeProjectButton.UseVisualStyleBackColor = false;
+            closeProjectButton.Visible = false;
+            closeProjectButton.Click += CloseProject;
+            // 
             // topPanel
             // 
             topPanel.Controls.Add(backButton);
+            topPanel.Controls.Add(closeProjectButton);
             topPanel.Dock = DockStyle.Top;
             topPanel.Location = new Point(0, 0);
             topPanel.Name = "topPanel";

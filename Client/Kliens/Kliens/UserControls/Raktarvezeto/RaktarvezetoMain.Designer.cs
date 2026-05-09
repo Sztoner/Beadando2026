@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             mainPanel = new Panel();
+            projectsBox = new ComboBox();
             compBox = new NumericUpDown();
             colBox = new NumericUpDown();
             rowBox = new NumericUpDown();
@@ -64,6 +65,7 @@
             // 
             // mainPanel
             // 
+            mainPanel.Controls.Add(projectsBox);
             mainPanel.Controls.Add(compBox);
             mainPanel.Controls.Add(colBox);
             mainPanel.Controls.Add(rowBox);
@@ -82,9 +84,20 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(800, 450);
             mainPanel.TabIndex = 1;
-            mainPanel.ControlAdded += DisableBackground;
-            mainPanel.ControlRemoved += EnableBackground;
-            mainPanel.Resize += mainPanel_Resize;
+            // 
+            // projectsBox
+            // 
+            projectsBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            projectsBox.BackColor = Color.White;
+            projectsBox.Enabled = false;
+            projectsBox.Font = new Font("Segoe UI", 11F);
+            projectsBox.FormattingEnabled = true;
+            projectsBox.Items.AddRange(new object[] { "Raktár", "Lefoglalt", "Hiányzó" });
+            projectsBox.Location = new Point(238, 58);
+            projectsBox.Name = "projectsBox";
+            projectsBox.Size = new Size(166, 28);
+            projectsBox.TabIndex = 18;
+            projectsBox.SelectedValueChanged += projectsBox_SelectedValueChanged;
             // 
             // compBox
             // 
@@ -346,10 +359,10 @@
             // filterBox
             // 
             filterBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            filterBox.BackColor = SystemColors.Window;
+            filterBox.BackColor = Color.White;
             filterBox.Font = new Font("Segoe UI", 11F);
             filterBox.FormattingEnabled = true;
-            filterBox.Items.AddRange(new object[] { "Raktár", "Hiányzó", "Lefoglalt" });
+            filterBox.Items.AddRange(new object[] { "Raktár", "Lefoglalt", "Hiányzó" });
             filterBox.Location = new Point(419, 58);
             filterBox.Name = "filterBox";
             filterBox.Size = new Size(99, 28);
@@ -403,5 +416,6 @@
         private NumericUpDown compBox;
         private NumericUpDown colBox;
         private NumericUpDown rowBox;
+        private ComboBox projectsBox;
     }
 }

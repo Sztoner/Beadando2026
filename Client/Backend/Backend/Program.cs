@@ -34,6 +34,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
+if (!builder.Environment.IsDevelopment())
+    builder.WebHost.UseUrls("http://localhost:5127");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

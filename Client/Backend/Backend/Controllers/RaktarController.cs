@@ -10,6 +10,8 @@ namespace Backend.Controllers
     public class RaktarController : ControllerBase
     {
         private readonly PostgreDbContext _context;
+        private int id;
+        private IEnumerable<object> projektAlkatreszek;
 
         public RaktarController(PostgreDbContext context)
         {
@@ -17,17 +19,67 @@ namespace Backend.Controllers
         }
 
         // POST: api/raktar
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPost]
         public async Task<IActionResult> Create(Raktar raktar)
         {
-            _context.Set<Raktar>().Add(raktar);
-            await _context.SaveChangesAsync();
-            return Ok();
+            using var adatbazisTranzakcio = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                //Rekesz ellenőrzés
+                bool letezik = await _context.Raktar
+                    .AnyAsync(r => r.RekeszId == raktar.RekeszId);
+
+                if (letezik)
+                    return BadRequest("A rekesz már foglalt");
+
+                _context.Raktar.Add(raktar);
+                await _context.SaveChangesAsync();
+
+                int maradek = raktar.Darabszam;
+
+                var hianyosLista = await _context.ProjektAlkatreszek
+                    .Where(pa => pa.AlkatreszId == raktar.AlkatreszId && pa.HianyDb > 0)
+                    .Join(_context.Projektek,
+                        pa => pa.ProjektId,
+                        p => p.Id,
+                        (pa, p) => new { pa, p })
+                    .Where(x => x.p.Statusz == "Wait")
+                    .Select(x => x.pa)
+                    .ToListAsync();
+
+                foreach (var item in hianyosLista)
+                {
+                    if (maradek <= 0)
+                        break;
+
+                    if (item.HianyDb <= maradek)
+                    {
+                        //maradek -= item.HianyDb;
+                        item.HianyDb = 0;
+                    }
+                    else
+                    {
+                        item.HianyDb -= maradek;
+                        //maradek = 0;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                await adatbazisTranzakcio.CommitAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await adatbazisTranzakcio.RollbackAsync();
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/raktar
-        //[Authorize(Roles = "raktarvezeto,raktaros")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -48,7 +100,7 @@ namespace Backend.Controllers
         }
 
         // PUT: api/raktar
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpPut]
         public async Task<IActionResult> Update(Raktar raktar)
         {
@@ -65,7 +117,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/raktar/{id}
-        //[Authorize(Roles = "raktarvezeto")]
+        [Authorize(Roles = "raktarvezeto")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

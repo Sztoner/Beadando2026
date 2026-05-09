@@ -46,7 +46,6 @@
             // mainPanel
             // 
             mainPanel.BackColor = Color.White;
-            mainPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(descriptionBox);
             mainPanel.Controls.Add(label4);
             mainPanel.Controls.Add(locationBox);
@@ -61,16 +60,16 @@
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(510, 300);
+            mainPanel.Size = new Size(494, 261);
             mainPanel.TabIndex = 0;
             // 
             // descriptionBox
             // 
             descriptionBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             descriptionBox.BorderStyle = BorderStyle.FixedSingle;
-            descriptionBox.Location = new Point(128, 158);
+            descriptionBox.Location = new Point(129, 145);
             descriptionBox.Name = "descriptionBox";
-            descriptionBox.Size = new Size(250, 61);
+            descriptionBox.Size = new Size(236, 61);
             descriptionBox.TabIndex = 31;
             descriptionBox.Text = "";
             // 
@@ -78,7 +77,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label4.Location = new Point(68, 158);
+            label4.Location = new Point(69, 145);
             label4.Name = "label4";
             label4.Size = new Size(54, 21);
             label4.TabIndex = 35;
@@ -88,24 +87,24 @@
             // 
             locationBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             locationBox.Font = new Font("Segoe UI", 10F);
-            locationBox.Location = new Point(145, 121);
+            locationBox.Location = new Point(146, 108);
             locationBox.Name = "locationBox";
-            locationBox.Size = new Size(233, 25);
+            locationBox.Size = new Size(219, 25);
             locationBox.TabIndex = 30;
             // 
             // clientBox
             // 
             clientBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             clientBox.Font = new Font("Segoe UI", 10F);
-            clientBox.Location = new Point(171, 85);
+            clientBox.Location = new Point(172, 72);
             clientBox.Name = "clientBox";
-            clientBox.Size = new Size(207, 25);
+            clientBox.Size = new Size(193, 25);
             clientBox.TabIndex = 29;
             // 
             // cancelButton
             // 
             cancelButton.FlatStyle = FlatStyle.Flat;
-            cancelButton.Location = new Point(115, 256);
+            cancelButton.Location = new Point(115, 219);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(99, 32);
             cancelButton.TabIndex = 38;
@@ -116,7 +115,7 @@
             // saveButton
             // 
             saveButton.FlatStyle = FlatStyle.Flat;
-            saveButton.Location = new Point(10, 256);
+            saveButton.Location = new Point(10, 219);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(99, 32);
             saveButton.TabIndex = 37;
@@ -128,7 +127,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label5.Location = new Point(68, 121);
+            label5.Location = new Point(69, 108);
             label5.Name = "label5";
             label5.Size = new Size(71, 21);
             label5.TabIndex = 30;
@@ -138,7 +137,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label3.Location = new Point(68, 85);
+            label3.Location = new Point(69, 72);
             label3.Name = "label3";
             label3.Size = new Size(97, 21);
             label3.TabIndex = 29;
@@ -148,16 +147,16 @@
             // 
             nameBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             nameBox.Font = new Font("Segoe UI", 10F);
-            nameBox.Location = new Point(115, 50);
+            nameBox.Location = new Point(116, 37);
             nameBox.Name = "nameBox";
-            nameBox.Size = new Size(263, 25);
+            nameBox.Size = new Size(249, 25);
             nameBox.TabIndex = 28;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label2.Location = new Point(68, 50);
+            label2.Location = new Point(69, 37);
             label2.Name = "label2";
             label2.Size = new Size(41, 21);
             label2.TabIndex = 27;
@@ -167,7 +166,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 238);
-            label1.Location = new Point(0, 0);
+            label1.Location = new Point(3, 0);
             label1.Name = "label1";
             label1.Size = new Size(232, 30);
             label1.TabIndex = 26;
@@ -178,14 +177,16 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(510, 300);
+            ClientSize = new Size(494, 261);
             Controls.Add(mainPanel);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            MaximizeBox = false;
             MaximumSize = new Size(510, 300);
+            MinimizeBox = false;
             MinimumSize = new Size(510, 300);
             Name = "UjProjekt";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Új Projekt Hozzáadása";
+            Text = "Új Projekt Létrehozása Varázsló";
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
             ResumeLayout(false);

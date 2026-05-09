@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +20,7 @@ namespace Kliens.UserControls.Szakember
     {
         private int selectedId = 0;
 
-        public List<string> statuses = new List<string> { "New", "Draft", "Wait", "Scheduled", "InProgress", "Finished", "Failed" };
+        public List<string> statuses = new List<string> { "New", "Draft", "Wait", "Scheduled", "InProgress", "Completed", "Failed" };
         public Projekt selectedProject;
         public Action? OnClosing;
 
@@ -55,7 +57,6 @@ namespace Kliens.UserControls.Szakember
                     partPriceLabel.Visible = true;
                     priceLabel.Visible = true;
                 }
-
                 LoadStatus();
             }
         }
@@ -67,24 +68,41 @@ namespace Kliens.UserControls.Szakember
             {
                 statusLabel.Text = "Állapot: "+selectedProject.Statusz;
                 int statusIndex = statuses.IndexOf(selectedProject.Statusz);
+                closeProjectButton.Visible = true;
+
                 if(statusIndex == 0)
                 {
                     partGridView.Visible = false;
                     partsLabel.Text = "A Projekthez nem tartozik\nlefoglalt alkatrész";
                     PartsButton.Visible = true;
                 }
-                else if(statusIndex > 0 && statusIndex <= 3)
+                else if(statusIndex > 0 && statusIndex < statuses.Count)
                 {
                     partGridView.Visible = true;
                     partsLabel.Text = "Alkatrészek";
                     PartsButton.Visible = false;
-                    
-                    if(statusIndex == 3)
+                    LoadParts();
+
+                    if (statusIndex >= 3)
                     {
                         calcPriceButton.Visible = false;
-                    }
+                        if (selectedProject.Ar > 0)
+                        {
+                            priceLabel.Text = "Össz. Ár: " + selectedProject.Ar.ToString() + "Ft";
+                            partPriceLabel.Text = "Akatrészek Ára: " + (selectedProject.Ar - (selectedProject.Munkaido * selectedProject.Munkadij)).ToString() + "Ft";
+                        }
+                          
+                        if(statusIndex >= 5)
+                        {
+                            closeProjectButton.Visible= false;
+                            savePriceButton.Visible = false;
+                            joblenghtBox.Enabled = false;
+                            laborcostBox.Enabled = false;
 
-                    LoadParts();
+                            partPriceLabel.Visible = true;
+                            priceLabel.Visible = true;
+                        }
+                    }
                 }
             }
         }
@@ -95,6 +113,9 @@ namespace Kliens.UserControls.Szakember
             try
             {
                 List<ProjektAlkatreszGet> projectParts = await ApiKliens.Client.GetFromJsonAsync<List<ProjektAlkatreszGet>>($"/api/Projekt/{selectedProject.Id}/alkatresz");
+                if (projectParts is null)
+                    return;
+                
                 partGridView.DataSource = projectParts.Select(x => new
                 {
                     x.AlkatreszNev,
@@ -102,7 +123,7 @@ namespace Kliens.UserControls.Szakember
                     x.HianyDb
                 }).ToList(); ;
                 partGridView.Columns["Darabszam"].HeaderText = "Lefoglalt db";
-                partGridView.Columns["HianyDb"].HeaderText = "Ebböl hiányzó";
+                partGridView.Columns["HianyDb"].HeaderText = "Ebből hiányzó";
                 partGridView.Columns["AlkatreszNev"].HeaderText = "Alkatrész";
             }
 
@@ -126,12 +147,7 @@ namespace Kliens.UserControls.Szakember
             }
         }
 
-        private async void ProjektInfo_Load(object sender, EventArgs e)
-        {
-            await UpdateProjektInfo();
-        }
-
-        //A munkadij es munkaido frissitese
+        //A munkadij es munkaido mentese
         private async void UpdatePriceInfo(object sender, EventArgs e)  
         {
             if(joblenghtBox.Value > 0 && laborcostBox.Value > 0)
@@ -146,7 +162,6 @@ namespace Kliens.UserControls.Szakember
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        string hiba = await response.Content.ReadAsStringAsync();
                         MessageBox.Show("Nem sikerült elmenti a változtatásokat", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -159,6 +174,94 @@ namespace Kliens.UserControls.Szakember
             else { MessageBox.Show("Kérem érvényes adatokat adjon meg!", "Figyelem", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
         }
 
+        //Arkalkulacio elvegzese, allapot valtasa
+        private async void CalculatePrice(object sender, EventArgs e)
+        {
+            try
+            {
+                ((Button)sender).Enabled = false;
+                var response = await ApiKliens.Client.PostAsync($"/api/Projekt/{selectedId}/arkalkulacio", null);
+
+                if(!response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                await UpdateProjektInfo();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { ((Button)sender).Enabled = true; };
+        }
+
+            #region Projekt lezarasa
+        private async void CloseProject(object sender, EventArgs e)
+        {
+            if (selectedProject == null || !statuses.Contains(selectedProject.Statusz)) 
+                return;
+
+            int statusIndex = statuses.IndexOf(selectedProject.Statusz);
+            string finalStatus = null;
+
+            if (statusIndex < 4)
+            {
+                var valasz = MessageBox.Show(
+                    "A projekt jelen állapotában csak Failed státuszban zárható le. Biztos folytatja?",
+                    "Megerősítés", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (valasz == DialogResult.Yes) finalStatus = "Failed";
+            }
+            else if (statusIndex == 4)
+            {
+                var valasz = MessageBox.Show(
+                    "Sikeresen zárult a projekt?",
+                    "Projekt lezárása", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (valasz == DialogResult.Yes) 
+                    finalStatus = "Completed";
+                else if (valasz == DialogResult.No) 
+                    finalStatus = "Failed";
+            }
+
+            if (finalStatus != null)
+            {
+                ((Button)sender).Enabled= false;
+                await CloserHelper(finalStatus);
+                ((Button)sender).Enabled = true;
+            }
+        }
+
+        private async Task CloserHelper(string statusz)
+        {
+            selectedProject.Statusz = statusz;
+            try
+            {
+                var result = await ApiKliens.Client.PutAsJsonAsync<Projekt>($"/api/Projekt", selectedProject);
+                if (!result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("A projekt lezárása nem sikerült!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Naplo naplo = new Naplo
+                {
+                    ProjektId = selectedProject.Id,
+                    Statusz = selectedProject.Statusz,
+                    Datum = DateTime.UtcNow
+                };
+
+                var naploResult = await ApiKliens.Client.PostAsJsonAsync<Naplo>("/api/Projekt/Naplo", naplo);
+                LoadStatus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
         //Vissza a SzakemberMainbe
         private void GoBack(object sender, EventArgs e)
         {
@@ -168,6 +271,12 @@ namespace Kliens.UserControls.Szakember
             OnClosing = null;
             this.Dispose();
         }
+
+        private async void ProjektInfo_Load(object sender, EventArgs e)
+        {
+            await UpdateProjektInfo();
+        }
+
         public ProjektInfo(int id)
         {
             InitializeComponent();

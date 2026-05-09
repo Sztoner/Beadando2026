@@ -29,15 +29,12 @@
         private void InitializeComponent()
         {
             mainPanel = new Panel();
-            codeBox = new TextBox();
             loginButton = new Button();
-            label3 = new Label();
             label2 = new Label();
             pwBox = new TextBox();
             label1 = new Label();
             nameBox = new TextBox();
             welcomeLabel = new Label();
-            linkLabel1 = new LinkLabel();
             topMenu = new MenuStrip();
             welcomeToolStripMenuItem = new ToolStripMenuItem();
             logoutToolStripMenuItem = new ToolStripMenuItem();
@@ -48,30 +45,17 @@
             // mainPanel
             // 
             mainPanel.BackColor = Color.White;
-            mainPanel.Controls.Add(codeBox);
             mainPanel.Controls.Add(loginButton);
-            mainPanel.Controls.Add(label3);
             mainPanel.Controls.Add(label2);
             mainPanel.Controls.Add(pwBox);
             mainPanel.Controls.Add(label1);
             mainPanel.Controls.Add(nameBox);
             mainPanel.Controls.Add(welcomeLabel);
-            mainPanel.Controls.Add(linkLabel1);
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 24);
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(800, 426);
             mainPanel.TabIndex = 0;
-            // 
-            // codeBox
-            // 
-            codeBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            codeBox.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            codeBox.Location = new Point(271, 292);
-            codeBox.Margin = new Padding(4, 3, 4, 3);
-            codeBox.Name = "codeBox";
-            codeBox.Size = new Size(116, 31);
-            codeBox.TabIndex = 29;
             // 
             // loginButton
             // 
@@ -79,7 +63,7 @@
             loginButton.BackColor = Color.DodgerBlue;
             loginButton.FlatStyle = FlatStyle.Popup;
             loginButton.Font = new Font("Calibri", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            loginButton.Location = new Point(330, 338);
+            loginButton.Location = new Point(325, 290);
             loginButton.Margin = new Padding(4, 3, 4, 3);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(128, 42);
@@ -87,18 +71,6 @@
             loginButton.Text = "Bejelentkezés";
             loginButton.UseVisualStyleBackColor = false;
             loginButton.Click += Login;
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            label3.AutoSize = true;
-            label3.Font = new Font("Calibri", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            label3.Location = new Point(271, 271);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(98, 18);
-            label3.TabIndex = 26;
-            label3.Text = "Biztonsági Kód";
             // 
             // label2
             // 
@@ -157,18 +129,6 @@
             welcomeLabel.Text = "Üdvözöljük.";
             welcomeLabel.TextAlign = ContentAlignment.BottomCenter;
             // 
-            // linkLabel1
-            // 
-            linkLabel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(388, 308);
-            linkLabel1.Margin = new Padding(4, 0, 4, 0);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(40, 15);
-            linkLabel1.TabIndex = 27;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Mi ez?";
-            // 
             // topMenu
             // 
             topMenu.BackColor = Color.White;
@@ -221,15 +181,12 @@
         #endregion
 
         private Panel mainPanel;
-        private TextBox codeBox;
         private Button loginButton;
-        private Label label3;
         private Label label2;
         private TextBox pwBox;
         private Label label1;
         private TextBox nameBox;
         private Label welcomeLabel;
-        private LinkLabel linkLabel1;
         private MenuStrip topMenu;
         private ToolStripMenuItem welcomeToolStripMenuItem;
         private ToolStripMenuItem logoutToolStripMenuItem;

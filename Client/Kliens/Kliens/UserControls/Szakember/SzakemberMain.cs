@@ -46,7 +46,7 @@ namespace Kliens.UserControls.Szakember
                 projectsGridView.Columns["Id"].HeaderText = "Azonosító";
                 projectsGridView.Columns["Nev"].HeaderText = "Név";
                 projectsGridView.Columns["Helyszin"].HeaderText = "Helyszín";
-                projectsGridView.Columns["Megrendelo"].HeaderText = "Megrendelö";
+                projectsGridView.Columns["Megrendelo"].HeaderText = "Megrendelő";
                 projectsGridView.Columns["Statusz"].HeaderText = "Státusz";
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace Kliens.UserControls.Szakember
             try
             {
                 int projectId = (int)projectsGridView.SelectedRows[0].Cells[0].Value;
-                Debug.WriteLine(projectId);
+                //Debug.WriteLine(projectId);
                 ProjektInfo pInfo = new ProjektInfo(projectId);
                 pInfo.OnClosing = async () => await UpdateProjectsBox();
                 mainPanel.Controls.Add(pInfo);
